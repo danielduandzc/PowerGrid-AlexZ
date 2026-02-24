@@ -10,4 +10,7 @@ public class PowerGrid extends JFrame {
 		add(new PowerGridPanel());
 		setVisible(true);
 	}
+	public static void main(String[] args) {
+		System.out.println("Power Grid");
+    }
 }
