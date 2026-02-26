@@ -26,22 +26,27 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		super.paint(g);
 		if (screenNum == 0) {
 			// title screen
-			g.setFont(new Font("Arial", Font.BOLD, 100));
+			 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
+			g.setFont(sizedFont);
 			g.drawString("POWER GRID", 200, 200);
-			g.setFont(new Font("Arial", Font.PLAIN, 50));
+			sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
+			g.setFont(sizedFont);
 			g.drawString("Click to Start", 350, 400);
 		} else if (screenNum == 1) {
 			// instructions
-			g.setFont(new Font("Arial", Font.BOLD, 50));
+			Font sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
+			g.setFont(sizedFont);
 			g.drawString("Instructions", 350, 100);
-			g.setFont(new Font("Arial", Font.PLAIN, 30));
+			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
+			g.setFont(sizedFont);
 			g.drawString("1. Click to place power plants.", 100, 200);
 			g.drawString("2. Connect cities to power plants.", 100, 250);
 			g.drawString("3. Manage resources and expand your grid.", 100, 300);
 			g.drawString("Click to Start Game", 300, 400);
 		} else if (screenNum == 2) {
 			// game screen
-			g.setFont(new Font("Arial", Font.BOLD, 50));
+			Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 50f);
+			g.setFont(sizedFont);
 			g.drawString("Game Screen - Under Construction", 100, 200);
 		}
 	}
