@@ -1,4 +1,4 @@
-import java.awt.*;
+package src;
 import javax.swing.*;
 public class PowerGrid extends JFrame {
 	private final int WIDTH = 1200;

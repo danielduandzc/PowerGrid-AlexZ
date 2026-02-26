@@ -1,18 +1,11 @@
+package src;
+
 import java.awt.*;
-import javax.swing.*;
-import java.awt.image.*;
-import java.io.*;
-import javax.imageio.ImageIO;
-
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-
-import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-
-import java.awt.geom.AffineTransform;
-import java.util.*;
-import static java.lang.System.*;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.*;
 
 public class PowerGridPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
