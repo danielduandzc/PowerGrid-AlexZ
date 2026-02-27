@@ -34,11 +34,11 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		super.paint(g);
 		if (screenNum == 0) {
 			// title screen
-			g.drawImage(startScreenImg, 0, 0, null);
+			g.drawImage(startScreenImg, 0, 0, 1080, 1920, null);
 		} else if (screenNum == 1) {
 			// instructions
 			g.setFont(new Font("Arial", Font.BOLD, 50));
-			g.drawString("Instructions", 350, 100);
+			g.drawString("Instructions", 1920, 1080);
 			g.setFont(new Font("Arial", Font.PLAIN, 30));
 			g.drawString("1. Click to place power plants.", 100, 200);
 			g.drawString("2. Connect cities to power plants.", 100, 250);
