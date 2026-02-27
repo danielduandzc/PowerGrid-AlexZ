@@ -5,12 +5,24 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class PowerGridPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
-	
+	public static int numMouseClicks = 0;
+	private BufferedImage gameBackground;
 	public PowerGridPanel() {
+		//Load all images
+		try{
+            gameBackground = ImageIO.read(PowerGrid.class.getResourceAsStream("/resources/Base Image.png"));
+            
+
+        } catch (Exception e){
+            System.out.println("No workie because idk 🤷‍♂️");
+            System.out.println(e);
+        }
 		
 		try {
 			
@@ -29,14 +41,18 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 			 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 			g.setFont(sizedFont);
 			g.drawString("POWER GRID", 200, 200);
-			sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
+			g.drawImage(gameBackground, 0, 0, 2048,1152,this);
+			
+			sizedFont = Main.customFont.deriveFont(Font.PLAIN, 60f);
 			g.setFont(sizedFont);
-			g.drawString("Click to Start", 350, 400);
+			
+			g.drawImage(gameBackground,1276,796,1816-1276,897-796,this);//Play Button
+			g.drawString("Play", 1470, 897);
 		} else if (screenNum == 1) {
 			// instructions
 			Font sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 			g.setFont(sizedFont);
-			g.drawString("Instructions", 350, 100);
+			
 			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 			g.setFont(sizedFont);
 			g.drawString("1. Click to place power plants.", 100, 200);
@@ -54,7 +70,8 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 	public void mouseClicked(MouseEvent e) {
 		int x = e.getX();
         int y = e.getY();
-		if (screenNum == 0 && x >= 350 && x <= 650 && y >= 350 && y <= 450) {
+		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
+		if (screenNum == 0 && x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
 			screenNum = 1;
 		} else if (screenNum == 1 && x >= 300 && x <= 700 && y >= 350 && y <= 450) {
 			screenNum = 2;
