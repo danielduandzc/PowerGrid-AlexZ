@@ -16,13 +16,14 @@ import static java.lang.System.*;
 
 public class PowerGridPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
+	private BufferedImage startScreenImg;
 	
 	public PowerGridPanel() {
 		
 		try {
-			
+			startScreenImg = ImageIO.read(new File("Powergrid.png"));
 		} catch (Exception E) {
-			
+				System.out.println("Error loading images: " + E.getMessage());
 		}
 		
 		addKeyListener(this);
@@ -33,10 +34,7 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		super.paint(g);
 		if (screenNum == 0) {
 			// title screen
-			g.setFont(new Font("Arial", Font.BOLD, 100));
-			g.drawString("POWER GRID", 200, 200);
-			g.setFont(new Font("Arial", Font.PLAIN, 50));
-			g.drawString("Click to Start", 350, 400);
+			g.drawImage(startScreenImg, 0, 0, null);
 		} else if (screenNum == 1) {
 			// instructions
 			g.setFont(new Font("Arial", Font.BOLD, 50));
