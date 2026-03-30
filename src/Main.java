@@ -34,7 +34,7 @@ public class Main {
 
            
         }
-		PowerGrid graphicWindow = new PowerGrid("Power Grid!!!");
+		PowerGridFrame graphicWindow = new PowerGridFrame("Power Grid!!!");
     }
 		
 	}

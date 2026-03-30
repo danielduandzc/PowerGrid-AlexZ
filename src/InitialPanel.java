@@ -9,11 +9,13 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class PowerGridPanel extends JPanel implements KeyListener, MouseListener {
+public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
+	private static GameState state;
 	private BufferedImage gameBackground;
-	public PowerGridPanel() {
+	public PowerGridPanel(GameState gs) {
+		state=gs;
 		//Load all images
 		try{
             gameBackground = ImageIO.read(PowerGrid.class.getResourceAsStream("/resources/Base Image.png"));
@@ -29,14 +31,14 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		} catch (Exception E) {
 			
 		}
-		
+		state.currentEvent.push("Title Screen");
 		addKeyListener(this);
 		addMouseListener(this);
 	}
 	
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (screenNum == 0) {
+		if (state.currentEvent.peek().equals("Title Screen")) {
 			// title screen
 			 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 			g.setFont(sizedFont);
@@ -48,7 +50,7 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 			
 			g.drawImage(gameBackground,1276,796,1816-1276,897-796,this);//Play Button
 			g.drawString("Play", 1470, 897);
-		} else if (screenNum == 1) {
+		} else if (state.currentEvent.peek().equals("Instructions")) {
 			// instructions
 			Font sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 			g.setFont(sizedFont);
@@ -60,10 +62,7 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 			g.drawString("3. Manage resources and expand your grid.", 100, 300);
 			g.drawString("Click to Start Game", 300, 400);
 		} else if (screenNum == 2) {
-			// game screen
-			Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 50f);
-			g.setFont(sizedFont);
-			g.drawString("Game Screen - Under Construction", 100, 200);
+			
 		}
 	}
 	
@@ -71,10 +70,14 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		int x = e.getX();
         int y = e.getY();
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
-		if (screenNum == 0 && x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
-			screenNum = 1;
+		if (state.currentEvent.peek().equals("Title Screen") && x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
+			state.currentEvent.pop(); // Remove title screen
+			state.currentEvent.push("Instructions");
 		} else if (screenNum == 1 && x >= 300 && x <= 700 && y >= 350 && y <= 450) {
-			screenNum = 2;
+			state.currentEvent.pop(); // Remove instructions
+			state.currentEvent.push("Zone Selection");
+			add(new ZoneSelectionPanel(state));
+
 		}
 		repaint();
 	}
