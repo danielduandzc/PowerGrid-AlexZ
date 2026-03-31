@@ -1,0 +1,15 @@
+package src;
+import java.awt.image.BufferedImage;
+import java.util.*;
+public class GameState{
+
+    public static Queue<String> currentEvent = new LinkedList<>();
+    public static int currentPlayer;
+    public static int currentStep=1;
+    public static Player[] players=new Player[4];
+    public static Player[] playerOrder=new Player[4];
+    public static BufferedImage boardImage;
+    public static CityGraph graphOfCity=new CityGraph();
+
+
+}
