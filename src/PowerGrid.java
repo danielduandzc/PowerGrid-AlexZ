@@ -1,6 +1,6 @@
 package src;
 import javax.swing.*;
-public class PowerGrid extends JFrame {
+public class PowerGridFrame extends JFrame {
 	private final int WIDTH = 2048;
 	private final int HEIGHT = 1152;
 	public PowerGridFrame(String frameName) {
