@@ -1,8 +1,6 @@
 package src;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -40,21 +38,24 @@ public class ZoneSelectionPanel extends JPanel implements MouseListener {
 		
 		
 		addMouseListener(this);
+        repaint();
 	}
+    @Override
     public void paint(Graphics g) {
        
             
         
         super.paint(g);
-         if(GameState.currentEvent.peek().equals("Zone Selection")) {
-            g.drawImage(gameBackground, 0, 0, this);
+         if(GameState.currentEvent.getLast().equals("Zone Selection")) {
+            g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
             //Draw the houses
-            g.drawImage(redHouse, 100, 100, this);
-            g.drawImage(yellowHouse, 200, 100, this);
-            g.drawImage(greenHouse, 300, 100, this);
-            g.drawImage(blueHouse, 400, 100, this);
-            g.drawImage(purpleHouse, 500, 100, this);
-            g.drawImage(whiteHouse, 600, 100, this);
+            g.drawImage(redHouse, 100, 100, 100, 100, this);
+            g.drawImage(yellowHouse, 200, 100,100, 100, this);
+            g.drawImage(greenHouse, 300, 100, 100, 100,this);
+            g.drawImage(blueHouse, 400, 100, 100, 100,this);
+            g.drawImage(purpleHouse, 500, 100,100, 100, this);
+            g.drawImage(whiteHouse, 600, 100, 100, 100,this);
+            
         }
     }
     
@@ -65,6 +66,9 @@ public class ZoneSelectionPanel extends JPanel implements MouseListener {
     
     @Override
     public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        System.out.println("GHJ clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
     }
     
     @Override

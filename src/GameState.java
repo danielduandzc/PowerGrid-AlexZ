@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 public class GameState{
 
-    public static Queue<String> currentEvent = new LinkedList<>();
+    public static ArrayList<String> currentEvent = new ArrayList<>();
     public static int currentPlayer;
     public static int currentStep=1;
     public static Player[] players=new Player[4];

@@ -38,7 +38,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (GameState.currentEvent.peek().equals("Title Screen")) {
+		if (GameState.currentEvent.getLast().equals("Title Screen")) {
 			// title screen
 			 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 			g.setFont(sizedFont);
@@ -48,9 +48,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			sizedFont = Main.customFont.deriveFont(Font.PLAIN, 60f);
 			g.setFont(sizedFont);
 			
-			g.drawImage(gameBackground,1276,796,1816-1276,897-796,this);//Play Button
-			g.drawString("Play", 1470, 897);
-		} else if (GameState.currentEvent.peek().equals("Instructions")) {
+			//g.drawImage(gameBackground,1276,796,1816-1276,897-796,this);//Play Button
+			//g.drawString("Play", 1470, 897);
+		} else if (GameState.currentEvent.getLast().equals("Instructions")) {
 			// instructions
 			Font sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 			g.setFont(sizedFont);
@@ -67,19 +67,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-        int y = e.getY();
-		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
-		if (GameState.currentEvent.peek().equals("Title Screen") && x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
-			GameState.currentEvent.remove(); // Remove title screen
-			GameState.currentEvent.add("Instructions");
-		} else if (screenNum == 1 && x >= 300 && x <= 700 && y >= 350 && y <= 450) {
-			GameState.currentEvent.remove(); // Remove instructions
-			GameState.currentEvent.add("Zone Selection");
-			add(new ZoneSelectionPanel());
-
-		}
-		repaint();
+		
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -93,8 +81,26 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	public void keyReleased(KeyEvent e) {
 		
 	}
-	
+	@Override
 	public void mousePressed(MouseEvent e) {
+		int x = e.getX();
+        int y = e.getY();
+		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
+		if (GameState.currentEvent.getLast().equals("Title Screen") && x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
+			GameState.currentEvent.removeLast(); // Remove title screen
+			GameState.currentEvent.add("Instructions");
+			
+		} else if (GameState.currentEvent.getLast().equals("Instructions") && x >= 300 && x <= 700 && y >= 350 && y <= 450) {
+			 GameState.currentEvent.removeLast();
+    GameState.currentEvent.add("Zone Selection");
+    
+    this.add(new ZoneSelectionPanel()); // Adds the child
+    
+    this.revalidate(); // Tells Swing the "map" of components changed
+    this.repaint();    // Tells Swing to actually draw the change
+    return;
+		}
+		repaint();
 		
 	}
 	
