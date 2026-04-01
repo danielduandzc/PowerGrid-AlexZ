@@ -2,7 +2,7 @@ package src;
 import java.util.*;
 
 public class Player {
- private int Elektro, numHouses;
+ private int Elektro, numHouses = 0;
  private String color;
  private String canBid;
  private ArrayList<PowerPlant> powerPlants = new ArrayList<PowerPlant>();   
@@ -13,5 +13,8 @@ public class Player {
  }
  public String getColor(){
         return color;
+ }
+ public int addElektro(int add){
+       Elektro+=add;
  }
 }
