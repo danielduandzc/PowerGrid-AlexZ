@@ -144,7 +144,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			g2.drawLine(255, 650, 180, 725);
 		}
 				break;
-			
+			case "Auction":
+				
+			break;
 
 		}
 	}
@@ -256,10 +258,13 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				if(GameState.currentPlayerIndex == 4) {
 					GameState.currentEvent.removeLast();
 					GameState.currentPlayerIndex = 0;
-					GameState.currentEvent.add("Game");
+					GameState.currentEvent.add("Auction");
 				}
 
 		repaint();
+				case "Auction":
+				
+				break;
 		
 	}
 }
