@@ -13,13 +13,19 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
 	
-	private BufferedImage gameBackground;
+	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse;
 	public InitialPanel() {
 		
 		//Load all images
 		try{
-            gameBackground = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Base Image.png"));
-            
+            titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Base Image.png"));
+            gameBackground = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Background.png"));
+            redHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Red_House.png"));
+            yellowHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Yellow_House.png"));
+            greenHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Green_House.png"));
+            blueHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Blue_House.png"));
+            purpleHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Purple_House.png"));
+            whiteHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/White_House.png"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -43,7 +49,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 			g.setFont(sizedFont);
 			g.drawString("POWER GRID", 200, 200);
-			g.drawImage(gameBackground, 0, 0, 2048,1152,this);
+			g.drawImage(titleScreen, 0, 0, 2048,1152,this);
 			
 			sizedFont = Main.customFont.deriveFont(Font.PLAIN, 60f);
 			g.setFont(sizedFont);
@@ -61,7 +67,17 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			g.drawString("2. Connect cities to power plants.", 100, 250);
 			g.drawString("3. Manage resources and expand your grid.", 100, 300);
 			g.drawString("Click to Start Game", 300, 400);
-		} else if (screenNum == 2) {
+		} else if (GameState.currentEvent.getLast().equals("Zone Selection")) {
+			// zone selection
+			g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+			//Draw the houses
+			
+			if(!GameState.isZoneSelected[0]) g.drawImage(redHouse, 574, 501, 150, 150, this);
+			if(!GameState.isZoneSelected[1]) g.drawImage(yellowHouse, 724, 501,150, 150, this);
+			if(!GameState.isZoneSelected[2]) g.drawImage(greenHouse, 874, 501, 150, 150,this);
+			if(!GameState.isZoneSelected[3]) g.drawImage(blueHouse, 1024, 501, 150, 150,this);
+			if(!GameState.isZoneSelected[4]) g.drawImage(purpleHouse, 1174, 501,150, 150, this);
+			if(!GameState.isZoneSelected[5]) g.drawImage(whiteHouse, 1324, 501, 150, 150,this);
 			
 		}
 	}
@@ -94,11 +110,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			 GameState.currentEvent.removeLast();
     GameState.currentEvent.add("Zone Selection");
     
-    this.add(new ZoneSelectionPanel()); // Adds the child
+  
     
-    this.revalidate(); // Tells Swing the "map" of components changed
-    this.repaint();    // Tells Swing to actually draw the change
-    return;
 		}
 		repaint();
 		
