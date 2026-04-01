@@ -10,6 +10,10 @@ public class Main {
 	public static Font customFont = null;
 	public static void main(String[] args) {
 		 // 1. Load the font
+        GameState.players[0] = new Player();
+        GameState.players[1] = new Player();
+        GameState.players[2] = new Player();
+        GameState.players[3] = new Player();
         try {
             // Use getResourceAsStream for easy deployment within a JAR
             InputStream is = Main.class.getResourceAsStream("/resources/Bungee-Regular.ttf");

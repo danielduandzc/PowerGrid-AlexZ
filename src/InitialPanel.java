@@ -67,8 +67,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			g.drawString("2. Connect cities to power plants.", 100, 250);
 			g.drawString("3. Manage resources and expand your grid.", 100, 300);
 			g.drawString("Click to Start Game", 300, 400);
-		} else if (GameState.currentEvent.getLast().equals("Zone Selection")) {
-			// zone selection
+		} else if (GameState.currentEvent.getLast().equals("Color Selection")) {
+			// color selection
 			g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 			//Draw the houses
 			
@@ -102,20 +102,59 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		int x = e.getX();
         int y = e.getY();
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
-		if (GameState.currentEvent.getLast().equals("Title Screen") && x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
-			GameState.currentEvent.removeLast(); // Remove title screen
-			GameState.currentEvent.add("Instructions");
-			
-		} else if (GameState.currentEvent.getLast().equals("Instructions") && x >= 300 && x <= 700 && y >= 350 && y <= 450) {
-			 GameState.currentEvent.removeLast();
-    GameState.currentEvent.add("Zone Selection");
-    
-  
-    
-		}
+		switch(GameState.currentEvent.getLast()) {
+			case "Title Screen":
+				if (x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
+					GameState.currentEvent.removeLast(); // Remove title screen
+					GameState.currentEvent.add("Instructions");
+				}
+				break;
+			case "Instructions":
+				if (x >= 300 && x <= 700 && y >= 350 && y <= 450) {
+					GameState.currentEvent.removeLast();
+   					GameState.currentEvent.add("Color Selection");
+					break;
+				}
+			case "Color Selection":
+				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isZoneSelected[0]) {
+					GameState.isZoneSelected[0] = true;
+					GameState.players[GameState.currentPlayerIndex].setColor("Red");
+					GameState.currentPlayerIndex++;
+				} else if (x>=724 && x <= 874 && y >= 501 && y <= 651 && !GameState.isZoneSelected[1]) {
+					GameState.isZoneSelected[1] = true;
+					GameState.players[GameState.currentPlayerIndex].setColor("Yellow");
+					GameState.currentPlayerIndex++;
+				} else if (x >= 874 && x <= 1024 && y >= 501 && y <= 651 && !GameState.isZoneSelected[2]) {
+					GameState.isZoneSelected[2] = true;
+					GameState.players[GameState.currentPlayerIndex].setColor("Green");
+					GameState.currentPlayerIndex++;
+				} else if (x >= 1024 && x <= 1174 && y >= 501 && y <= 651 && !GameState.isZoneSelected[3]) {
+					GameState.isZoneSelected[3] = true;
+					GameState.players[GameState.currentPlayerIndex].setColor("Blue");
+					GameState.currentPlayerIndex++;
+				} else if (x >= 1174 && x <= 1324 && y >= 501 && y <= 651 && !GameState.isZoneSelected[4]) {
+					GameState.isZoneSelected[4] = true;
+					GameState.players[GameState.currentPlayerIndex].setColor("Purple");
+					GameState.currentPlayerIndex++;
+				} else if (x >= 1324 && x <= 1474 && y >= 501 && y <= 651 && !GameState.isZoneSelected[5]) {
+					GameState.isZoneSelected[5] = true;
+					GameState.players[GameState.currentPlayerIndex].setColor("White");
+					GameState.currentPlayerIndex++;
+				}
+				
+				if(GameState.currentPlayerIndex == 4) {
+					GameState.currentEvent.removeLast();
+					System.out.println("Player One Color: " + GameState.players[0].getColor());
+					System.out.println("Player Two Color: " + GameState.players[1].getColor());
+					System.out.println("Player Three Color: " + GameState.players[2].getColor());
+					System.out.println("Player Four Color: " + GameState.players[3].getColor());
+
+					GameState.currentEvent.add("Zone Selection");
+				}
 		repaint();
 		
 	}
+}
 	
 	public void mouseReleased(MouseEvent e) {
 		

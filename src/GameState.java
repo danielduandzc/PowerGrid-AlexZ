@@ -4,7 +4,7 @@ import java.util.*;
 public class GameState{
 
     public static ArrayList<String> currentEvent = new ArrayList<>();
-    public static int currentPlayer;
+    public static int currentPlayerIndex=0;
     public static int currentStep=1;
     public static Player[] players=new Player[4];
     public static int[] playerOrder= new int[]{1,2,3,4};
