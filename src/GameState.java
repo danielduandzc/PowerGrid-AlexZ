@@ -10,6 +10,7 @@ public class GameState{
     public static int[] playerOrder= new int[]{1,2,3,4};
     public static BufferedImage boardImage;
     public static CityGraph graphOfCity=new CityGraph();
+    public static boolean[] isColorSelected=new boolean[6];
     public static boolean[] isZoneSelected=new boolean[6];
 
 
