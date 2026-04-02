@@ -12,6 +12,7 @@ import javax.swing.*;
 public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
+	private Graphics g;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour;
@@ -195,7 +196,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		Graphics g = getGraphics();
 		int x = e.getX();
         int y = e.getY();
-		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
+		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
 				if (x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
