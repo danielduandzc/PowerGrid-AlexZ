@@ -12,17 +12,20 @@ public class GameState{
     public static CityGraph graphOfCity=new CityGraph();
     public static boolean[] isColorSelected=new boolean[6];
     public static boolean[] isZoneSelected=new boolean[6];
+    public static InitialPanel initialPanel;
     
     public void setUpAuction(){
         currentPlayerIndex=0;
-        for(player k : players)
+        for(Player k : players)
         {
             k.setInAuction(true);
             k.setHasPassed(false);
             k.setBid(0);
         }
         currentEvent.add("Pick Powerplant");
-        InitialPanel.repaint();
+       
+            initialPanel.repaint();
+        
         }
     }
    

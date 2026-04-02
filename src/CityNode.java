@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class CityNode {
     private String cityName;
     private String zoneColor;
+    private int distance;
     private int firstSector;
     private int secondSector;
     private int thirdSector;
@@ -57,6 +58,14 @@ public class CityNode {
 
     public void removeEdge(Edge e) {
         adjacentEdges.remove(e);
+    }
+
+    public void setDistance(int x){
+        distance = x;
+    }
+
+    public int getDistance(){
+        return distance;
     }
 
     public ArrayList<Edge> getAdjacentEdges() {
