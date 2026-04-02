@@ -12,6 +12,7 @@ import javax.swing.*;
 public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
+	private Graphics g;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse;
 	public InitialPanel() {
@@ -46,7 +47,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		super.paint(g);
 		if (GameState.currentEvent.getLast().equals("Title Screen")) {
 			// title screen
-			 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
+			Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 			g.setFont(sizedFont);
 			g.drawString("POWER GRID", 200, 200);
 			g.drawImage(titleScreen, 0, 0, 2048,1152,this);
@@ -101,7 +102,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
         int y = e.getY();
-		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|"+"Mouse clicks: " + ++numMouseClicks);
+		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
 				if (x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
@@ -120,6 +121,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					GameState.isZoneSelected[0] = true;
 					GameState.players[GameState.currentPlayerIndex].setColor("Red");
 					GameState.currentPlayerIndex++;
+					Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
+					g.setFont(sizedFont);
+					g.drawString("Player 1", 200, 200);
 				} else if (x>=724 && x <= 874 && y >= 501 && y <= 651 && !GameState.isZoneSelected[1]) {
 					GameState.isZoneSelected[1] = true;
 					GameState.players[GameState.currentPlayerIndex].setColor("Yellow");
