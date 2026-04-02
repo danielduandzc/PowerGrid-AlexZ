@@ -11,9 +11,13 @@ public class Main {
 	public static void main(String[] args) {
 		 // 1. Load the font
         GameState.players[0] = new Player();
+        GameState.players[0].addElektro(50);
         GameState.players[1] = new Player();
+        GameState.players[1].addElektro(50);
         GameState.players[2] = new Player();
+        GameState.players[2].addElektro(50);
         GameState.players[3] = new Player();
+        GameState.players[3].addElektro(50);
         try {
             // Use getResourceAsStream for easy deployment within a JAR
             InputStream is = Main.class.getResourceAsStream("/resources/Bungee-Regular.ttf");
