@@ -16,6 +16,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour;
+	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
+	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
+	pp42, pp44, pp46, pp50;
 	public InitialPanel() {
 		
 		//Load all images
@@ -34,6 +37,48 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			auctionImagePlayerTwo = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png"));
 			auctionImagePlayerThree = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png"));
 			auctionImagePlayerFour = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png"));
+			pp3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/3.jpeg"));
+			pp4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/4.jpeg"));
+			pp5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/5.jpeg"));
+			pp6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/6.jpeg"));
+			pp7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/7.jpeg"));
+			pp8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/8.jpeg"));
+			pp9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/9.jpeg"));
+			pp10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/10.png"));
+			pp11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/11.png"));
+			pp12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/12.jpeg"));
+			pp13 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/13.jpeg"));
+			pp14 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/14.jpeg"));
+			pp15 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/15.jpeg"));
+			pp16 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/16.jpeg"));
+			pp17 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/17.jpeg"));
+			pp18 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/18.jpeg"));
+			pp19 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/19.jpeg"));
+			pp20 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/20.jpeg"));
+			pp21 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/21.jpeg"));
+			pp22 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/22.jpeg"));
+			pp23 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/23.jpeg"));
+			pp24 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/24.jpeg"));
+			pp25 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/25.jpeg"));
+			pp26 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/26.jpeg"));
+			pp27 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/27.jpeg"));
+			pp28 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/28.jpeg"));
+			pp29 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/29.jpeg"));
+			pp30 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/30.jpeg"));
+			pp31 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/31.jpeg"));
+			pp32 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/32.jpeg"));
+			pp33 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/33.jpeg"));
+			pp34 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/34.jpeg"));
+			pp35 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/35.jpeg"));
+			pp36 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/36.jpeg"));
+			pp37 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/37.jpeg"));
+			pp38 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/38.jpeg"));
+			pp39 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/39.jpeg"));
+			pp40 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/40.jpeg"));
+			pp42 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/42.jpeg"));
+			pp44 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/44.jpeg"));
+			pp46 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/46.jpeg"));
+			pp50 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/50.jpeg"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -157,6 +202,33 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					g.drawImage(auctionImagePlayerThree, 900, 800, 400, 175, this);
 					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
 			break;
+			case "Pick Powerplant":
+				/*	
+					First powerplant is at 175 150. 150x150. each has 50 pixels between them.
+
+					Powerplant 1: 175,150 to 325,300
+					Powerplant 2: 225,150 to 375,300
+					Powerplant 3: 275,150 to 425,300
+					Powerplant 4: 325,150 to 475,300
+
+					Powerplant 5: 175,350 to 325,400
+					Powerplant 6: 225,350 to 375,400
+					Powerplant 7: 275,350 to 425,400
+					Powerplant 8: 325,350 to 475,400
+					
+					
+					*/
+					System.out.println("works");
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
+				g.setFont(sizedFont);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 500, 900);
+				for(int i=0;i<4;i++){
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 50, 150, 150, 150, this);
+				}
+				for(int i=0;i<4;i++){
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 50, 350, 150, 150, this);
+				}
 
 		}
 	}
@@ -173,6 +245,55 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	    int y = yRect + ((rectHeight - fm.getHeight()) / 2) + fm.getAscent();
 	    // Draw the string
 	    g.drawString(text, x, y);
+	}
+
+	private BufferedImage getPowerPlantImage(int powerPlantNumber) {
+		switch(powerPlantNumber) {
+			case 3: return pp3;
+			case 4: return pp4;
+			case 5: return pp5;
+			case 6: return pp6;
+			case 7: return pp7;
+			case 8: return pp8;
+			case 9: return pp9;
+			case 10: return pp10;
+			case 11: return pp11;
+			case 12: return pp12;
+			case 13: return pp13;
+			case 14: return pp14;
+			case 15: return pp15;
+			case 16: return pp16;
+			case 17: return pp17;
+			case 18: return pp18;
+			case 19: return pp19;
+			case 20: return pp20;
+			case 21: return pp21;
+			case 22: return pp22;
+			case 23: return pp23;
+			case 24: return pp24;
+			case 25: return pp25;
+			case 26: return pp26;
+			case 27: return pp27;
+			case 28: return pp28;
+			case 29: return pp29;
+			case 30: return pp30;
+			case 31: return pp31;
+			case 32: return pp32;
+			case 33: return pp33;
+			case 34: return pp34;
+			case 35: return pp35;
+			case 36: return pp36;
+			case 37: return pp37;
+			case 38: return pp38;
+			case 39: return pp39;
+			case 40: return pp40;
+			case 42: return pp42;
+			case 44: return pp44;
+			case 46: return pp46;
+			case 50: return pp50; 
+			
+		}
+		return null; // default case, should not happen if input is valid
 	}
 
 	
@@ -267,12 +388,52 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					GameState.currentPlayerIndex++;
 				}
 				if(GameState.currentPlayerIndex == 4) {
+					x=0;
+					y=0;
 					GameState.currentEvent.removeLast();
 					GameState.currentPlayerIndex = 0;
-					GameState.currentEvent.add("Auction");
+					GameState.setUpAuction();
 				}
 
 		repaint();
+				case "Pick Powerplant":
+					// code for picking power plant
+					/*	
+					First powerplant is at 175 150. 150x150. each has 50 pixels between them.
+
+					Powerplant 1: 175,150 to 325,300
+					Powerplant 2: 225,150 to 375,300
+					Powerplant 3: 275,150 to 425,300
+					Powerplant 4: 325,150 to 475,300
+
+					Powerplant 5: 175,350 to 325,400
+					Powerplant 6: 225,350 to 375,400
+					Powerplant 7: 275,350 to 425,400
+					Powerplant 8: 325,350 to 475,400
+					
+					
+					*/
+					if(y>=150&&y<=300) {
+						if(x>=175&&x<=325) {
+							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Auction");
+						} else if(x>=225&&x<=375) {
+							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Auction");
+						} else if(x>=275&&x<=425) {
+							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Auction");
+						} else if(x>=325&&x<=475) {
+							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Auction");
+						}
+					}
+					repaint();
+					break;
 				case "Auction":
 					if(y>=840&&y<=880)
 						if(x>=300&&x<=475) {
@@ -284,13 +445,80 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						} else if(x>=1500&&x<=1675) {
 							//GameState.currentEvent.add("View Player Four Profile");
 						}
-					if(y>=920&&y<=970)
-						if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&) {
-							
+					if(y>=920&&y<=970){
+						if(x>=100&&x<=100+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							}
+						}else if(x>=250&&x<=250+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							}
+						}else if(x>=320&&x<=320+80) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							}
+						}else if(x>=410&&x<=410+70) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							}
+						}else if(x>=500&&x<=500+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							}
+						}else if(x>=650&&x<=650+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							}
+						}else if(x>=720&&x<=720+80) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							}
+						}else if(x>=810&&x<=810+70) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							}
+						}else if(x>=900&&x<=900+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							}
+						}else if(x>=1050&&x<=1050+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							}
+						}else if(x>=1120&&x<=1120+80) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							}
+						}else if(x>=1210&&x<=1210+70) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							}
+						}else if(x>=1300&&x<=1300+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							}
+						}else if(x>=1450&&x<=1450+50) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							}
+						}else if(x>=1520&&x<=1520+80) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							}
+						}else if(x>=1610&&x<=1610+70) {
+							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							}
 						}
+						
+					}
+				
+			
+				repaint();
 				break;
 		
-	}
+		}
 }
 	
 	public void mouseReleased(MouseEvent e) {

@@ -42,6 +42,7 @@ public class Main {
 
            
         }
+        GameState.setUpDeckAndMarket();
 		PowerGridFrame graphicWindow = new PowerGridFrame("Power Grid!!!");
     }
 		

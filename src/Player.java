@@ -6,6 +6,7 @@ public class Player {
       private String color;
       private boolean inAuction;
       private int bid;
+      private int ghostBid;
       private boolean hasPassed;
       private ArrayList<PowerPlant> powerPlants = new ArrayList<PowerPlant>();   
       private HashSet<CityNode> cities = new HashSet<CityNode>();
@@ -38,6 +39,24 @@ public class Player {
       }
       public void addBid(int x){
             bid+=x;
+      }
+      public int getBid(){
+            return bid;
+      }
+      public void setGhostBid(int x){
+            ghostBid=x;
+      }
+      public int getGhostBid(){
+            return ghostBid;
+      }
+      
+      public void useGhostBid(){
+            addBid(ghostBid);
+            ghostBid=0;
+      }
+      public void buyPowerPlant(PowerPlant plant){
+            powerPlants.add(plant);
+            addElektro(-plant.getPrice());
       }
 
 }
