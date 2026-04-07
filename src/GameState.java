@@ -41,14 +41,37 @@ public class GameState{
         for(int i=tempDeck.size()-1;i>=0;i--) {
             powerPlantDeck.add(tempDeck.get(i));
         }
-
-
-
-
-
-
-
-    } 
+        //Max Resources, Power, Price, half max r, resources 
+        powerPlantDeck.add(new PowerPlant(4,3,16,2,new ArrayList<Resource>(Arrays.asList(Resource.OIL))));
+        powerPlantDeck.add(new PowerPlant(2,2,17,1,new ArrayList<Resource>(Arrays.asList(Resource.URANIUM))));
+        powerPlantDeck.add(new PowerPlant(0,2,18,0,new ArrayList<Resource>()));
+        powerPlantDeck.add(new PowerPlant(4,3,19,2,new ArrayList<Resource>(Arrays.asList(Resource.GARBAGE))));
+        powerPlantDeck.add(new PowerPlant(6,5,20,3,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(4,4,21,2,new ArrayList<Resource>(Arrays.asList(Resource.OIL,Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(0,2,22,0,new ArrayList<Resource>()));
+        powerPlantDeck.add(new PowerPlant(2,3,23,1,new ArrayList<Resource>(Arrays.asList(Resource.URANIUM))));
+        powerPlantDeck.add(new PowerPlant(4,4,24,2,new ArrayList<Resource>(Arrays.asList(Resource.GARBAGE))));
+        powerPlantDeck.add(new PowerPlant(4,5,25,2,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(4,5,26,2,new ArrayList<Resource>(Arrays.asList(Resource.OIL))));
+        powerPlantDeck.add(new PowerPlant(0,3,27,0,new ArrayList<Resource>()));
+        powerPlantDeck.add(new PowerPlant(2,4,28,1,new ArrayList<Resource>(Arrays.asList(Resource.URANIUM))));
+        powerPlantDeck.add(new PowerPlant(2,4,29,1,new ArrayList<Resource>(Arrays.asList(Resource.OIL,Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(6,6,30,3,new ArrayList<Resource>(Arrays.asList(Resource.GARBAGE))));
+        powerPlantDeck.add(new PowerPlant(6,6,31,3,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(6,6,32,3,new ArrayList<Resource>(Arrays.asList(Resource.OIL))));
+        powerPlantDeck.add(new PowerPlant(0,4,33,0,new ArrayList<Resource>()));
+        powerPlantDeck.add(new PowerPlant(2,5,34,1,new ArrayList<Resource>(Arrays.asList(Resource.URANIUM))));
+        powerPlantDeck.add(new PowerPlant(2,5,35,1,new ArrayList<Resource>(Arrays.asList(Resource.OIL))));
+        powerPlantDeck.add(new PowerPlant(6,7,36,3,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(0,4,37,0,new ArrayList<Resource>()));
+        powerPlantDeck.add(new PowerPlant(6,7,38,3,new ArrayList<Resource>(Arrays.asList(Resource.GARBAGE))));
+        powerPlantDeck.add(new PowerPlant(2,6,39,1,new ArrayList<Resource>(Arrays.asList(Resource.URANIUM))));
+        powerPlantDeck.add(new PowerPlant(4,6,40,2,new ArrayList<Resource>(Arrays.asList(Resource.OIL))));
+        powerPlantDeck.add(new PowerPlant(4,6,42,2,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(0,5,44,0,new ArrayList<Resource>()));
+        powerPlantDeck.add(new PowerPlant(6,7,46,3,new ArrayList<Resource>(Arrays.asList(Resource.OIL,Resource.COAL))));
+        powerPlantDeck.add(new PowerPlant(0,6,50,0,new ArrayList<Resource>()));
+     } 
 
    
 

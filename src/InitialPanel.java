@@ -224,10 +224,10 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.setFont(sizedFont);
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 500, 900);
 				for(int i=0;i<4;i++){
-					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 50, 150, 150, 150, this);
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}
 				for(int i=0;i<4;i++){
-					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 50, 350, 150, 150, this);
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
 
 		}
@@ -413,25 +413,24 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					
 					
 					*/
-					if(y>=150&&y<=300) {
-						if(x>=175&&x<=325) {
-							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
-							GameState.currentEvent.removeLast();
-							GameState.currentEvent.add("Auction");
-						} else if(x>=225&&x<=375) {
-							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
-							GameState.currentEvent.removeLast();
-							GameState.currentEvent.add("Auction");
-						} else if(x>=275&&x<=425) {
-							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
-							GameState.currentEvent.removeLast();
-							GameState.currentEvent.add("Auction");
-						} else if(x>=325&&x<=475) {
-							GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
-							GameState.currentEvent.removeLast();
-							GameState.currentEvent.add("Auction");
-						}
-					}
+				if (y >= 150 && y <= 300) {
+
+				if (x >= 175 && x <= 325) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
+
+				} else if (x >= 375 && x <= 525) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
+
+				} else if (x >= 575 && x <= 725) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+
+				} else if (x >= 775 && x <= 925) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
+				}
+
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Auction");
+			}
 					repaint();
 					break;
 				case "Auction":
