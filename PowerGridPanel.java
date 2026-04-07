@@ -34,7 +34,7 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		super.paint(g);
 		if (screenNum == 0) {
 			// title screen
-			g.drawImage(startScreenImg, 0, 0, 1080, 1920, null);
+			g.drawImage(startScreenImg, 0, 0, 56, 145, null);
 		} else if (screenNum == 1) {
 			// instructions
 			g.setFont(new Font("Arial", Font.BOLD, 50));
