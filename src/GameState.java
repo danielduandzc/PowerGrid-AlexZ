@@ -15,7 +15,7 @@ public class GameState{
     
     public void setUpAuction(){
         currentPlayerIndex=0;
-        for(player k : players)
+        for(Player k : players)
         {
             k.setInAuction(true);
             k.setHasPassed(false);

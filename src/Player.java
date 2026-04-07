@@ -16,7 +16,7 @@ public class Player {
  public String getColor(){
         return color;
  }
- public int addElektro(int add){
+ public void addElektro(int add){
        Elektro+=add;
  }
  public void setInAuction(boolean b){

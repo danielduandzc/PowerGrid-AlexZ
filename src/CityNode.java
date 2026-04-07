@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class CityNode {
     private String cityName;
     private String zoneColor;
+    private int distance;
     private int firstSector;
     private int secondSector;
     private int thirdSector;
