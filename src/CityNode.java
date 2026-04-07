@@ -60,6 +60,14 @@ public class CityNode {
         adjacentEdges.remove(e);
     }
 
+    public void setDistance(int x){
+        distance = x;
+    }
+
+    public int getDistance(){
+        return distance;
+    }
+
     public ArrayList<Edge> getAdjacentEdges() {
         return adjacentEdges;
     }

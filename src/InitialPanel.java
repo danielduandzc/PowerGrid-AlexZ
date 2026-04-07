@@ -14,7 +14,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	public static int numMouseClicks = 0;
 	private Graphics g;
 	
-	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board;
+	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
+	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour;
 	public InitialPanel() {
 		
 		//Load all images
@@ -29,6 +30,10 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
             blueHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Blue_House.png"));
             purpleHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Purple_House.png"));
             whiteHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/White_House.png"));
+			auctionImagePlayerOne = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_1.png"));
+			auctionImagePlayerTwo = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png"));
+			auctionImagePlayerThree = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png"));
+			auctionImagePlayerFour = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -146,7 +151,11 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		}
 				break;
 			case "Auction":
-				
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+					g.drawImage(auctionImagePlayerOne, 100, 800, 400, 175, this);
+					g.drawImage(auctionImagePlayerTwo, 500, 800, 400, 175, this);
+					g.drawImage(auctionImagePlayerThree, 900, 800, 400, 175, this);
+					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
 			break;
 
 		}
@@ -184,6 +193,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
+		Graphics g = getGraphics();
 		int x = e.getX();
         int y = e.getY();
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
@@ -264,7 +274,20 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 		repaint();
 				case "Auction":
-				
+					if(y>=840&&y<=880)
+						if(x>=300&&x<=475) {
+							//GameState.currentEvent.add("View Player One Profile");
+						} else if(x>=710&&x<=885) {
+							//GameState.currentEvent.add("View Player Two Profile");
+						} else if(x>=1100&&x<=1275) {
+							//GameState.currentEvent.add("View Player Three Profile");
+						} else if(x>=1500&&x<=1675) {
+							//GameState.currentEvent.add("View Player Four Profile");
+						}
+					if(y>=920&&y<=970)
+						if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&) {
+							
+						}
 				break;
 		
 	}

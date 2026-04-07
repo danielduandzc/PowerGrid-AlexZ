@@ -12,6 +12,7 @@ public class GameState{
     public static CityGraph graphOfCity=new CityGraph();
     public static boolean[] isColorSelected=new boolean[6];
     public static boolean[] isZoneSelected=new boolean[6];
+    public static InitialPanel initialPanel;
     
     public void setUpAuction(){
         currentPlayerIndex=0;
@@ -22,7 +23,9 @@ public class GameState{
             k.setBid(0);
         }
         currentEvent.add("Pick Powerplant");
-        InitialPanel.repaint();
+       
+            initialPanel.repaint();
+        
         }
     }
    
