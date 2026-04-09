@@ -7,8 +7,13 @@ public class PowerGridFrame extends JFrame {
 		super(frameName);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(WIDTH, HEIGHT);
+<<<<<<< HEAD
+		GameState gs = new GameState();
+		add(new PowerGridPanel(gs));
+=======
 		GameState.initialPanel = new InitialPanel();
 		add(GameState.initialPanel);
+>>>>>>> 109725aa76b9115da96fa5573919191628d01231
 		setVisible(true);
 	}
 	public static void main(String[] args) {

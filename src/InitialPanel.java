@@ -25,7 +25,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		try{
 			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
 			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
-            titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Base Image.png"));
+            titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Powergrid.png"));
             gameBackground = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Background.png"));
             redHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Red_House.png"));
             yellowHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Yellow_House.png"));
@@ -99,28 +99,12 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	public void paint(Graphics g) {
 		super.paint(g);
 		switch(GameState.currentEvent.getLast()) {
-			case "Title Screen":
-				// title screen
-				 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
-				g.setFont(sizedFont);
-				g.drawString("POWER GRID", 200, 200);
-				g.drawImage(titleScreen, 0, 0, 2048,1152,this);
-				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 60f);
-				g.setFont(sizedFont);
-				//g.drawImage(gameBackground,1276,796,1816-1276,897-796,this);//Play Button
-				//g.drawString("Play", 1470, 897
-				break;
-			case "Instructions":
-				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
-			g.setFont(sizedFont);
+			 case "Title Screen":
+			// 	// title screen with proper layout
+			 	g.drawImage(titleScreen, 0, 0, 2048, 1152, this);
+			 	break;
+		
 			
-			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
-			g.setFont(sizedFont);
-			g.drawString("1. Click to place power plants.", 100, 200);
-			g.drawString("2. Connect cities to power plants.", 100, 250);
-			g.drawString("3. Manage resources and expand your grid.", 100, 300);
-			g.drawString("Click to Start Game", 300, 400);
-				break;
 			case "Color Selection":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				//Draw the houses	
@@ -286,6 +270,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					*/
 					System.out.println("works");
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 				g.setFont(sizedFont);
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 100, 900);
@@ -386,17 +371,27 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
-				if (x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
-					GameState.currentEvent.removeLast(); // Remove title screen
-					GameState.currentEvent.add("Instructions");
+				// Check if Play button was clicked
+				if (x >= 1212 && x <= 1680 && y >= 735 && y <= 819) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Color Selection");
+					repaint();
+				}
+				// Check if Rules button was clicked
+				else if (x >= 1212 && x <= 1680 && y >= 860 && y <= 940) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Color Selection");
+					repaint();
 				}
 				break;
+			
 			case "Instructions":
 				if (x >= 300 && x <= 700 && y >= 350 && y <= 450) {
 					GameState.currentEvent.removeLast();
    					GameState.currentEvent.add("Color Selection");
-					break;
+					repaint();
 				}
+				break;
 			case "Color Selection":
 				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isColorSelected[0]) {
 					GameState.isColorSelected[0] = true;
@@ -433,7 +428,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					GameState.currentPlayerIndex = 0;
 					GameState.currentEvent.add("Zone Selection");
 				}
-				case "Zone Selection":
+				repaint();
+				break;
+			case "Zone Selection":
 				if(x>=180 && x <= 255 && y >= 150 && y <= 225 && !GameState.isZoneSelected[0]) {
 					GameState.isZoneSelected[0] = true;
 					GameState.currentPlayerIndex++;
