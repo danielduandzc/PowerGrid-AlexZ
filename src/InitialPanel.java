@@ -198,7 +198,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					if(GameState.players[0].getGhostBid() != 0) {
 						g.setColor(Color.BLUE);
 						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.minBid) {
-							g.setColor(Color.GREEN);
+							g.setColor(new Color(0,100,0));
 						}
 						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() <= GameState.minBid ||
 							GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.players[0].getElektro()) {
@@ -207,12 +207,12 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					}else {
 						g.setColor(Color.BLACK);
 					}
-					g.drawString(GameState.players[0].getBid() + "", 200, 950);
+					g.drawString((GameState.players[0].getBid() + GameState.players[0].getGhostBid()) + "", 200, 950);
 					g.drawImage(auctionImagePlayerTwo, 500, 800, 400, 175, this);
 					if(GameState.players[1].getGhostBid() != 0) {
 						g.setColor(Color.BLUE);
 						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.minBid) {
-							g.setColor(Color.GREEN);
+							g.setColor(new Color(0,100,0));
 						}
 						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() <= GameState.minBid ||
 							GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.players[1].getElektro()) {
@@ -222,12 +222,12 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						g.setColor(Color.BLACK);
 					}
 					
-					g.drawString(GameState.players[1].getBid() + "", 600, 950);
+					g.drawString((GameState.players[1].getBid() + GameState.players[1].getGhostBid()) + "", 600, 950);
 					g.drawImage(auctionImagePlayerThree, 900, 800, 400, 175, this);
 					if(GameState.players[2].getGhostBid() != 0) {
 						g.setColor(Color.BLUE);
 						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.minBid) {
-							g.setColor(Color.GREEN);
+							g.setColor(new Color(0,100,0));
 						}
 						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() <= GameState.minBid ||
 							GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.players[2].getElektro()) {
@@ -236,12 +236,12 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					}else {
 						g.setColor(Color.BLACK);
 					}
-					g.drawString(GameState.players[2].getBid() + "", 1000, 950);
+					g.drawString((GameState.players[2].getBid() + GameState.players[2].getGhostBid()) + "", 1000, 950);
 					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
 					if(GameState.players[3].getGhostBid() != 0) {
 						g.setColor(Color.BLUE);
 						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.minBid) {
-							g.setColor(Color.GREEN);
+							g.setColor(new Color(0,100,0));
 						}
 						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() <= GameState.minBid ||
 							GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.players[3].getElektro()) {
@@ -250,7 +250,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					}else {
 						g.setColor(Color.BLACK);
 					}
-					g.drawString(GameState.players[3].getBid() + "", 1400, 950);
+					g.drawString((GameState.players[3].getBid() + GameState.players[3].getGhostBid()) + "", 1400, 950);
 			break;
 			case "Pick Powerplant":
 				/*	
@@ -270,7 +270,11 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					*/
 					System.out.println("works");
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				
+				Font sizedFont;
+				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
+			g.setFont(sizedFont);
+			
+			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 				g.setFont(sizedFont);
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 100, 900);
@@ -490,7 +494,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				} else if (x >= 775 && x <= 925) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 				}
-
+				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Auction");
 			}
@@ -519,10 +523,17 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						}else if(x>=320&&x<=320+80) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
 							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							GameState.currentPlayerIndex++;
+							if(GameState.currentPlayerIndex == 4) {
+								GameState.currentPlayerIndex = 0;
+							}
+							repaint();
+
 							}
 						}else if(x>=410&&x<=410+70) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
 							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							GameState.continueAuction();
 							}
 						}else if(x>=500&&x<=500+50) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
@@ -535,10 +546,16 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						}else if(x>=720&&x<=720+80) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
 							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							GameState.currentPlayerIndex++;
+							if(GameState.currentPlayerIndex == 4) {
+								GameState.currentPlayerIndex = 0;
+							}
+							repaint();
 							}
 						}else if(x>=810&&x<=810+70) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
 							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							GameState.continueAuction();
 							}
 						}else if(x>=900&&x<=900+50) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
@@ -551,10 +568,16 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						}else if(x>=1120&&x<=1120+80) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
 							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							GameState.currentPlayerIndex++;
+							if(GameState.currentPlayerIndex == 4) {
+								GameState.currentPlayerIndex = 0;
+							}
+							repaint();
 							}
 						}else if(x>=1210&&x<=1210+70) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
 							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							GameState.continueAuction();
 							}
 						}else if(x>=1300&&x<=1300+50) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
@@ -567,10 +590,16 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						}else if(x>=1520&&x<=1520+80) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
 							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
+							GameState.currentPlayerIndex++;
+							if(GameState.currentPlayerIndex == 4) {
+								GameState.currentPlayerIndex = 0;
+							}
+							repaint();
 							}
 						}else if(x>=1610&&x<=1610+70) {
 							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
 							GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							GameState.continueAuction();
 							}
 						}
 						

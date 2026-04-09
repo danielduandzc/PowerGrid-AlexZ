@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-import java.util.*;
-public class GameState{
-
-    public static Queue<String> currentEvent = new LinkedList<>();
-    public static int currentPlayer;
-    public static int currentStep=1;
-    public static player[] players=new player[4];
-    public static player[] playerOrder=new int[4];
-    public static bufferedImage boardImage;
-    public static cityGraph graphOfCity=new cityGraph();
-
-
-}
-=======
 package src;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
@@ -108,7 +93,7 @@ public class GameState{
            
         
     }
-    public void continueAuction(){
+    public static void continueAuction(){
         minBid=players[currentPlayerIndex].getBid();
         currentPlayerIndex++;
         if(currentPlayerIndex==4) {
@@ -142,4 +127,3 @@ public class GameState{
 
 
 
->>>>>>> 109725aa76b9115da96fa5573919191628d01231

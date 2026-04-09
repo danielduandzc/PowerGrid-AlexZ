@@ -3,23 +3,23 @@ package src;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.JLabel;
 public class Main {
 	public static Font customFont = null;
 	public static void main(String[] args) {
 		 // 1. Load the font
         GameState.players[0] = new Player();
-        GameState.players[0].addElektro(50);
+       
         GameState.players[1] = new Player();
-        GameState.players[1].addElektro(50);
+        
         GameState.players[2] = new Player();
-        GameState.players[2].addElektro(50);
+       
         GameState.players[3] = new Player();
-        GameState.players[3].addElektro(50);
+        
         try {
             // Try to load from resources directory first
             File fontFile = new File("resources/Bungee-Regular.ttf");
@@ -54,10 +54,7 @@ public class Main {
             JLabel label = new JLabel("Hello, Custom Font!");
             label.setFont(sizedFont);
         }
-<<<<<<< HEAD
-=======
         GameState.setUpDeckAndMarket();
->>>>>>> 109725aa76b9115da96fa5573919191628d01231
 		PowerGridFrame graphicWindow = new PowerGridFrame("Power Grid!!!");
     }
 		

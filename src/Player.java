@@ -11,10 +11,6 @@ public class Player {
       private ArrayList<PowerPlant> powerPlants = new ArrayList<PowerPlant>();   
       private HashSet<CityNode> cities = new HashSet<CityNode>();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e9e6c5905534447899c61cb61cf18fa449d1fc8d
       public void setColor(String color) {
             this.color = color;
       }
@@ -62,13 +58,9 @@ public class Player {
             powerPlants.add(plant);
             addElektro(-plant.getPrice());
       }
-<<<<<<< HEAD
       public int getElektro(){
             return Elektro;
       }
-=======
-
->>>>>>> e9e6c5905534447899c61cb61cf18fa449d1fc8d
 }
 
 
