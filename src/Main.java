@@ -54,6 +54,7 @@ public class Main {
             JLabel label = new JLabel("Hello, Custom Font!");
             label.setFont(sizedFont);
         }
+        GameState.setUpDeckAndMarket();
 		PowerGridFrame graphicWindow = new PowerGridFrame("Power Grid!!!");
     }
 		

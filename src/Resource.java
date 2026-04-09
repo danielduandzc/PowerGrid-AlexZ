@@ -4,5 +4,6 @@ public enum Resource {
     COAL,
     OIL,
     GARBAGE,
-    URANIUM
+    URANIUM,
+    TRASH
 }

@@ -1,8 +1,7 @@
 package src;
 
 
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+
 import java.util.*;
 
 public class PowerPlant {
@@ -12,15 +11,11 @@ public class PowerPlant {
     int fuelCost;
     ArrayList<Resource> fuelType;
     ArrayList<Resource> currentResources = new ArrayList<Resource>();  
-    BufferedImage image;
+   
 
 
-    public PowerPlant(int maxResources, int powerOutput, int price, int fuelCost, ArrayList<Resource> fuelType, String imagePath) {
-        try {
-            image = ImageIO.read(getClass().getResource(imagePath));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public PowerPlant(int maxResources, int powerOutput, int price, int fuelCost, ArrayList<Resource> fuelType) {
+       
         this.maxResources = maxResources;
         this.powerOutput = powerOutput;
         this.price = price;
