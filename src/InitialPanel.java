@@ -15,7 +15,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private Graphics g;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
-	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour;
+	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -37,6 +37,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			auctionImagePlayerTwo = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png"));
 			auctionImagePlayerThree = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png"));
 			auctionImagePlayerFour = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png"));
+			arrow= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Arrow.png"));
 			pp3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/3.jpeg"));
 			pp4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/4.jpeg"));
 			pp5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/5.jpeg"));
@@ -197,10 +198,75 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				break;
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				    g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
+					switch(GameState.playerOrder[GameState.currentPlayerIndex]) {
+					case 1: g.drawImage(arrow, 220, 500, 250, 200, this); break;
+					case 2: g.drawImage(arrow, 620, 500, 250, 200, this); break;
+					case 3: g.drawImage(arrow, 1020, 500, 250, 200, this); break;
+					case 4: g.drawImage(arrow, 1420, 500, 250, 200, this); break;
+					}
+					 font = new Font("Arial", Font.BOLD, 30);
+					g.setFont(font);
+
+					
+					
 					g.drawImage(auctionImagePlayerOne, 100, 800, 400, 175, this);
+					if(GameState.players[0].getGhostBid() != 0) {
+						g.setColor(Color.BLUE);
+						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.minBid) {
+							g.setColor(Color.GREEN);
+						}
+						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() <= GameState.minBid ||
+							GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.players[0].getElektro()) {
+							g.setColor(Color.RED);
+						}
+					}else {
+						g.setColor(Color.BLACK);
+					}
+					g.drawString(GameState.players[0].getBid() + "", 200, 950);
 					g.drawImage(auctionImagePlayerTwo, 500, 800, 400, 175, this);
+					if(GameState.players[1].getGhostBid() != 0) {
+						g.setColor(Color.BLUE);
+						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.minBid) {
+							g.setColor(Color.GREEN);
+						}
+						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() <= GameState.minBid ||
+							GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.players[1].getElektro()) {
+							g.setColor(Color.RED);
+						}
+					}else {
+						g.setColor(Color.BLACK);
+					}
+					
+					g.drawString(GameState.players[1].getBid() + "", 600, 950);
 					g.drawImage(auctionImagePlayerThree, 900, 800, 400, 175, this);
+					if(GameState.players[2].getGhostBid() != 0) {
+						g.setColor(Color.BLUE);
+						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.minBid) {
+							g.setColor(Color.GREEN);
+						}
+						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() <= GameState.minBid ||
+							GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.players[2].getElektro()) {
+							g.setColor(Color.RED);
+						}
+					}else {
+						g.setColor(Color.BLACK);
+					}
+					g.drawString(GameState.players[2].getBid() + "", 1000, 950);
 					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
+					if(GameState.players[3].getGhostBid() != 0) {
+						g.setColor(Color.BLUE);
+						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.minBid) {
+							g.setColor(Color.GREEN);
+						}
+						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() <= GameState.minBid ||
+							GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.players[3].getElektro()) {
+							g.setColor(Color.RED);
+						}
+					}else {
+						g.setColor(Color.BLACK);
+					}
+					g.drawString(GameState.players[3].getBid() + "", 1400, 950);
 			break;
 			case "Pick Powerplant":
 				/*	
@@ -222,7 +288,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 				g.setFont(sizedFont);
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 500, 900);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 100, 900);
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}

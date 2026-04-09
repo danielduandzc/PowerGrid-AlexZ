@@ -19,6 +19,9 @@ public class GameState{
     public static ArrayList<PowerPlant> powerPlantsInMarket=new ArrayList<PowerPlant>();
 
     public static void setUpDeckAndMarket(){
+        for(Player k : players) {
+            k.addElektro(50);
+        }
         ArrayList<PowerPlant> tempDeck=new ArrayList<PowerPlant>();
         tempDeck.add(new PowerPlant(4,1,3,2,new ArrayList<Resource>(Arrays.asList(Resource.OIL))));
         tempDeck.add(new PowerPlant(4,1,4,2,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
