@@ -1,5 +1,6 @@
 package src;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 import java.util.*;
 public class GameState{
 
@@ -13,6 +14,9 @@ public class GameState{
     public static boolean[] isColorSelected=new boolean[6];
     public static boolean[] isZoneSelected=new boolean[6];
     public static InitialPanel initialPanel;
+    public static Rectangle playButtonBounds;
+    public static Rectangle rulesButtonBounds;
+    public static Rectangle backButtonBounds;
     
     public void setUpAuction(){
         currentPlayerIndex=0;

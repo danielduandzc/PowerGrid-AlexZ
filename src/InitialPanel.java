@@ -6,8 +6,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.awt.geom.RoundRectangle2D;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.io.File;
 
 public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
@@ -20,20 +22,20 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		
 		//Load all images
 		try{
-			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
-			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
-            titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Base Image.png"));
-            gameBackground = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Background.png"));
-            redHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Red_House.png"));
-            yellowHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Yellow_House.png"));
-            greenHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Green_House.png"));
-            blueHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Blue_House.png"));
-            purpleHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Purple_House.png"));
-            whiteHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/White_House.png"));
-			auctionImagePlayerOne = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_1.png"));
-			auctionImagePlayerTwo = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png"));
-			auctionImagePlayerThree = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png"));
-			auctionImagePlayerFour = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png"));
+			bigBoard = ImageIO.read(new File("resources/Board.png"));
+			board = ImageIO.read(new File("resources/Cropped Board.png"));
+            titleScreen = ImageIO.read(new File("resources/Powergrid.png"));
+            gameBackground = ImageIO.read(new File("resources/Background.png"));
+            redHouse = ImageIO.read(new File("resources/Red_House.png"));
+            yellowHouse = ImageIO.read(new File("resources/Yellow_House.png"));
+            greenHouse = ImageIO.read(new File("resources/Green_House.png"));
+            blueHouse = ImageIO.read(new File("resources/Blue_House.png"));
+            purpleHouse = ImageIO.read(new File("resources/Purple_House.png"));
+            whiteHouse = ImageIO.read(new File("resources/White_House.png"));
+			auctionImagePlayerOne = ImageIO.read(new File("resources/Player_1.png"));
+			auctionImagePlayerTwo = ImageIO.read(new File("resources/Player_2.png"));
+			auctionImagePlayerThree = ImageIO.read(new File("resources/Player_3.png"));
+			auctionImagePlayerFour = ImageIO.read(new File("resources/Player_4.png"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -54,17 +56,14 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		super.paint(g);
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
-				// title screen
-				 Font sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
-				g.setFont(sizedFont);
-				g.drawString("POWER GRID", 200, 200);
-				g.drawImage(titleScreen, 0, 0, 2048,1152,this);
-				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 60f);
-				g.setFont(sizedFont);
-				//g.drawImage(gameBackground,1276,796,1816-1276,897-796,this);//Play Button
-				//g.drawString("Play", 1470, 897
+				// title screen with proper layout
+				drawTitleScreen(g);
+				break;
+			case "Rules":
+				drawRulesScreen(g);
 				break;
 			case "Instructions":
+				Font sizedFont;
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 			g.setFont(sizedFont);
 			
@@ -160,6 +159,92 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 		}
 	}
+	
+	private void drawTitleScreen(Graphics g) {
+		// Draw background (scaled to fit properly maintaining aspect ratio)
+		if (titleScreen != null) {
+			int imgW = titleScreen.getWidth();
+			int imgH = titleScreen.getHeight();
+			double scale = Math.min((double) getWidth() / imgW, (double) getHeight() / imgH);
+			int newW = (int) (imgW * scale);
+			int newH = (int) (imgH * scale);
+			int x = (getWidth() - newW) / 2;
+			int y = (getHeight() - newH) / 2;
+			g.drawImage(titleScreen, x, y, newW, newH, this);
+		} else {
+			g.setColor(new Color(30, 60, 120)); // Dark blue background fallback
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
+	}
+	
+	private void drawRulesScreen(Graphics g) {
+		// Fill background
+		g.setColor(new Color(20, 40, 80));
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		// Draw title
+		Font titleFont = Main.customFont.deriveFont(Font.BOLD, 60f);
+		g2.setFont(titleFont);
+		g2.setColor(Color.WHITE);
+		String title = "RULES";
+		FontMetrics fm = g2.getFontMetrics();
+		int titleX = (getWidth() - fm.stringWidth(title)) / 2;
+		g2.drawString(title, titleX, 80);
+		
+		// Draw rules text
+		Font ruleFont = Main.customFont.deriveFont(Font.PLAIN, 24f);
+		g2.setFont(ruleFont);
+		g2.setColor(new Color(200, 220, 255));
+		
+		int startY = 150;
+		int lineHeight = 50;
+		String[] rules = {
+			"1. Click to place power plants in different cities",
+			"2. Connect cities to your power plants to generate income",
+			"3. Manage resources (coal, oil, uranium, etc.) wisely",
+			"4. Expand your network to cover more cities than opponents",
+			"5. Outbid other players in auctions to get better plants",
+			"6. First to 17 cities wins the game!"
+		};
+		
+		for (int i = 0; i < rules.length; i++) {
+			g2.drawString(rules[i], 100, startY + (i * lineHeight));
+		}
+		
+		// Draw back button
+		int buttonWidth = 150;
+		int buttonHeight = 70;
+		int backButtonX = getWidth() / 2 - buttonWidth / 2;
+		int backButtonY = getHeight() - 120;
+		drawButton(g2, backButtonX, backButtonY, buttonWidth, buttonHeight, "Back", new Color(150, 80, 80), new Color(100, 40, 40));
+		
+		// Store button coordinates for click detection
+		GameState.backButtonBounds = new Rectangle(backButtonX, backButtonY, buttonWidth, buttonHeight);
+	}
+	
+	private void drawButton(Graphics2D g, int x, int y, int width, int height, String label, Color primaryColor, Color borderColor) {
+		// Draw button background
+		g.setColor(primaryColor);
+		g.fillRoundRect(x, y, width, height, 15, 15);
+		
+		// Draw button border
+		g.setColor(borderColor);
+		g.setStroke(new BasicStroke(3));
+		g.drawRoundRect(x, y, width, height, 15, 15);
+		
+		// Draw button text
+		Font buttonFont = Main.customFont.deriveFont(Font.BOLD, 32f);
+		g.setFont(buttonFont);
+		g.setColor(Color.WHITE);
+		FontMetrics fm = g.getFontMetrics();
+		int textX = x + (width - fm.stringWidth(label)) / 2;
+		int textY = y + ((height - fm.getHeight()) / 2) + fm.getAscent();
+		g.drawString(label, textX, textY);
+	}
+	
 	public void centerString(Graphics g, String text, int xRect, int yRect, int rectWidth, int rectHeight) {
 	    // Get the FontMetrics
 	    FontMetrics fm = g.getFontMetrics();
@@ -199,17 +284,34 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
-				if (x >= 1276 && x <= 1816 && y >= 796 && y <= 897) {
-					GameState.currentEvent.removeLast(); // Remove title screen
-					GameState.currentEvent.add("Instructions");
+				// Check if Play button was clicked
+				if (x >= 1212 && x <= 1680 && y >= 735 && y <= 819) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Color Selection");
+					repaint();
+				}
+				// Check if Rules button was clicked
+				else if (x >= 1212 && x <= 1680 && y >= 860 && y <= 940) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Rules");
+					repaint();
+				}
+				break;
+			case "Rules":
+				// Check if Back button was clicked
+				if (GameState.backButtonBounds != null && GameState.backButtonBounds.contains(x, y)) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Title Screen");
+					repaint();
 				}
 				break;
 			case "Instructions":
 				if (x >= 300 && x <= 700 && y >= 350 && y <= 450) {
 					GameState.currentEvent.removeLast();
    					GameState.currentEvent.add("Color Selection");
-					break;
+					repaint();
 				}
+				break;
 			case "Color Selection":
 				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isColorSelected[0]) {
 					GameState.isColorSelected[0] = true;
@@ -246,7 +348,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					GameState.currentPlayerIndex = 0;
 					GameState.currentEvent.add("Zone Selection");
 				}
-				case "Zone Selection":
+				repaint();
+				break;
+			case "Zone Selection":
 				if(x>=180 && x <= 255 && y >= 150 && y <= 225 && !GameState.isZoneSelected[0]) {
 					GameState.isZoneSelected[0] = true;
 					GameState.currentPlayerIndex++;
@@ -271,27 +375,29 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					GameState.currentPlayerIndex = 0;
 					GameState.currentEvent.add("Auction");
 				}
-
-		repaint();
-				case "Auction":
-					if(y>=840&&y<=880)
-						if(x>=300&&x<=475) {
-							//GameState.currentEvent.add("View Player One Profile");
-						} else if(x>=710&&x<=885) {
-							//GameState.currentEvent.add("View Player Two Profile");
-						} else if(x>=1100&&x<=1275) {
-							//GameState.currentEvent.add("View Player Three Profile");
-						} else if(x>=1500&&x<=1675) {
-							//GameState.currentEvent.add("View Player Four Profile");
-						}
-					if(y>=920&&y<=970)
-						if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&) {
-							
-						}
+				repaint();
 				break;
-		
+			case "Auction":
+				if(y>=840&&y<=880) {
+					if(x>=300&&x<=475) {
+						//GameState.currentEvent.add("View Player One Profile");
+					} else if(x>=710&&x<=885) {
+						//GameState.currentEvent.add("View Player Two Profile");
+					} else if(x>=1100&&x<=1275) {
+						//GameState.currentEvent.add("View Player Three Profile");
+					} else if(x>=1500&&x<=1675) {
+						//GameState.currentEvent.add("View Player Four Profile");
+					}
+				}
+				if(y>=920&&y<=970) {
+					if(GameState.players[GameState.currentPlayerIndex].getInAuction()) {
+						
+					}
+				}
+				repaint();
+				break;
+		}
 	}
-}
 	
 	public void mouseReleased(MouseEvent e) {
 		

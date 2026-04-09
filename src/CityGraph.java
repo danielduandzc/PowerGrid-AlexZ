@@ -10,9 +10,15 @@ public class CityGraph {
         this.edges = new ArrayList<>();
     }
 
-    public ArrayList<Edge> getShortestPath(CityNode start, CityNode target) {
+    public ArrayList<Edge> getShortestPath(CityNode startNode, CityNode targetNode) {
         // Implementation for shortest path algorithm (e.g., Dijkstra's)
         PriorityQueue<CityNode> adjacentCities = new PriorityQueue<CityNode>();
+        HashSet<CityNode> visitedNodes = new HashSet<>();
+        CityNode currentNode = startNode;
+        startNode.setDistance(0);
+        for(CityNode n: nodes)
+            n.setDistance(Integer.MAX_VALUE);
+        
         
         return new ArrayList<>();
     }
