@@ -2,7 +2,7 @@ package src;
 
 import java.util.ArrayList;
 
-public class CityNode implements Comparable<int>{
+public class CityNode implements Comparable<CityNode>{
     private String cityName;
     private String zoneColor;
     private int distance;
