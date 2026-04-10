@@ -304,7 +304,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font sizedFont;
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
-			g.setFont(sizedFont);
+				g.setFont(sizedFont);
 			
 			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
@@ -380,7 +380,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			case 50: return pp50; 
 			
 		}
-		return null; // default case, should not happen if input is valid
+		return null;
 	}
 
 	
@@ -416,7 +416,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				// Check if Rules button was clicked
 				else if (x >= 1280 && x <= 1800 && y >= 950 && y <= 1050) {
 					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Color Selection");
+					GameState.currentEvent.add("Rules");
 					repaint();
 				}
 				break;
@@ -428,6 +428,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					repaint();
 				}
 				break;
+
 			case "Color Selection":
 				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isColorSelected[0]) {
 					GameState.isColorSelected[0] = true;
