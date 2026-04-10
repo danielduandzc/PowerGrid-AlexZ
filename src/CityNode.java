@@ -2,7 +2,7 @@ package src;
 
 import java.util.ArrayList;
 
-public class CityNode {
+public class CityNode implements Comparable<int>{
     private String cityName;
     private String zoneColor;
     private int distance;
@@ -74,5 +74,15 @@ public class CityNode {
     
     public ArrayList<Edge> getAdjacentEdges() {
         return adjacentEdges;
+    }
+
+    public int compareTo(CityNode n){
+        if(this.getDistance() > n.getDistance())
+            return 1;
+        if(this.getDistance() < n.getDistance())
+            return -1;
+        else
+            if(this.getDistance == n.getDistance())
+                return 0;
     }
 }
