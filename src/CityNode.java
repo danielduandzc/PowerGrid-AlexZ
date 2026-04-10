@@ -68,6 +68,10 @@ public class CityNode {
         return distance;
     }
 
+    public void setAdjacentEdges(ArrayList<Edge> list) {
+        adjacentEdges = list;
+    }
+    
     public ArrayList<Edge> getAdjacentEdges() {
         return adjacentEdges;
     }
