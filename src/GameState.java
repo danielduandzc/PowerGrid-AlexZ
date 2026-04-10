@@ -94,7 +94,7 @@ public class GameState{
         
     }
     public static void continueAuction(){
-        minBid=players[currentPlayerIndex].getBid();
+        minBid=Math.max(minBid, players[currentPlayerIndex].getBid());
         currentPlayerIndex++;
         if(currentPlayerIndex==4) {
             currentPlayerIndex=0;
@@ -117,6 +117,9 @@ public class GameState{
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
                     k.setInAuction(false);
+                    currentEvent.add("Pick Powerplant");
+                }else{
+                    k.setHasPassed(false);
                 }
             }
         }
