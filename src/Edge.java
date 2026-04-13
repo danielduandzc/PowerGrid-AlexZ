@@ -9,6 +9,12 @@ public class Edge {
         this.a = a;
         this.b = b;
     }
+
+    public Edge(CityNode a, CityNode b, int c){
+        this.a = a;
+        this.b = b;
+        cost = c;
+    }
     
     public CityNode getOtherNode(CityNode n) {
         if (n.equals(a)) {
