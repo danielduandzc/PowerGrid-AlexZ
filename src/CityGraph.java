@@ -47,6 +47,13 @@ public class CityGraph {
         }
     }
 
+    public CityNode getNode(String name){
+        for(CityNode n: nodes)
+            if(n.getName().equals(name))
+                return n;
+        return null;
+    }
+
     public void removeNode(CityNode n) {
         nodes.remove(n);
         edges.removeIf(e -> e.getANode().equals(n) || e.getBNode().equals(n));
