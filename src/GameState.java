@@ -133,6 +133,17 @@ public class GameState{
         } catch (FileNotFoundException e){
             System.out.println("CityNode File error");
         }
+
+        try{
+            File cityEdgeInformation = new File("cityEdgeInfo.txt");
+            Scanner kb = new Scanner(cityEdgeInformation);
+
+            while(kb.hasNextLine()){
+                String[] temp = sc.nextLine().split(" ");
+                String cityName = temp[0];
+                
+            }
+        }
     }
 }
    
