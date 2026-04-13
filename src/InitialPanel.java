@@ -13,9 +13,11 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
 	private Graphics g;
+	private int rulecounter = 0;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
-	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow;
+	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, rules1, rules2, rules3, rules4, rules5, 
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -23,6 +25,19 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		
 		//Load all images
 		try{
+			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
+			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
+			rules2 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules2.png"));
+			rules3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules3.png"));
+			rules4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules4.png"));
+			rules5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules5.png"));
+			rules6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules6.png"));
+			rules7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules7.png"));
+			rules8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules8.png"));
+			rules9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules9.png"));
+			rules10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules10.png"));
+			rules11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules11.png"));
+			rules12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules12.png"));
 			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
 			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
             titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Powergrid.png"));
@@ -85,6 +100,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
             System.out.println("No workie because idk 🤷‍♂️");
             System.out.println(e);
         }
+		System.out.println("rulesBG loaded: " + (rulesBG != null));
 		
 		try {
 			
@@ -98,6 +114,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	
 	public void paint(Graphics g) {
 		super.paint(g);
+		System.out.println("Painting: " + GameState.currentEvent.getLast());
 		switch(GameState.currentEvent.getLast()) {
 			 case "Title Screen":
 			// 	// title screen with proper layout
@@ -105,8 +122,24 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			 	break;
 
 			case "Instructions":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				System.out.println("Drawing rulesBG: " + (rulesBG != null));
+				g.drawImage(rulesBG, 0, 0, 1024, 1152, this);
+				switch(rulecounter) {
+					case 0: g.drawImage(rules1, 400, 0, 1024, 1152, this); break;
+					case 1: g.drawImage(rules2, 400, 0, 1024, 1152, this); break;
+					case 2: g.drawImage(rules3, 400, 0, 1024, 1152, this); break;
+					case 3: g.drawImage(rules4, 400, 0, 1024, 1152, this); break;
+					case 4: g.drawImage(rules5, 400, 0, 1024, 1152, this); break;
+					case 5: g.drawImage(rules6, 400, 0, 1024, 1152, this); break;
+					case 6: g.drawImage(rules7, 400, 0, 1024, 1152, this); break;
+					case 7: g.drawImage(rules8, 400, 0, 1024, 1152, this); break;
+					case 8: g.drawImage(rules9, 400, 0, 1024, 1152,this); break;
+					case 9: g.drawImage(rules10,400 ,0 ,1024 ,1152 ,this); break;
+					case 10: g.drawImage(rules11 ,400 ,0 ,1024 ,1152 ,this); break;
+					case 11: g.drawImage(rules12 ,400 ,0 ,1024 ,1152 ,this); break;
+				}
 				Font sizedFont2 = Main.customFont.deriveFont(Font.PLAIN, 30f);
+				g.drawString("Testing", 50, 100);
 				break;
 			
 			case "Color Selection":
@@ -124,65 +157,65 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
 		
-		//continue button
-		//height: 950
-		Font font = new Font("Arial", Font.BOLD, 30);
-		g.setFont(font);
-		
-		g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		g.setColor(Color.WHITE);
-		g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		g.setColor(Color.BLACK);
-		
-		Graphics2D g2 = (Graphics2D)(g);
-		g2.setStroke(new BasicStroke(5));
-		g2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		
-		centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		g2.setStroke(new BasicStroke(15));
-			g.setColor(new Color(0, 128, 128));//teal
-			g.fillRect(180, 150, 75, 75);
-		if(GameState.isZoneSelected[0]){
-			g2.setColor(new Color(0,0,0));//black
-			g2.drawLine(180, 150, 255, 225);
-			g2.drawLine(255, 150, 180, 225);
-		}
-		
-			g.setColor(new Color(255, 165,0));//orange
-			g.fillRect(180,250, 75, 75);
-		if(GameState.isZoneSelected[1]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 250, 255, 325);
-			g2.drawLine(255, 250, 180, 325);
-		}
-		g.setColor(new Color(255, 0, 0));//red
-		g.fillRect(180, 350, 75, 75);
-		if(GameState.isZoneSelected[2]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 350, 255, 425);
-			g2.drawLine(255, 350, 180, 425);
-		}
-		g.setColor(new Color(255,255,0));//yellow
-		g.fillRect(180, 450, 75, 75);
-		if(GameState.isZoneSelected[3]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 450, 255, 525);
-			g2.drawLine(255, 450, 180, 525);
-		}
-		g.setColor(new Color(0, 0, 128));//blue
-		g.fillRect(180, 550, 75, 75);
-		if(GameState.isZoneSelected[4]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 550, 255, 625);
-			g2.drawLine(255, 550, 180, 625);
-		}
-		g.setColor(new Color(128, 0, 128));//purple
-		g.fillRect(180, 650, 75, 75);
-		if(GameState.isZoneSelected[5]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 650, 255, 725);
-			g2.drawLine(255, 650, 180, 725);
-		}
+				//continue button
+				//height: 950
+				Font font = new Font("Arial", Font.BOLD, 30);
+				g.setFont(font);
+				
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.BLACK);
+				
+				Graphics2D g2 = (Graphics2D)(g);
+				g2.setStroke(new BasicStroke(5));
+				g2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				
+				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g2.setStroke(new BasicStroke(15));
+					g.setColor(new Color(0, 128, 128));//teal
+					g.fillRect(180, 150, 75, 75);
+				if(GameState.isZoneSelected[0]){
+					g2.setColor(new Color(0,0,0));//black
+					g2.drawLine(180, 150, 255, 225);
+					g2.drawLine(255, 150, 180, 225);
+				}
+				
+					g.setColor(new Color(255, 165,0));//orange
+					g.fillRect(180,250, 75, 75);
+				if(GameState.isZoneSelected[1]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 250, 255, 325);
+					g2.drawLine(255, 250, 180, 325);
+				}
+				g.setColor(new Color(255, 0, 0));//red
+				g.fillRect(180, 350, 75, 75);
+				if(GameState.isZoneSelected[2]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 350, 255, 425);
+					g2.drawLine(255, 350, 180, 425);
+				}
+				g.setColor(new Color(255,255,0));//yellow
+				g.fillRect(180, 450, 75, 75);
+				if(GameState.isZoneSelected[3]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 450, 255, 525);
+					g2.drawLine(255, 450, 180, 525);
+				}
+				g.setColor(new Color(0, 0, 128));//blue
+				g.fillRect(180, 550, 75, 75);
+				if(GameState.isZoneSelected[4]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 550, 255, 625);
+					g2.drawLine(255, 550, 180, 625);
+				}
+				g.setColor(new Color(128, 0, 128));//purple
+				g.fillRect(180, 650, 75, 75);
+				if(GameState.isZoneSelected[5]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 650, 255, 725);
+					g2.drawLine(255, 650, 180, 725);
+				}
 				break;
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -429,8 +462,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			
 			case "Instructions":
 				if (x >= 300 && x <= 700 && y >= 350 && y <= 450) {
-					GameState.currentEvent.removeLast();
-   					GameState.currentEvent.add("Color Selection");
+					
 					repaint();
 				}
 				break;
