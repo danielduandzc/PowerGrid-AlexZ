@@ -317,6 +317,25 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
+				break;
+			case "Buy Powerplant":
+			g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				
+				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
+			g.setFont(sizedFont);
+			
+			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
+				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
+				g.setFont(sizedFont);
+				g.drawString("Player " + ((GameState.playerOrderInAuction.get(0)) + 1) + " Buy a Power Plant", 100, 900);
+				for(int i=0;i<4;i++){
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
+				}
+				for(int i=0;i<4;i++){
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
+				}
+				break;
+
 
 		}
 	}
@@ -543,6 +562,44 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			}
 					repaint();
 					break;
+			case "Buy Powerplant":
+				if (y >= 150 && y <= 300) {
+
+				if (x >= 175 && x <= 325) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Cities");
+
+				} else if (x >= 375 && x <= 525) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Cities");
+
+				} else if (x >= 575 && x <= 725) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Cities");
+
+				} else if (x >= 775 && x <= 925) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Cities");
+				}
+			}
+				break;
 				case "Auction":
 					if(y>=840&&y<=880)
 						if(x>=300&&x<=475) {

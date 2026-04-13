@@ -5,9 +5,10 @@ public class Edge {
     private CityNode b;
     private int cost;
     
-    public Edge(CityNode a, CityNode b) {
+    public Edge(CityNode a, CityNode b, int cost) {
         this.a = a;
         this.b = b;
+        this.cost = cost;
     }
     
     public CityNode getOtherNode(CityNode n) {
