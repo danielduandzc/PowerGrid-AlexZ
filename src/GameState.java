@@ -19,6 +19,7 @@ public class GameState{
     public static ArrayList<PowerPlant> powerPlantDeck=new ArrayList<PowerPlant>();
     public static ArrayList<PowerPlant> powerPlantsInMarket=new ArrayList<PowerPlant>();
     public static ArrayList<Integer> playerOrderInAuction=new ArrayList<Integer>();
+    public static ResourceHub resourceMarket = new ResourceHub();
 
     public static void setUpDeckAndMarket(){
         for(Player k : players) {

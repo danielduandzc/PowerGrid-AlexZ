@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -337,38 +338,183 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				break;
 			case "Buy Resources":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				Font resourceFont = new Font("Arial", Font.BOLD, 35);
-				g.setFont(resourceFont);
+				Font customFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
+				Font customFontMed = Main.customFont.deriveFont(Font.BOLD, 30f);
+				Font customFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
+				
+				g.setFont(customFontLarge);
 				g.setColor(Color.BLACK);
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Buy Resources", 100, 100);
+				
+				g.setFont(customFontMed);
 				g.drawString("Elektro: " + GameState.players[GameState.currentPlayerIndex].getElektro(), 100, 150);
 				
-				// Display resources and buy buttons
+				// Display player's powerplants as images with their individual resources
+				Player currentPlayer = GameState.players[GameState.currentPlayerIndex];
+				ArrayList<PowerPlant> playerPowerPlants = currentPlayer.getPowerPlants();
+				
+				g.setFont(customFontMed);
+				g.drawString("Your Power Plants:", 100, 200);
+				
+				Graphics2D g2d = (Graphics2D) g;
+				int ppXPos = 100;
+				int ppYPos = 230;
+				
+				if(playerPowerPlants.size() == 0) {
+					g.setFont(customFontSmall);
+					g.drawString("No power plants yet", 120, ppYPos);
+				} else {
+					for(PowerPlant pp : playerPowerPlants) {
+						// Draw power plant image
+						BufferedImage ppImage = getPowerPlantImage(pp.getPrice());
+						if(ppImage != null) {
+							g.drawImage(ppImage, ppXPos, ppYPos, 100, 100, this);
+						} else {
+							// Fallback if image not available
+							g.setColor(Color.LIGHT_GRAY);
+							g.fillRect(ppXPos, ppYPos, 100, 100);
+							g.setColor(Color.BLACK);
+							g2d.setStroke(new BasicStroke(2));
+							g2d.drawRect(ppXPos, ppYPos, 100, 100);
+						}
+						
+						// Draw plant info below image
+						g.setFont(customFontSmall);
+						g.setColor(Color.BLACK);
+						g.drawString("Capacity: " + pp.getMaxResources(), ppXPos, ppYPos + 120);
+						
+						// Draw resource capabilities
+						String fuelStr = "";
+						for(Resource r : pp.getFuelType()) {
+							fuelStr += r.toString().substring(0, 1);
+						}
+						g.drawString("Fuels: " + fuelStr, ppXPos, ppYPos + 140);
+						
+						// Draw current resources in plant
+						int currentCount = pp.getCurrentResources().size();
+						g.drawString("Current: " + currentCount, ppXPos, ppYPos + 160);
+						
+					// Draw resource tokens
+					Color[] sphereColorsLocal = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
+					int tokenXPos = ppXPos;
+					int tokenYPos = ppYPos + 175;
+					int[] resourceCounts = {0, 0, 0, 0};						for(Resource r : pp.getCurrentResources()) {
+							if(r == Resource.COAL) resourceCounts[0]++;
+							else if(r == Resource.OIL) resourceCounts[1]++;
+							else if(r == Resource.GARBAGE) resourceCounts[2]++;
+							else if(r == Resource.URANIUM) resourceCounts[3]++;
+						}
+						
+						// Draw resource tokens (show coal as example)
+						if(resourceCounts[0] > 0) {
+							for(int t = 0; t < resourceCounts[0] && t < 3; t++) {
+								g.setColor(sphereColorsLocal[0]);
+								g.fillOval(tokenXPos, tokenYPos, 15, 15);
+								g.setColor(Color.WHITE);
+								g2d.setStroke(new BasicStroke(1));
+								g2d.drawOval(tokenXPos, tokenYPos, 15, 15);
+								tokenXPos += 18;
+							}
+						}
+						
+						ppXPos += 120;
+						if(ppXPos > getWidth() - 150) {
+							ppXPos = 100;
+							ppYPos += 200;
+						}
+					}
+				}
+				
+				// Display Resource Market (as per official rules)
+				int marketStartY = ppYPos + 220;
+				g.setFont(customFontLarge);
+				g.setColor(Color.BLACK);
+				g.drawString("Resource Market", 100, marketStartY);
+				
+				// Draw the resource market grid
 				String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};
-				int[] resourcePrices = {10, 12, 8, 15};
-				for(int i = 0; i < 4; i++) {
-					int yPos = 300 + (i * 150);
-					g.drawString(resourceNames[i] + ": $" + resourcePrices[i], 100, yPos);
-					
-					// Buy button
-					g.drawRect(400, yPos - 30, 100, 50);
-					g.setColor(Color.WHITE);
-					g.fillRect(400, yPos - 30, 100, 50);
+				Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+				Color[] sphereColors = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
+				
+				// Display each resource type with its market spaces
+				int resourceYPos = marketStartY + 50;
+				
+				for(int r = 0; r < 4; r++) {
+					// Draw colored sphere (resource token)
+					g.setColor(sphereColors[r]);
+					g.fillOval(100, resourceYPos - 20, 35, 35);
 					g.setColor(Color.BLACK);
-					Graphics2D resourceG2 = (Graphics2D)(g);
-					resourceG2.setStroke(new BasicStroke(3));
-					resourceG2.drawRect(400, yPos - 30, 100, 50);
-					centerString(g, "Buy", 400, yPos - 30, 100, 50);
+					g2d.setStroke(new BasicStroke(2));
+					g2d.drawOval(100, resourceYPos - 20, 35, 35);
+					
+					// Draw resource name
+					g.setFont(customFontMed);
+					g.setColor(Color.BLACK);
+					g.drawString(resourceNames[r] + ":", 150, resourceYPos);
+					
+					// Draw available quantity at cheapest price with token images
+					int cheapestPrice = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
+					if(cheapestPrice >= 0) {
+						g.setFont(customFontSmall);
+						g.drawString("$" + cheapestPrice, 320, resourceYPos);
+						
+						// Display how many are available at cheapest price (as tokens)
+						int availableCount = 0;
+						int[] market = null;
+						if(r == 0) market = GameState.resourceMarket.getCoalMarket();
+						else if(r == 1) market = GameState.resourceMarket.getOilMarket();
+						else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
+						else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
+						
+						if(market != null) {
+							for(int i = 1; i < market.length; i++) {
+								if(market[i] > 0) {
+									availableCount = market[i];
+									break;
+								}
+							}
+						}
+						
+						// Draw resource tokens for available count
+						int tokenX = 400;
+						for(int t = 0; t < availableCount && t < 5; t++) {
+							g.setColor(sphereColors[r]);
+							g.fillOval(tokenX, resourceYPos - 15, 20, 20);
+							g.setColor(Color.BLACK);
+							g2d.setStroke(new BasicStroke(1));
+							g2d.drawOval(tokenX, resourceYPos - 15, 20, 20);
+							tokenX += 22;
+						}
+						
+						if(availableCount > 5) {
+							g.setFont(customFontSmall);
+							g.drawString("+" + (availableCount - 5), tokenX, resourceYPos);
+						}
+						
+						// Buy button
+						g.setColor(Color.LIGHT_GRAY);
+						g.fillRect(750, resourceYPos - 20, 80, 40);
+						g.setColor(Color.BLACK);
+						g2d.setStroke(new BasicStroke(3));
+						g2d.drawRect(750, resourceYPos - 20, 80, 40);
+						g.setFont(customFontSmall);
+						centerString(g, "Buy", 750, resourceYPos - 20, 80, 40);
+					} else {
+						g.setFont(customFontSmall);
+						g.setColor(Color.RED);
+						g.drawString("SOLD OUT", 320, resourceYPos);
+					}
+					
+					resourceYPos += 60;
 				}
 				
 				// Done button
-				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setFont(customFontMed);
 				g.setColor(Color.WHITE);
 				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				g.setColor(Color.BLACK);
-				Graphics2D resG2 = (Graphics2D)(g);
-				resG2.setStroke(new BasicStroke(5));
-				resG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g2d.setStroke(new BasicStroke(5));
+				g2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Buy Cities":
@@ -893,14 +1039,51 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							GameState.currentEvent.add("Buy Cities");
 						}
 					}
+					
 					// Resource buy buttons
-					String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};
-					for(int i = 0; i < 4; i++) {
-						int yPos = 300 + (i * 150);
-						if(x >= 400 && x <= 500 && y >= yPos - 30 && y <= yPos + 20) {
-							// Handle resource purchase based on index i
-							// Logic: If player can purchase or place resource, do so
+					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+					Player buyPlayer = GameState.players[GameState.currentPlayerIndex];
+					ArrayList<PowerPlant> playerPowerPlantsClick = buyPlayer.getPowerPlants();
+					
+					// Calculate ppYPos the same way as in paint method
+					int ppYPosClick = 230;
+					int ppXPosClick = 100;
+					if(playerPowerPlantsClick.size() > 0) {
+						for(int i = 0; i < playerPowerPlantsClick.size(); i++) {
+							ppXPosClick += 120;
+							if(ppXPosClick > getWidth() - 150) {
+								ppXPosClick = 100;
+								ppYPosClick += 200;
+							}
 						}
+					}
+					
+					int marketStartYClick = ppYPosClick + 220;
+					int resourceYPosClick = marketStartYClick + 50;
+					
+					for(int r = 0; r < 4; r++) {
+						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
+						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
+							// Check if player can afford and has capacity
+							int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
+							if(price >= 0) {
+								if(buyPlayer.getElektro() >= price && buyPlayer.canAddResource(resourceTypes[r], 1)) {
+									boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
+									if(bought) {
+										buyPlayer.addResource(resourceTypes[r], 1);
+										buyPlayer.addElektro(-price);
+										System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " bought " + resourceTypes[r] + " for " + price + " Elektro");
+									}
+								} else if(!buyPlayer.canAddResource(resourceTypes[r], 1)) {
+									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have capacity for more resources");
+								} else {
+									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have enough Elektro");
+								}
+							} else {
+								System.out.println("Resource " + resourceTypes[r] + " is sold out");
+							}
+						}
+						resourceYPosClick += 60;
 					}
 					repaint();
 					break;
