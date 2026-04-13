@@ -335,9 +335,146 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
 				break;
+			case "Buy Resources":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font resourceFont = new Font("Arial", Font.BOLD, 35);
+				g.setFont(resourceFont);
+				g.setColor(Color.BLACK);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Buy Resources", 100, 100);
+				g.drawString("Elektro: " + GameState.players[GameState.currentPlayerIndex].getElektro(), 100, 150);
+				
+				// Display resources and buy buttons
+				String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};
+				int[] resourcePrices = {10, 12, 8, 15};
+				for(int i = 0; i < 4; i++) {
+					int yPos = 300 + (i * 150);
+					g.drawString(resourceNames[i] + ": $" + resourcePrices[i], 100, yPos);
+					
+					// Buy button
+					g.drawRect(400, yPos - 30, 100, 50);
+					g.setColor(Color.WHITE);
+					g.fillRect(400, yPos - 30, 100, 50);
+					g.setColor(Color.BLACK);
+					Graphics2D resourceG2 = (Graphics2D)(g);
+					resourceG2.setStroke(new BasicStroke(3));
+					resourceG2.drawRect(400, yPos - 30, 100, 50);
+					centerString(g, "Buy", 400, yPos - 30, 100, 50);
+				}
+				
+				// Done button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D resG2 = (Graphics2D)(g);
+				resG2.setStroke(new BasicStroke(5));
+				resG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
 			case "Buy Cities":
-				//drawboard
-				//for loop of every city adding the appropriate images depending on which ones have a house or have houses.
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
+				// Draw the board and city houses - UI will be implemented with board drawing
+				// Draw continue button
+				Font buyFont = new Font("Arial", Font.BOLD, 30);
+				g.setFont(buyFont);
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.BLACK);
+				Graphics2D buyG2 = (Graphics2D)(g);
+				buyG2.setStroke(new BasicStroke(5));
+				buyG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				break;
+			case "Confirm City Purchase":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font confirmFont = new Font("Arial", Font.BOLD, 40);
+				g.setFont(confirmFont);
+				g.setColor(Color.BLACK);
+				String confirmMsg = "Confirm Purchase?";
+				FontMetrics fm = g.getFontMetrics();
+				int msgWidth = fm.stringWidth(confirmMsg);
+				g.drawString(confirmMsg, (getWidth() - msgWidth) / 2, getHeight() / 2 - 100);
+				
+				// Yes button
+				g.drawRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D confirmG2 = (Graphics2D)(g);
+				confirmG2.setStroke(new BasicStroke(5));
+				confirmG2.drawRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				centerString(g, "Yes", (int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				
+				// No button
+				g.drawRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				confirmG2.drawRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				centerString(g, "No", (int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				break;
+			case "Bureaucracy":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
+				g.setFont(bureaucracyFont);
+				g.setColor(Color.BLACK);
+				String bureauMsg = "Player " + (GameState.currentPlayerIndex + 1) + " has earned 50 Elektro";
+				FontMetrics bureauFm = g.getFontMetrics();
+				int bureauMsgWidth = bureauFm.stringWidth(bureauMsg);
+				g.drawString(bureauMsg, (getWidth() - bureauMsgWidth) / 2, getHeight() / 2);
+				
+				// Click to continue button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D bureauG2 = (Graphics2D)(g);
+				bureauG2.setStroke(new BasicStroke(5));
+				bureauG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
+			case "Activate Powerplants":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font ppFont = new Font("Arial", Font.BOLD, 35);
+				g.setFont(ppFont);
+				g.setColor(Color.BLACK);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Activate Powerplants", 100, 100);
+				
+				// Display player's powerplants (placeholder)
+				g.drawString("Click powerplants to activate", 100, 200);
+				
+				// Done button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D ppG2 = (Graphics2D)(g);
+				ppG2.setStroke(new BasicStroke(5));
+				ppG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
+			case "Hybrid Powerplant":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font hybridFont = new Font("Arial", Font.BOLD, 40);
+				g.setFont(hybridFont);
+				g.setColor(Color.BLACK);
+				g.drawString("Select Resources", (getWidth() - 300) / 2, getHeight() / 2 - 150);
+				
+				// Display coal and oil options
+				g.drawString("Coal needed: 2", 400, getHeight() / 2);
+				g.drawString("Oil needed: 2", 400, getHeight() / 2 + 100);
+				
+				// Confirm button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D hybridG2 = (Graphics2D)(g);
+				hybridG2.setStroke(new BasicStroke(5));
+				hybridG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Confirm", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
 				
 
 
@@ -581,9 +718,9 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
                         i++;
                     }
                     GameState.powerPlantsInMarket.remove(i);
-                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+				    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Buy Cities");
+				GameState.currentEvent.add("Buy Resources");
 
 				} else if (x >= 375 && x <= 525) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
@@ -598,10 +735,10 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
                     GameState.powerPlantsInMarket.remove(i);
                     GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Buy Cities");
+				GameState.currentEvent.add("Buy Resources");
 
 				} else if (x >= 575 && x <= 725) {
-					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get();
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
                     GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
@@ -613,7 +750,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
                     GameState.powerPlantsInMarket.remove(i);
                     GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Buy Cities");
+				GameState.currentEvent.add("Buy Resources");
 				} else if (x >= 775 && x <= 925) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
@@ -627,9 +764,10 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
                     GameState.powerPlantsInMarket.remove(i);
                     GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Buy Cities");
+				GameState.currentEvent.add("Buy Resources");
 				}
 			}
+			repaint();
 				break;
 				case "Auction":
 					if(y>=840&&y<=880)
@@ -744,70 +882,95 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				repaint();
 				break;
 
+				case "Buy Resources":
+					// Done button clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Buy Cities");
+						}
+					}
+					// Resource buy buttons
+					String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};
+					for(int i = 0; i < 4; i++) {
+						int yPos = 300 + (i * 150);
+						if(x >= 400 && x <= 500 && y >= yPos - 30 && y <= yPos + 20) {
+							// Handle resource purchase based on index i
+							// Logic: If player can purchase or place resource, do so
+						}
+					}
+					repaint();
+					break;
 				case "Buy Cities":
-					// this is the button for saying i am done purchasing cities.
-
-					//this will have a large large large if else loop basically looking at the x and y,
-					//the step and the other aspects that regard this click. Basically buying that city.
-					//User will be prompted with a conformation option to ensure they meant to carry out this action.
-					//After They say i am done, then the current player will continue. The prompt will also not appear
-					//  if they cannot purchase the said city.
-					//once the 4th player confirms they have done what they want, they will continue to the "bureaucracy"
+					// Check if Done button was clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.925) && y <= (int)(getHeight() * 0.925) + (int)(getHeight() * 0.05)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Activate Powerplants");
+						}
+					}
+					// Large if-else loop checking x and y coordinates for city clicks on the board
+					// User can click on cities to purchase them - will be prompted with confirmation
+					// After they say done, current player continues. Prompt only appears if city is purchasable.
+					// Once the 4th player confirms they are done, they continue to "Activate Powerplants"
 					repaint();
 					break;
 				case "Confirm City Purchase":
-					//This will simply show a question asking a player if they want to purchase the city for the 
-					// lowest possible price it could find. Very simple.
-					repaint();
+					// Yes button clicked
+					if(x >= (int)(getWidth() * 0.25) && x <= (int)(getWidth() * 0.25) + (int)(getWidth() * 0.15)
+					   && y >= (int)(getHeight() * 0.55) && y <= (int)(getHeight() * 0.55) + (int)(getHeight() * 0.08)) {
+						// Confirm purchase - add logic to purchase city
+						GameState.currentEvent.removeLast();
+						repaint();
+					}
+					// No button clicked
+					else if(x >= (int)(getWidth() * 0.6) && x <= (int)(getWidth() * 0.6) + (int)(getWidth() * 0.15)
+					   && y >= (int)(getHeight() * 0.55) && y <= (int)(getHeight() * 0.55) + (int)(getHeight() * 0.08)) {
+						// Cancel purchase, go back to Buy Cities
+						GameState.currentEvent.removeLast();
+						repaint();
+					}
 					break;
 
 				case "Bureaucracy":
-					//This is very simple. All this does is say ok go to the next prompt.
-					//The idea is that this stage will show "Player "+currentPlayer+" has earned "+money earned from 
-					// bureaucracy. After this a click is done and we continue. 
-					if(GameState.currentPlayerIndex==4){
-						//GameState.newRound();
+					// Any click continues to next phase
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.75) && y <= (int)(getHeight() * 0.75) + (int)(getHeight() * 0.08)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							// GameState.newRound();
+						}
 					}
 					repaint();
-
-					break;
-				case "Buying resources":
-				//To simplify we have this UI that shows the markets and six buttons.
-				//The player's current amount of resources will be shown as well as the max amount they can
-				// have and their elektro. The game calculates this by finding the max storage of 
-				// each powerplant. For example you have one that can store 6 coal and you have 5 coal
-				// You will be shown with 5/6 total coal.
-
-				//This is the coords of the each button. Above this will show the price of it.
-				
-				//The logic is as follow:
-				//If the player cannot purchase or place the resource on any powerplant, their input will do nothing
-				if(GameState.currentPlayerIndex==4){
-					GameState.currentPlayerIndex=0;
-						GameState.currentEvent.removeLast();
-						GameState.currentEvent.add("Activate Powerplants");
-					}
 					break;
 				case "Activate Powerplants":
-					//This will show a certain player and how many power plants that they have. They will 
-					//Click the powerplants they want to utilize during this. In the event we click 
-					//a hybrid powerplant we will be adding a new event which will be below this.
-					
-					//Once they complete this the game state will run a method that adds all these values
-					//to itself so bureaucracy can display the correct amount for how many each player earned.
-					if(GameState.currentPlayerIndex==4){
-					GameState.currentPlayerIndex=0;
-						GameState.currentEvent.removeLast();
-						//GameState.doBureaucracy();
-						GameState.currentEvent.add("Bureaucracy");
+					// Done button clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							// GameState.doBureaucracy();
+							GameState.currentEvent.add("Bureaucracy");
+						}
 					}
 					break;
 				case "Hybrid Powerplant":
-					//This has a pop up that is very similar in structure to the choosing houses.
-					//We have the exact amount of each resource shown that is needed (coal and oil)
-					//If the plant requires 2 to be powered, 2 coal and 2 oil will be shown (if they have enough)
-					//Once they click 2, the thing will disappear and we will be back to the person clicking 
-					//The powerplants they want to power.
+					// Confirm button clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.75) && y <= (int)(getHeight() * 0.75) + (int)(getHeight() * 0.08)) {
+						// Confirm resource selection and return to Activate Powerplants
+						GameState.currentEvent.removeLast();
+					}
 					break;
 		
 		}
