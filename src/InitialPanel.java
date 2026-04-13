@@ -103,7 +103,11 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			// 	// title screen with proper layout
 			 	g.drawImage(titleScreen, 0, 0, 2048, 1152, this);
 			 	break;
-		
+
+			case "Instructions":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font sizedFont2 = Main.customFont.deriveFont(Font.PLAIN, 30f);
+				break;
 			
 			case "Color Selection":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -317,6 +321,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
 
+			
 		}
 	}
 	public void centerString(Graphics g, String text, int xRect, int yRect, int rectWidth, int rectHeight) {
@@ -416,7 +421,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				// Check if Rules button was clicked
 				else if (x >= 1280 && x <= 1800 && y >= 950 && y <= 1050) {
 					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Rules");
+					GameState.currentEvent.add("Instructions");
 					repaint();
 				}
 				break;
