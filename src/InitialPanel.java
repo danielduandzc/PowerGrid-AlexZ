@@ -261,6 +261,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						g.setColor(Color.BLACK);
 					}
 					g.drawString((GameState.players[2].getBid() + GameState.players[2].getGhostBid()) + "", 1000, 950);
+					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
 					if(!GameState.players[3].getInAuction()||GameState.players[3].getHasPassed()) {
 						Color halfTransparentBlack = new Color(0, 0, 0, 127);
 						g.setColor(halfTransparentBlack);
@@ -269,7 +270,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						g.setColor(Color.BLACK);
 						g.drawString(GameState.players[3].getElektro() + " Elektro", 1400, 750);
 					}
-					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
+				
 					if(GameState.players[3].getGhostBid() != 0) {
 						g.setColor(Color.BLUE);
 						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.minBid) {
@@ -309,7 +310,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 				g.setFont(sizedFont);
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " Pick a Power Plant", 100, 900);
+				g.drawString("Player " + ((GameState.playerOrderInAuction.get(0)) + 1) + " Pick a Power Plant", 100, 900);
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}
@@ -516,19 +517,29 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 				if (x >= 175 && x <= 325) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Auction");
 
 				} else if (x >= 375 && x <= 525) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Auction");
 
 				} else if (x >= 575 && x <= 725) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Auction");
 
 				} else if (x >= 775 && x <= 925) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
-				}
-				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Auction");
+				}
+				
 			}
 					repaint();
 					break;

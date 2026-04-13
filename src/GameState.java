@@ -18,6 +18,7 @@ public class GameState{
     public static PowerPlant auctionedPowerPlant;
     public static ArrayList<PowerPlant> powerPlantDeck=new ArrayList<PowerPlant>();
     public static ArrayList<PowerPlant> powerPlantsInMarket=new ArrayList<PowerPlant>();
+    public static ArrayList<Integer> playerOrderInAuction=new ArrayList<Integer>();
 
     public static void setUpDeckAndMarket(){
         for(Player k : players) {
@@ -82,6 +83,11 @@ public class GameState{
     public static void setUpAuction(){
         currentPlayerIndex=0;
         minBid=0;
+        playerOrderInAuction.clear();
+        playerOrderInAuction.add(0);
+        playerOrderInAuction.add(1);
+        playerOrderInAuction.add(2);
+        playerOrderInAuction.add(3);
         for(Player k : players)
         {
             k.setInAuction(true);
@@ -110,16 +116,31 @@ public class GameState{
             }
         }
         if(numPlayersInAuction==1) {
-            for(Player k : players)
+            int j=0;
+            for(int k : playerOrder)
             {
-                if(k.getInAuction()&&!k.getHasPassed()) {
-                    k.buyPowerPlant(auctionedPowerPlant);
+                j++;
+                currentPlayerIndex=0;
+                if(players[k].getInAuction()&&!players[k].getHasPassed()) {
+                     players[k].setBid(0);
+                    players[k].setGhostBid(0);
+                    players[k].buyPowerPlant(auctionedPowerPlant);
+                    int i=0;
+                    while(powerPlantsInMarket.get(i).getPrice()<auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    powerPlantsInMarket.remove(i);
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
-                    k.setInAuction(false);
+                    players[k].setInAuction(false);
+                    playerOrderInAuction.remove(j);
+                    
                     currentEvent.add("Pick Powerplant");
                 }else{
-                    k.setHasPassed(false);
+                    players[k].setBid(0);
+                    players[k].setGhostBid(0);
+                    minBid=0;
+                    players[k].setHasPassed(false);
                 }
             }
         }
