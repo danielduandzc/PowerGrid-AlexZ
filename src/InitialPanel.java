@@ -335,6 +335,11 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
 				break;
+			case "Buy Cities":
+				//drawboard
+				//for loop of every city adding the appropriate images depending on which ones have a house or have houses.
+				
+
 
 
 		}
@@ -583,18 +588,44 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				} else if (x >= 375 && x <= 525) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Buy Cities");
 
 				} else if (x >= 575 && x <= 725) {
-					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get();
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Buy Cities");
-
 				} else if (x >= 775 && x <= 925) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Buy Cities");
 				}
@@ -712,6 +743,72 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			
 				repaint();
 				break;
+
+				case "Buy Cities":
+					// this is the button for saying i am done purchasing cities.
+
+					//this will have a large large large if else loop basically looking at the x and y,
+					//the step and the other aspects that regard this click. Basically buying that city.
+					//User will be prompted with a conformation option to ensure they meant to carry out this action.
+					//After They say i am done, then the current player will continue. The prompt will also not appear
+					//  if they cannot purchase the said city.
+					//once the 4th player confirms they have done what they want, they will continue to the "bureaucracy"
+					repaint();
+					break;
+				case "Confirm City Purchase":
+					//This will simply show a question asking a player if they want to purchase the city for the 
+					// lowest possible price it could find. Very simple.
+					repaint();
+					break;
+
+				case "Bureaucracy":
+					//This is very simple. All this does is say ok go to the next prompt.
+					//The idea is that this stage will show "Player "+currentPlayer+" has earned "+money earned from 
+					// bureaucracy. After this a click is done and we continue. 
+					if(GameState.currentPlayerIndex==4){
+						//GameState.newRound();
+					}
+					repaint();
+
+					break;
+				case "Buying resources":
+				//To simplify we have this UI that shows the markets and six buttons.
+				//The player's current amount of resources will be shown as well as the max amount they can
+				// have and their elektro. The game calculates this by finding the max storage of 
+				// each powerplant. For example you have one that can store 6 coal and you have 5 coal
+				// You will be shown with 5/6 total coal.
+
+				//This is the coords of the each button. Above this will show the price of it.
+				
+				//The logic is as follow:
+				//If the player cannot purchase or place the resource on any powerplant, their input will do nothing
+				if(GameState.currentPlayerIndex==4){
+					GameState.currentPlayerIndex=0;
+						GameState.currentEvent.removeLast();
+						GameState.currentEvent.add("Activate Powerplants");
+					}
+					break;
+				case "Activate Powerplants":
+					//This will show a certain player and how many power plants that they have. They will 
+					//Click the powerplants they want to utilize during this. In the event we click 
+					//a hybrid powerplant we will be adding a new event which will be below this.
+					
+					//Once they complete this the game state will run a method that adds all these values
+					//to itself so bureaucracy can display the correct amount for how many each player earned.
+					if(GameState.currentPlayerIndex==4){
+					GameState.currentPlayerIndex=0;
+						GameState.currentEvent.removeLast();
+						//GameState.doBureaucracy();
+						GameState.currentEvent.add("Bureaucracy");
+					}
+					break;
+				case "Hybrid Powerplant":
+					//This has a pop up that is very similar in structure to the choosing houses.
+					//We have the exact amount of each resource shown that is needed (coal and oil)
+					//If the plant requires 2 to be powered, 2 coal and 2 oil will be shown (if they have enough)
+					//Once they click 2, the thing will disappear and we will be back to the person clicking 
+					//The powerplants they want to power.
+					break;
 		
 		}
 }

@@ -9,6 +9,7 @@ public class CityNode {
     private int firstSector;
     private int secondSector;
     private int thirdSector;
+    
     private ArrayList<Edge> adjacentEdges;
 
     public CityNode(String n, String c) {
