@@ -2,6 +2,8 @@ package src;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 public class GameState{
 
     public static ArrayList<String> currentEvent = new ArrayList<>();
@@ -116,6 +118,20 @@ public class GameState{
                     k.setInAuction(false);
                 }
             }
+        }
+    }
+
+    public void setUpGraph(){
+        try{
+            File cityInformation = new File("cityInfo.txt");
+            Scanner sc = new Scanner(cityInformation);
+
+            while(sc.hasNextLine()){
+                String[] temp = sc.nextLine().split(" ");
+                graphOfCity.addNode(new CityNode(temp[0], temp[1]));
+            }
+        } catch (FileNotFoundException e){
+            System.out.println("CityNode File error");
         }
     }
 }
