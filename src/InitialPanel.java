@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -354,6 +355,312 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
+				break;
+			case "Buy Powerplant":
+			g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				
+				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
+			g.setFont(sizedFont);
+			
+			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
+				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
+				g.setFont(sizedFont);
+				g.drawString("Player " + ((GameState.playerOrderInAuction.get(0)) + 1) + " Buy a Power Plant", 100, 900);
+				for(int i=0;i<4;i++){
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
+				}
+				for(int i=0;i<4;i++){
+					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
+				}
+				break;
+			case "Buy Resources":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font customFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
+				Font customFontMed = Main.customFont.deriveFont(Font.BOLD, 30f);
+				Font customFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
+				
+				g.setFont(customFontLarge);
+				g.setColor(Color.BLACK);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Buy Resources", 100, 100);
+				
+				g.setFont(customFontMed);
+				g.drawString("Elektro: " + GameState.players[GameState.currentPlayerIndex].getElektro(), 100, 150);
+				
+				// Display player's powerplants as images with their individual resources
+				Player currentPlayer = GameState.players[GameState.currentPlayerIndex];
+				ArrayList<PowerPlant> playerPowerPlants = currentPlayer.getPowerPlants();
+				
+				g.setFont(customFontMed);
+				g.drawString("Your Power Plants:", 100, 200);
+				
+				Graphics2D g2d = (Graphics2D) g;
+				int ppXPos = 100;
+				int ppYPos = 230;
+				
+				if(playerPowerPlants.size() == 0) {
+					g.setFont(customFontSmall);
+					g.drawString("No power plants yet", 120, ppYPos);
+				} else {
+					for(PowerPlant pp : playerPowerPlants) {
+						// Draw power plant image
+						BufferedImage ppImage = getPowerPlantImage(pp.getPrice());
+						if(ppImage != null) {
+							g.drawImage(ppImage, ppXPos, ppYPos, 100, 100, this);
+						} else {
+							// Fallback if image not available
+							g.setColor(Color.LIGHT_GRAY);
+							g.fillRect(ppXPos, ppYPos, 100, 100);
+							g.setColor(Color.BLACK);
+							g2d.setStroke(new BasicStroke(2));
+							g2d.drawRect(ppXPos, ppYPos, 100, 100);
+						}
+						
+						// Draw plant info below image
+						g.setFont(customFontSmall);
+						g.setColor(Color.BLACK);
+						g.drawString("Capacity: " + pp.getMaxResources(), ppXPos, ppYPos + 120);
+						
+						// Draw resource capabilities
+						String fuelStr = "";
+						for(Resource r : pp.getFuelType()) {
+							fuelStr += r.toString().substring(0, 1);
+						}
+						g.drawString("Fuels: " + fuelStr, ppXPos, ppYPos + 140);
+						
+						// Draw current resources in plant
+						int currentCount = pp.getCurrentResources().size();
+						g.drawString("Current: " + currentCount, ppXPos, ppYPos + 160);
+						
+					// Draw resource tokens
+					Color[] sphereColorsLocal = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
+					int tokenXPos = ppXPos;
+					int tokenYPos = ppYPos + 175;
+					int[] resourceCounts = {0, 0, 0, 0};						for(Resource r : pp.getCurrentResources()) {
+							if(r == Resource.COAL) resourceCounts[0]++;
+							else if(r == Resource.OIL) resourceCounts[1]++;
+							else if(r == Resource.GARBAGE) resourceCounts[2]++;
+							else if(r == Resource.URANIUM) resourceCounts[3]++;
+						}
+						
+						// Draw resource tokens (show coal as example)
+						if(resourceCounts[0] > 0) {
+							for(int t = 0; t < resourceCounts[0] && t < 3; t++) {
+								g.setColor(sphereColorsLocal[0]);
+								g.fillOval(tokenXPos, tokenYPos, 15, 15);
+								g.setColor(Color.WHITE);
+								g2d.setStroke(new BasicStroke(1));
+								g2d.drawOval(tokenXPos, tokenYPos, 15, 15);
+								tokenXPos += 18;
+							}
+						}
+						
+						ppXPos += 120;
+						if(ppXPos > getWidth() - 150) {
+							ppXPos = 100;
+							ppYPos += 200;
+						}
+					}
+				}
+				
+				// Display Resource Market (as per official rules)
+				int marketStartY = ppYPos + 220;
+				g.setFont(customFontLarge);
+				g.setColor(Color.BLACK);
+				g.drawString("Resource Market", 100, marketStartY);
+				
+				// Draw the resource market grid
+				String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};
+				Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+				Color[] sphereColors = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
+				
+				// Display each resource type with its market spaces
+				int resourceYPos = marketStartY + 50;
+				
+				for(int r = 0; r < 4; r++) {
+					// Draw colored sphere (resource token)
+					g.setColor(sphereColors[r]);
+					g.fillOval(100, resourceYPos - 20, 35, 35);
+					g.setColor(Color.BLACK);
+					g2d.setStroke(new BasicStroke(2));
+					g2d.drawOval(100, resourceYPos - 20, 35, 35);
+					
+					// Draw resource name
+					g.setFont(customFontMed);
+					g.setColor(Color.BLACK);
+					g.drawString(resourceNames[r] + ":", 150, resourceYPos);
+					
+					// Draw available quantity at cheapest price with token images
+					int cheapestPrice = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
+					if(cheapestPrice >= 0) {
+						g.setFont(customFontSmall);
+						g.drawString("$" + cheapestPrice, 320, resourceYPos);
+						
+						// Display how many are available at cheapest price (as tokens)
+						int availableCount = 0;
+						int[] market = null;
+						if(r == 0) market = GameState.resourceMarket.getCoalMarket();
+						else if(r == 1) market = GameState.resourceMarket.getOilMarket();
+						else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
+						else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
+						
+						if(market != null) {
+							for(int i = 1; i < market.length; i++) {
+								if(market[i] > 0) {
+									availableCount = market[i];
+									break;
+								}
+							}
+						}
+						
+						// Draw resource tokens for available count
+						int tokenX = 400;
+						for(int t = 0; t < availableCount && t < 5; t++) {
+							g.setColor(sphereColors[r]);
+							g.fillOval(tokenX, resourceYPos - 15, 20, 20);
+							g.setColor(Color.BLACK);
+							g2d.setStroke(new BasicStroke(1));
+							g2d.drawOval(tokenX, resourceYPos - 15, 20, 20);
+							tokenX += 22;
+						}
+						
+						if(availableCount > 5) {
+							g.setFont(customFontSmall);
+							g.drawString("+" + (availableCount - 5), tokenX, resourceYPos);
+						}
+						
+						// Buy button
+						g.setColor(Color.LIGHT_GRAY);
+						g.fillRect(750, resourceYPos - 20, 80, 40);
+						g.setColor(Color.BLACK);
+						g2d.setStroke(new BasicStroke(3));
+						g2d.drawRect(750, resourceYPos - 20, 80, 40);
+						g.setFont(customFontSmall);
+						centerString(g, "Buy", 750, resourceYPos - 20, 80, 40);
+					} else {
+						g.setFont(customFontSmall);
+						g.setColor(Color.RED);
+						g.drawString("SOLD OUT", 320, resourceYPos);
+					}
+					
+					resourceYPos += 60;
+				}
+				
+				// Done button
+				g.setFont(customFontMed);
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				g2d.setStroke(new BasicStroke(5));
+				g2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
+			case "Buy Cities":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
+				// Draw the board and city houses - UI will be implemented with board drawing
+				// Draw continue button
+				Font buyFont = new Font("Arial", Font.BOLD, 30);
+				g.setFont(buyFont);
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.BLACK);
+				Graphics2D buyG2 = (Graphics2D)(g);
+				buyG2.setStroke(new BasicStroke(5));
+				buyG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				break;
+			case "Confirm City Purchase":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font confirmFont = new Font("Arial", Font.BOLD, 40);
+				g.setFont(confirmFont);
+				g.setColor(Color.BLACK);
+				String confirmMsg = "Confirm Purchase?";
+				FontMetrics fm = g.getFontMetrics();
+				int msgWidth = fm.stringWidth(confirmMsg);
+				g.drawString(confirmMsg, (getWidth() - msgWidth) / 2, getHeight() / 2 - 100);
+				
+				// Yes button
+				g.drawRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D confirmG2 = (Graphics2D)(g);
+				confirmG2.setStroke(new BasicStroke(5));
+				confirmG2.drawRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				centerString(g, "Yes", (int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				
+				// No button
+				g.drawRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				confirmG2.drawRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				centerString(g, "No", (int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
+				break;
+			case "Bureaucracy":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
+				g.setFont(bureaucracyFont);
+				g.setColor(Color.BLACK);
+				String bureauMsg = "Player " + (GameState.currentPlayerIndex + 1) + " has earned 50 Elektro";
+				FontMetrics bureauFm = g.getFontMetrics();
+				int bureauMsgWidth = bureauFm.stringWidth(bureauMsg);
+				g.drawString(bureauMsg, (getWidth() - bureauMsgWidth) / 2, getHeight() / 2);
+				
+				// Click to continue button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D bureauG2 = (Graphics2D)(g);
+				bureauG2.setStroke(new BasicStroke(5));
+				bureauG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
+			case "Activate Powerplants":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font ppFont = new Font("Arial", Font.BOLD, 35);
+				g.setFont(ppFont);
+				g.setColor(Color.BLACK);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Activate Powerplants", 100, 100);
+				
+				// Display player's powerplants (placeholder)
+				g.drawString("Click powerplants to activate", 100, 200);
+				
+				// Done button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D ppG2 = (Graphics2D)(g);
+				ppG2.setStroke(new BasicStroke(5));
+				ppG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
+			case "Hybrid Powerplant":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font hybridFont = new Font("Arial", Font.BOLD, 40);
+				g.setFont(hybridFont);
+				g.setColor(Color.BLACK);
+				g.drawString("Select Resources", (getWidth() - 300) / 2, getHeight() / 2 - 150);
+				
+				// Display coal and oil options
+				g.drawString("Coal needed: 2", 400, getHeight() / 2);
+				g.drawString("Oil needed: 2", 400, getHeight() / 2 + 100);
+				
+				// Confirm button
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				g.setColor(Color.BLACK);
+				Graphics2D hybridG2 = (Graphics2D)(g);
+				hybridG2.setStroke(new BasicStroke(5));
+				hybridG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				centerString(g, "Confirm", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				
+
+
 
 			
 		}
@@ -581,6 +888,71 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			}
 					repaint();
 					break;
+			case "Buy Powerplant":
+				if (y >= 150 && y <= 300) {
+
+				if (x >= 175 && x <= 325) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+				    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Resources");
+
+				} else if (x >= 375 && x <= 525) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Resources");
+
+				} else if (x >= 575 && x <= 725) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Resources");
+				} else if (x >= 775 && x <= 925) {
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+                    GameState.players[GameState.playerOrderInAuction.get(0)].buyPowerPlant(GameState.auctionedPowerPlant);
+                    int i=0;
+                    while(GameState.powerPlantsInMarket.get(i).getPrice()<GameState.auctionedPowerPlant.getPrice()) {
+                        i++;
+                    }
+                    GameState.powerPlantsInMarket.remove(i);
+                    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+				GameState.currentEvent.removeLast();
+				GameState.currentEvent.add("Buy Resources");
+				}
+			}
+			repaint();
+				break;
 				case "Auction":
 					if(y>=840&&y<=880)
 						if(x>=300&&x<=475) {
@@ -693,6 +1065,134 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			
 				repaint();
 				break;
+
+				case "Buy Resources":
+					// Done button clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Buy Cities");
+						}
+					}
+					
+					// Resource buy buttons
+					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+					Player buyPlayer = GameState.players[GameState.currentPlayerIndex];
+					ArrayList<PowerPlant> playerPowerPlantsClick = buyPlayer.getPowerPlants();
+					
+					// Calculate ppYPos the same way as in paint method
+					int ppYPosClick = 230;
+					int ppXPosClick = 100;
+					if(playerPowerPlantsClick.size() > 0) {
+						for(int i = 0; i < playerPowerPlantsClick.size(); i++) {
+							ppXPosClick += 120;
+							if(ppXPosClick > getWidth() - 150) {
+								ppXPosClick = 100;
+								ppYPosClick += 200;
+							}
+						}
+					}
+					
+					int marketStartYClick = ppYPosClick + 220;
+					int resourceYPosClick = marketStartYClick + 50;
+					
+					for(int r = 0; r < 4; r++) {
+						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
+						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
+							// Check if player can afford and has capacity
+							int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
+							if(price >= 0) {
+								if(buyPlayer.getElektro() >= price && buyPlayer.canAddResource(resourceTypes[r], 1)) {
+									boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
+									if(bought) {
+										buyPlayer.addResource(resourceTypes[r], 1);
+										buyPlayer.addElektro(-price);
+										System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " bought " + resourceTypes[r] + " for " + price + " Elektro");
+									}
+								} else if(!buyPlayer.canAddResource(resourceTypes[r], 1)) {
+									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have capacity for more resources");
+								} else {
+									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have enough Elektro");
+								}
+							} else {
+								System.out.println("Resource " + resourceTypes[r] + " is sold out");
+							}
+						}
+						resourceYPosClick += 60;
+					}
+					repaint();
+					break;
+				case "Buy Cities":
+					// Check if Done button was clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.925) && y <= (int)(getHeight() * 0.925) + (int)(getHeight() * 0.05)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Activate Powerplants");
+						}
+					}
+					// Large if-else loop checking x and y coordinates for city clicks on the board
+					// User can click on cities to purchase them - will be prompted with confirmation
+					// After they say done, current player continues. Prompt only appears if city is purchasable.
+					// Once the 4th player confirms they are done, they continue to "Activate Powerplants"
+					repaint();
+					break;
+				case "Confirm City Purchase":
+					// Yes button clicked
+					if(x >= (int)(getWidth() * 0.25) && x <= (int)(getWidth() * 0.25) + (int)(getWidth() * 0.15)
+					   && y >= (int)(getHeight() * 0.55) && y <= (int)(getHeight() * 0.55) + (int)(getHeight() * 0.08)) {
+						// Confirm purchase - add logic to purchase city
+						GameState.currentEvent.removeLast();
+						repaint();
+					}
+					// No button clicked
+					else if(x >= (int)(getWidth() * 0.6) && x <= (int)(getWidth() * 0.6) + (int)(getWidth() * 0.15)
+					   && y >= (int)(getHeight() * 0.55) && y <= (int)(getHeight() * 0.55) + (int)(getHeight() * 0.08)) {
+						// Cancel purchase, go back to Buy Cities
+						GameState.currentEvent.removeLast();
+						repaint();
+					}
+					break;
+
+				case "Bureaucracy":
+					// Any click continues to next phase
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.75) && y <= (int)(getHeight() * 0.75) + (int)(getHeight() * 0.08)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							// GameState.newRound();
+						}
+					}
+					repaint();
+					break;
+				case "Activate Powerplants":
+					// Done button clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
+						GameState.currentPlayerIndex++;
+						if(GameState.currentPlayerIndex == 4) {
+							GameState.currentPlayerIndex = 0;
+							GameState.currentEvent.removeLast();
+							// GameState.doBureaucracy();
+							GameState.currentEvent.add("Bureaucracy");
+						}
+					}
+					break;
+				case "Hybrid Powerplant":
+					// Confirm button clicked
+					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+					   && y >= (int)(getHeight() * 0.75) && y <= (int)(getHeight() * 0.75) + (int)(getHeight() * 0.08)) {
+						// Confirm resource selection and return to Activate Powerplants
+						GameState.currentEvent.removeLast();
+					}
+					break;
 		
 		}
 }
