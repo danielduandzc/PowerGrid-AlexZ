@@ -124,7 +124,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 			case "Instructions":
 				System.out.println("Drawing rulesBG: " + (rulesBG != null));
-				g.drawImage(rulesBG, 0, 0, 1024, 1152, this);
+				g.drawImage(rulesBG, 0, 0, 1925, 1050, this);
 				switch(rulecounter) {
 					case 0: g.drawImage(rules1, 400, 0, 1024, 1152, this); break;
 					case 1: g.drawImage(rules2, 400, 0, 1024, 1152, this); break;
@@ -140,7 +140,6 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					case 11: g.drawImage(rules12 ,400 ,0 ,1024 ,1152 ,this); break;
 				}
 				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 30f));
-				g.drawString("Testing", 50, 100);
 				break;
 			
 			case "Color Selection":
@@ -767,10 +766,29 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				break;
 			
 			case "Instructions":
-				if (x >= 300 && x <= 700 && y >= 350 && y <= 450) {
-					
-					repaint();
+				// Rectangle for increasing ruleCounter
+				int incX1 = 1724, incY1 = 87;   // top-left
+				int incX2 = 1852, incY2 = 958;  // bottom-right
+
+				// Rectangle for decreasing ruleCounter
+				int decX1 = 76, decY1 = 108;    // top-left
+				int decX2 = 200, decY2 = 969;   // bottom-right
+
+				if (x >= incX1 && x <= incX2 && y >= incY1 && y <= incY2) {
+					rulecounter++;
+				} else if (x >= decX1 && x <= decX2 && y >= decY1 && y <= decY2) {
+					rulecounter--;
 				}
+
+				// Wrap-around logic
+				if (rulecounter < 0) {
+					rulecounter = 11;
+				} else if (rulecounter > 11) {
+					rulecounter = 0;
+				}
+
+				repaint();
+				System.out.println("ruleCounter is now: " + rulecounter);
 				break;
 
 			case "Color Selection":
