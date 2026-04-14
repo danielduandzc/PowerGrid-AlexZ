@@ -139,7 +139,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					case 10: g.drawImage(rules11 ,400 ,0 ,1024 ,1152 ,this); break;
 					case 11: g.drawImage(rules12 ,400 ,0 ,1024 ,1152 ,this); break;
 				}
-				Font sizedFont2 = Main.customFont.deriveFont(Font.PLAIN, 30f);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 30f));
 				g.drawString("Testing", 50, 100);
 				break;
 			
@@ -497,21 +497,21 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						
 						// Display how many are available at cheapest price (as tokens)
 						int availableCount = 0;
-						int[] market = null;
-						if(r == 0) market = GameState.resourceMarket.getCoalMarket();
-						else if(r == 1) market = GameState.resourceMarket.getOilMarket();
-						else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
-						else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
+					//	int[] market = null;
+					//	if(r == 0) market = GameState.resourceMarket.getCoalMarket();
+					//	else if(r == 1) market = GameState.resourceMarket.getOilMarket();
+					//	else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
+					//	else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
 						
-						if(market != null) {
-							for(int i = 1; i < market.length; i++) {
-								if(market[i] > 0) {
-									availableCount = market[i];
-									break;
-								}
-							}
-						}
-						
+					//	if(market != null) {
+					//		for(int i = 1; i < market.length; i++) {
+					//			if(market[i] > 0) {
+					//				availableCount = market[i];
+					//				break;
+					//			}
+					//		}
+					//	}
+					//	
 						// Draw resource tokens for available count
 						int tokenX = 400;
 						for(int t = 0; t < availableCount && t < 5; t++) {
@@ -747,7 +747,6 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Graphics g = getGraphics();
 		int x = e.getX();
         int y = e.getY();
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
@@ -1079,26 +1078,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					}
 					
 					// Resource buy buttons
-					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
-					Player buyPlayer = GameState.players[GameState.currentPlayerIndex];
-					ArrayList<PowerPlant> playerPowerPlantsClick = buyPlayer.getPowerPlants();
 					
-					// Calculate ppYPos the same way as in paint method
-					int ppYPosClick = 230;
-					int ppXPosClick = 100;
-					if(playerPowerPlantsClick.size() > 0) {
-						for(int i = 0; i < playerPowerPlantsClick.size(); i++) {
-							ppXPosClick += 120;
-							if(ppXPosClick > getWidth() - 150) {
-								ppXPosClick = 100;
-								ppYPosClick += 200;
-							}
-						}
-					}
-					
-					int marketStartYClick = ppYPosClick + 220;
-					int resourceYPosClick = marketStartYClick + 50;
-					
+				/*
 					for(int r = 0; r < 4; r++) {
 						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
 						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
@@ -1122,7 +1103,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							}
 						}
 						resourceYPosClick += 60;
-					}
+					}   */
 					repaint();
 					break;
 				case "Buy Cities":

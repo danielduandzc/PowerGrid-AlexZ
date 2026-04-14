@@ -55,7 +55,7 @@ public class Main {
             label.setFont(sizedFont);
         }
         GameState.setUpDeckAndMarket();
-		PowerGridFrame graphicWindow = new PowerGridFrame("Power Grid!!!");
+		new PowerGridFrame("Power Grid!!!");
     }
 		
 	}
