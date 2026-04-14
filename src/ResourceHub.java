@@ -44,6 +44,22 @@ public class ResourceHub {
         uraniumMarket[16] = 1;
     }
     
+    // Get the market array for a specific resource
+    public int[] getMarketForResource(Resource resource) {
+        switch(resource) {
+            case COAL:
+                return coalMarket;
+            case OIL:
+                return oilMarket;
+            case GARBAGE:
+                return garbageMarket;
+            case URANIUM:
+                return uraniumMarket;
+            default:
+                return null;
+        }
+    }
+    
     // Get the price of the cheapest available resource
     public int getCheapestPrice(Resource resource) {
         int[] market = getMarketForResource(resource);
@@ -52,4 +68,6 @@ public class ResourceHub {
                 return spacePrice[i];
             }
         }
-        return 
+        return  69;
+    }
+}
