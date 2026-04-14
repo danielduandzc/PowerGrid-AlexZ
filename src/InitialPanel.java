@@ -16,7 +16,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private Graphics g;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
-	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow;
+	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -24,6 +24,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		
 		//Load all images
 		try{
+			scoringTrack = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Scoring_Track.png"));
 			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
 			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
             titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Powergrid.png"));
@@ -388,6 +389,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						for(Resource r : pp.getFuelType()) {
 							fuelStr += r.toString().substring(0, 1);
 						}
+						if(fuelStr.isEmpty()) fuelStr = "Renewable";
+						if(fuelStr.length() == 2) fuelStr = fuelStr.substring(0, 1) + "/" + fuelStr.substring(1);
 						g.drawString("Fuels: " + fuelStr, ppXPos, ppYPos + 140);
 						
 						// Draw current resources in plant
@@ -520,10 +523,19 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			case "Buy Cities":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
+				
+				// Draw heading with player info
+				Font citiesFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
+				Font citiesFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
+				
+				g.setFont(citiesFontLarge);
+				g.setColor(Color.BLACK);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1), 100, 100);
+				g.drawString("Buy Cities", 100, 150);
+				
 				// Draw the board and city houses - UI will be implemented with board drawing
 				// Draw continue button
-				Font buyFont = new Font("Arial", Font.BOLD, 30);
-				g.setFont(buyFont);
+				g.setFont(citiesFontSmall);
 				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
 				g.setColor(Color.WHITE);
 				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
@@ -563,10 +575,12 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				break;
 			case "Bureaucracy":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(scoringTrack, 724, 200, 600, 130, this);
+				
 				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
 				g.setFont(bureaucracyFont);
 				g.setColor(Color.BLACK);
-				String bureauMsg = "Player " + (GameState.currentPlayerIndex + 1) + " has earned 50 Elektro";
+				String bureauMsg = "Player " + (GameState.currentPlayerIndex + 1) + " has earned " + GameState.players[GameState.currentPlayerIndex].getEarnedIncome() + " Elektro";
 				FontMetrics bureauFm = g.getFontMetrics();
 				int bureauMsgWidth = bureauFm.stringWidth(bureauMsg);
 				g.drawString(bureauMsg, (getWidth() - bureauMsgWidth) / 2, getHeight() / 2);
@@ -580,25 +594,115 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				bureauG2.setStroke(new BasicStroke(5));
 				bureauG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
 				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				
+				// Draw circles AFTER other elements so they appear on top
+				// Scoring track coordinates (22 positions: 0-21)
+				int[][] scoringCoords = {
+					{749, 247}, {808, 247}, {893, 245}, {977, 241}, {1064, 243}, {1149, 244}, {1237, 243}, {1305, 246},
+					{746, 299}, {790, 298}, {834, 299}, {876, 300}, {917, 299}, {962, 300}, {1001, 298}, {1043, 301},
+					{1089, 299}, {1134, 300}, {1176, 298}, {1223, 298}, {1259, 301}, {1305, 296}
+				};
+				
+				Graphics2D bureauG2d = (Graphics2D) g;
+				bureauG2d.setStroke(new BasicStroke(2));
+				
+				// Draw one circle for each player at their city count position
+				
+					int cityCount = GameState.players[GameState.currentPlayerIndex].getCities().size();
+					
+						String playerColorStr = GameState.players[GameState.currentPlayerIndex].getColor();
+						Color playerColor = getColorFromString(playerColorStr);
+						
+						// Position is cityCount - 1 since arrays are 0-indexed
+						int positionIdx = cityCount;
+						int x = scoringCoords[positionIdx][0];
+						int y = scoringCoords[positionIdx][1];
+						int circleSize = 20;
+						
+						g.setColor(playerColor);
+						g.fillOval(x - circleSize/2, y - circleSize/2, circleSize, circleSize);
+						g.setColor(Color.BLACK);
+						bureauG2d.drawOval(x - circleSize/2, y - circleSize/2, circleSize, circleSize);
+					
+				
 				break;
 			case "Activate Powerplants":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				Font ppFont = new Font("Arial", Font.BOLD, 35);
-				g.setFont(ppFont);
+				Font ppFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
+				Font ppFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
+				g.setFont(ppFontLarge);
 				g.setColor(Color.BLACK);
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Activate Powerplants", 100, 100);
 				
-				// Display player's powerplants (placeholder)
-				g.drawString("Click powerplants to activate", 100, 200);
+				// Display player's powerplants with images
+				Player currentPPPlayer = GameState.players[GameState.currentPlayerIndex];
+				ArrayList<PowerPlant> playerPPs = currentPPPlayer.getPowerPlants();
+				
+				g.setFont(ppFontSmall);
+				g.drawString("Click powerplants to activate", 100, 150);
+				
+				Graphics2D ppG2d = (Graphics2D) g;
+				int ppDisplayXPos = 100;
+				int ppDisplayYPos = 200;
+				int ppImageWidth = 250;
+				int ppImageHeight = 250;
+				int ppSpacing = 310;
+				
+				if(playerPPs.size() == 0) {
+					g.setFont(ppFontSmall);
+					g.drawString("No power plants yet", 120, ppDisplayYPos);
+				} else {
+					for(int ppIdx = 0; ppIdx < playerPPs.size(); ppIdx++) {
+						PowerPlant pp = playerPPs.get(ppIdx);
+						int xPos = ppDisplayXPos + (ppIdx % 8) * ppSpacing;
+						int yPos = ppDisplayYPos + (ppIdx / 8) * ppSpacing;
+						
+						// Draw powerplant image
+						BufferedImage ppImage = getPowerPlantImage(pp.getPrice());
+						if(ppImage != null) {
+							g.drawImage(ppImage, xPos, yPos, ppImageWidth, ppImageHeight, this);
+						} else {
+							g.setColor(Color.LIGHT_GRAY);
+							g.fillRect(xPos, yPos, ppImageWidth, ppImageHeight);
+							g.setColor(Color.BLACK);
+							ppG2d.setStroke(new BasicStroke(2));
+							ppG2d.drawRect(xPos, yPos, ppImageWidth, ppImageHeight);
+						}
+						
+						// Draw border - red if not activated, green if activated
+						ppG2d.setStroke(new BasicStroke(5));
+						if(pp.isActivated()) {
+							g.setColor(Color.GREEN);
+						} else {
+							g.setColor(Color.RED);
+						}
+						ppG2d.drawRect(xPos, yPos, ppImageWidth, ppImageHeight);
+						
+						// Draw plant info below image
+						g.setFont(ppFontSmall);
+						g.setColor(Color.BLACK);
+						g.drawString("Capacity: " + pp.getMaxResources(), xPos, yPos + ppImageHeight + 25);
+						
+						// Draw resource capabilities
+						String fuelStr = "";
+						for(Resource r : pp.getFuelType()) {
+							fuelStr += r.toString().substring(0, 1);
+						}
+						g.drawString("Fuels: " + fuelStr, xPos, yPos + ppImageHeight + 45);
+						
+						// Draw current resources in plant
+						int currentCount = pp.getCurrentResources().size();
+						g.drawString("Current: " + currentCount, xPos, yPos + ppImageHeight + 65);
+					}
+				}
 				
 				// Done button
 				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				g.setColor(Color.WHITE);
 				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				g.setColor(Color.BLACK);
-				Graphics2D ppG2 = (Graphics2D)(g);
-				ppG2.setStroke(new BasicStroke(5));
-				ppG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				ppG2d.setStroke(new BasicStroke(5));
+				ppG2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Hybrid Powerplant":
@@ -690,6 +794,19 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		}
 		return null; // default case, should not happen if input is valid
 	}
+	
+	private Color getColorFromString(String colorString) {
+		if(colorString == null) return Color.BLACK;
+		switch(colorString) {
+			case "Red": return new Color(255, 0, 0);
+			case "Yellow": return new Color(255, 255, 0);
+			case "Green": return new Color(0, 128, 0);
+			case "Blue": return new Color(0, 0, 128);
+			case "Purple": return new Color(128, 0, 128);
+			case "White": return Color.WHITE;
+			default: return Color.BLACK;
+		}
+	}
 
 	
 	public void mouseClicked(MouseEvent e) {
@@ -697,6 +814,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	}
 	
 	public void keyPressed(KeyEvent e) {
+		System.out.println(GameState.currentEvent);
 		repaint();
 	}
 	
@@ -826,25 +944,24 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 
 				} else if (x >= 375 && x <= 525) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
-
+				
 				} else if (x >= 575 && x <= 725) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 
 				} else if (x >= 775 && x <= 925) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 				}
 				
 			}
@@ -1135,17 +1252,47 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					repaint();
 					break;
 				case "Activate Powerplants":
-					// Done button clicked
+					// Check if Done button clicked
 					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
 					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
 						GameState.currentPlayerIndex++;
 						if(GameState.currentPlayerIndex == 4) {
 							GameState.currentPlayerIndex = 0;
 							GameState.currentEvent.removeLast();
-							// GameState.doBureaucracy();
+							GameState.runBureaucracy();
 							GameState.currentEvent.add("Bureaucracy");
 						}
+					} else {
+						// Check if a powerplant was clicked
+						Player clickedPPPlayer = GameState.players[GameState.currentPlayerIndex];
+						ArrayList<PowerPlant> clickedPlayerPPs = clickedPPPlayer.getPowerPlants();
+						
+						int ppDisplayXPos = 100;
+						int ppDisplayYPos = 200;
+						int ppImageWidth = 250;
+						int ppImageHeight = 250;
+						int ppSpacing = 310;
+						
+						for(int ppIdx = 0; ppIdx < clickedPlayerPPs.size(); ppIdx++) {
+							PowerPlant pp = clickedPlayerPPs.get(ppIdx);
+							int xPos = ppDisplayXPos + (ppIdx % 8) * ppSpacing;
+							int yPos = ppDisplayYPos + (ppIdx / 8) * ppSpacing;
+							
+							// Check if click is within this powerplant's bounds
+							if(x >= xPos && x <= xPos + ppImageWidth && y >= yPos && y <= yPos + ppImageHeight) {
+								
+								// Check if powerplant has enough resources to activate
+								int currentResourceCount = pp.getCurrentResources().size();
+								if(currentResourceCount >= pp.getFuelCost()) {
+									// Toggle activation
+									
+									pp.setActivated(!pp.isActivated());
+								}
+								break;
+							}
+						}
 					}
+					repaint();
 					break;
 				case "Hybrid Powerplant":
 					// Confirm button clicked

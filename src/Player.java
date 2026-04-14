@@ -11,6 +11,19 @@ public class Player {
       private ArrayList<PowerPlant> powerPlants = new ArrayList<PowerPlant>();   
       private HashSet<CityNode> cities = new HashSet<CityNode>();
       private HashMap<Resource, Integer> resources = new HashMap<Resource, Integer>();
+      private int earnedIncome;
+
+      public void setEarnedIncome(int income) {
+            this.earnedIncome = income;
+      }
+
+      public HashSet<CityNode> getCities() {
+            return cities;
+      }
+
+      public int getEarnedIncome() {
+            return earnedIncome;
+      }
 
       public void setColor(String color) {
             this.color = color;

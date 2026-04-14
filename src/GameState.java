@@ -79,7 +79,56 @@ public class GameState{
         powerPlantDeck.add(new PowerPlant(0,6,50,0,new ArrayList<Resource>()));
      } 
 
-   
+     public static void runBureaucracy(){
+            for(Player p : players) {
+                int powerCount = 0;
+                for(PowerPlant plant : p.getPowerPlants()) {
+                    if(plant.isActivated()) {
+                        powerCount += plant.getPowerOutput();
+                        // Remove resources used for this turn
+                        for(Resource r : plant.getFuelType()) {
+                            int resourcesToRemove = Math.min(plant.getCurrentResources().size(), plant.getMaxResources());
+                            for(int i = 0; i < resourcesToRemove; i++) {
+                                plant.getCurrentResources().remove(r);
+                            }
+                        }
+                    }
+                }
+                // Power cities based on powerCount
+                for(int i=0; i<4; i++){
+                    players[i].setEarnedIncome(calculateIncome(Math.min(powerCount, players[i].getCities().size())));
+                }
+            }
+     }
+
+    public static int calculateIncome(int p){
+        switch (p) {
+            case 0 :return 10;
+            case 1 :return 22;
+            case 2 :return 33;
+            case 3 :return 44;
+            case 4 :return 54;
+            case 5 :return 64;
+            case 6 :return 73;
+            case 7 :return 82;
+            case 8 :return 90;
+            case 9 :return 98;
+            case 10 :return 105;
+            case 11 :return 112;
+            case 12 :return 118;
+            case 13 :return 124;
+            case 14 :return 129;
+            case 15 :return 134;
+            case 16 :return 138;
+            case 17 :return 142;
+            case 18 :return 145;
+            case 19 :return 148;
+            case 20 :return 150;
+           
+        }
+        return 150;
+    }
+    
 
     public static void setUpAuction(){
         
@@ -96,6 +145,7 @@ public class GameState{
             k.setHasPassed(false);
             k.setBid(0);
         }
+         currentEvent.add("Auction");
         currentEvent.add("Pick Powerplant");
        
            
