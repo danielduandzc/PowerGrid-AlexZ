@@ -22,7 +22,7 @@ public class CityGraph {
         
         while(!adjacentCities.isEmpty()){ 
             if(visitedNodes.containsAll(nodes)
-               return Integer.MAX_VALUE;
+               return targetNode.getDistance();
             
             currentNode = adjacentCities.poll();
             visitedNodes.add(currentNode);
