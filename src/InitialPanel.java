@@ -15,6 +15,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	public static int numMouseClicks = 0;
 	private Graphics g;
 	private int rulecounter = 0;
+	private int resourceButtonStartY = 500; // Y position where resource buy buttons start
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack, rules1, rules2, rules3, rules4, rules5, 
@@ -125,7 +126,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 			case "Instructions":
 				System.out.println("Drawing rulesBG: " + (rulesBG != null));
-				g.drawImage(rulesBG, 0, 0, 1925, 1050, this);
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				switch(rulecounter) {
 					case 0: g.drawImage(rules1, 400, 0, 1024, 1152, this); break;
 					case 1: g.drawImage(rules2, 400, 0, 1024, 1152, this); break;
@@ -141,6 +142,53 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					case 11: g.drawImage(rules12 ,400 ,0 ,1024 ,1152 ,this); break;
 				}
 				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 30f));
+				
+				// Draw left arrow pointer for previous page
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setStroke(new BasicStroke(4));
+				
+				// Left click area - white box background
+				int decX1 = 76, decY1 = 108;
+				int decX2 = 200, decY2 = 969;
+				g.setColor(Color.WHITE);
+				g.fillRect(decX1, decY1, decX2 - decX1, decY2 - decY1);
+				
+				// Right click area - white box background
+				int incX1 = 1724, incY1 = 87;
+				int incX2 = 1852, incY2 = 958;
+				g.fillRect(incX1, incY1, incX2 - incX1, incY2 - incY1);
+				
+				// Left arrow (pointing left)
+				g.setColor(Color.BLACK);
+				int leftArrowX = 100;
+				int leftArrowY = 576;
+				int arrowSize = 40;
+				int[] leftXPoints = {leftArrowX, leftArrowX + arrowSize, leftArrowX + arrowSize};
+				int[] leftYPoints = {leftArrowY, leftArrowY - arrowSize, leftArrowY + arrowSize};
+				g2d.fillPolygon(leftXPoints, leftYPoints, 3);
+				g2d.drawPolygon(leftXPoints, leftYPoints, 3);
+				
+				// Right arrow (pointing right)
+				int rightArrowX = getWidth() - 100;
+				int rightArrowY = 576;
+				int[] rightXPoints = {rightArrowX, rightArrowX - arrowSize, rightArrowX - arrowSize};
+				int[] rightYPoints = {rightArrowY, rightArrowY - arrowSize, rightArrowY + arrowSize};
+				g2d.fillPolygon(rightXPoints, rightYPoints, 3);
+				g2d.drawPolygon(rightXPoints, rightYPoints, 3);
+				
+				// Draw Return button
+				int returnButtonX = getWidth()/2 - 60;
+				int returnButtonY = 20;
+				int returnButtonWidth = 120;
+				int returnButtonHeight = 50;
+				
+				g.setColor(Color.WHITE);
+				g.fillRect(returnButtonX, returnButtonY, returnButtonWidth, returnButtonHeight);
+				g.setColor(Color.BLACK);
+				g2d.setStroke(new BasicStroke(3));
+				g2d.drawRect(returnButtonX, returnButtonY, returnButtonWidth, returnButtonHeight);
+				g.setFont(Main.customFont.deriveFont(Font.BOLD, 20f));
+				centerString(g, "Return", returnButtonX, returnButtonY, returnButtonWidth, returnButtonHeight);
 				break;
 			
 			case "Color Selection":
@@ -393,7 +441,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.setFont(customFontMed);
 				g.drawString("Your Power Plants:", 100, 200);
 				
-				Graphics2D g2d = (Graphics2D) g;
+				 g2d = (Graphics2D) g;
 				int ppXPos = 100;
 				int ppYPos = 230;
 				
@@ -477,6 +525,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				
 				// Display each resource type with its market spaces
 				int resourceYPos = marketStartY + 50;
+				resourceButtonStartY = resourceYPos; // Store starting position for mouse click detection
 				
 				for(int r = 0; r < 4; r++) {
 					// Draw colored sphere (resource token)
@@ -499,20 +548,20 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						
 						// Display how many are available at cheapest price (as tokens)
 						int availableCount = 0;
-					//	int[] market = null;
-					//	if(r == 0) market = GameState.resourceMarket.getCoalMarket();
-					//	else if(r == 1) market = GameState.resourceMarket.getOilMarket();
-					//	else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
-					//	else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
+						int[] market = null;
+						if(r == 0) market = GameState.resourceMarket.getCoalMarket();
+						else if(r == 1) market = GameState.resourceMarket.getOilMarket();
+						else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
+						else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
 						
-					//	if(market != null) {
-					//		for(int i = 1; i < market.length; i++) {
-					//			if(market[i] > 0) {
-					//				availableCount = market[i];
-					//				break;
-					//			}
-					//		}
-					//	}
+						if(market != null) {
+							for(int i = 1; i < market.length; i++) {
+								if(market[i] > 0) {
+									availableCount = market[i];
+									break;
+								}
+							}
+						}
 					//	
 						// Draw resource tokens for available count
 						int tokenX = 400;
@@ -829,20 +878,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			case 50: return pp50; 
 			
 		}
-		return null;
-	}
-	
-	private Color getColorFromString(String colorString) {
-		if(colorString == null) return Color.BLACK;
-		switch(colorString) {
-			case "Red": return new Color(255, 0, 0);
-			case "Yellow": return new Color(255, 255, 0);
-			case "Green": return new Color(0, 128, 0);
-			case "Blue": return new Color(0, 0, 128);
-			case "Purple": return new Color(128, 0, 128);
-			case "White": return Color.WHITE;
-			default: return Color.BLACK;
-		}
+		return null; // default case, should not happen if input is valid
 	}
 	
 	private Color getColorFromString(String colorString) {
@@ -905,10 +941,20 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				int decX1 = 76, decY1 = 108;    // top-left
 				int decX2 = 200, decY2 = 969;   // bottom-right
 
+				// Return button bounds (centered horizontally, higher position)
+				int returnButtonX = getWidth()/2 - 60;
+				int returnButtonY = 20;
+				int returnButtonWidth = 120;
+				int returnButtonHeight = 50;
+
 				if (x >= incX1 && x <= incX2 && y >= incY1 && y <= incY2) {
 					rulecounter++;
 				} else if (x >= decX1 && x <= decX2 && y >= decY1 && y <= decY2) {
 					rulecounter--;
+				} else if (x >= returnButtonX && x <= returnButtonX + returnButtonWidth && y >= returnButtonY && y <= returnButtonY + returnButtonHeight) {
+					// Return to Title Screen
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Title Screen");
 				}
 
 				// Wrap-around logic
@@ -1011,28 +1057,48 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				if (x >= 175 && x <= 325) {
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				// Automatically make minimum bid and lock it in
+				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
+				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				
+				GameState.currentEvent.add("Auction");
+				GameState.continueAuction();
 
-				} else if (x >= 375 && x <= 525) {
-					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
-					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+			} else if (x >= 375 && x <= 525) {
+				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
+				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				// Automatically make minimum bid and lock it in
+				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
+				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				
-				} else if (x >= 575 && x <= 725) {
-					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
-					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				GameState.currentEvent.add("Auction");
+				GameState.continueAuction();
+			
+			} else if (x >= 575 && x <= 725) {
+				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
+				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				// Automatically make minimum bid and lock it in
+				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
+				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				
+				GameState.currentEvent.add("Auction");
+				GameState.continueAuction();
 
-				} else if (x >= 775 && x <= 925) {
-					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
-					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+			} else if (x >= 775 && x <= 925) {
+				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
+				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				// Automatically make minimum bid and lock it in
+				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
+				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				
-				}
-				
+				GameState.currentEvent.add("Auction");
+				GameState.continueAuction();
 			}
+		}
 					repaint();
 					break;
 			case "Buy Powerplant":
@@ -1225,9 +1291,13 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						}
 					}
 					
-					// Resource buy buttons
+					// Get current player and resource types
+					Player buyPlayer = GameState.players[GameState.currentPlayerIndex];
+					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
 					
-				/*
+					// Resource buy buttons - use class field that's set during paint
+					int resourceYPosClick = resourceButtonStartY;
+				
 					for(int r = 0; r < 4; r++) {
 						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
 						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
@@ -1251,7 +1321,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							}
 						}
 						resourceYPosClick += 60;
-					}   */
+					}   
 					repaint();
 					break;
 				case "Buy Cities":
@@ -1264,11 +1334,36 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							GameState.currentEvent.removeLast();
 							GameState.currentEvent.add("Activate Powerplants");
 						}
+					} else {
+						// Check which city was clicked
+						String[] cityNames = {"Flensburg", "Kiel", "Rostock", "Lubeck", "Cuxhaven", "Wilhelmshaven", "Hamburg", 
+											  "Schwerin", "Torgelow", "Bremen", "Berlin", "Osnabruck", "Hannover", "Magdeburg", 
+											  "Frankfurt-O", "Munster", "Duisburg", "Essen", "Dortmund", "Halle", "Kassel", 
+											  "Leipzig", "Dusseldorf", "Erfurt", "Dresden", "Koln", "Aachen", "Fulda", 
+											  "Frankfurt-M", "Wiesbaden", "Trier", "Wurzburg", "Nurnberg", "Mannheim", 
+											  "Saarbrucken", "Regensburg", "Stuttgart", "Augsburg", "Passau", "Freiburg", 
+											  "Munchen", "Konstanz"};
+						int[][] cityCords = {{867, 36}, {918, 101}, {1114, 122}, {989, 146}, {802, 163}, {736, 203}, 
+											  {913, 203}, {1053, 206}, {1294, 198}, {818, 266}, {1236, 331}, {747, 344}, 
+											  {919, 360}, {1092, 367}, {1336, 358}, {694, 405}, {559, 432}, {623, 446}, 
+											  {710, 475}, {1111, 461}, {869, 490}, {1165, 491}, {577, 504}, {1038, 535}, 
+											  {1297, 533}, {642, 552}, {548, 570}, {916, 589}, {814, 629}, {750, 652}, 
+											  {586, 692}, {934, 687}, {1043, 725}, {804, 746}, {671, 771}, {1124, 789}, 
+											  {837, 828}, {998, 856}, {1272, 849}, {712, 916}, {1095, 910}, {831, 958}};
+						
+						int clickRadius = 30;
+						for(int c = 0; c < cityNames.length; c++) {
+							int cityX = cityCords[c][0];
+							int cityY = cityCords[c][1];
+							
+							// Check if click is within radius of city
+							if(Math.sqrt(Math.pow(x - cityX, 2) + Math.pow(y - cityY, 2)) <= clickRadius) {
+								System.out.println("Clicked city: " + cityNames[c]);
+								GameState.currentEvent.add("Confirm City Purchase");
+								break;
+							}
+						}
 					}
-					// Large if-else loop checking x and y coordinates for city clicks on the board
-					// User can click on cities to purchase them - will be prompted with confirmation
-					// After they say done, current player continues. Prompt only appears if city is purchasable.
-					// Once the 4th player confirms they are done, they continue to "Activate Powerplants"
 					repaint();
 					break;
 				case "Confirm City Purchase":
