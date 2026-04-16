@@ -119,25 +119,24 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		switch(GameState.currentEvent.getLast()) {
 			 case "Title Screen":
 			// 	// title screen with proper layout
-			 	g.drawImage(titleScreen, 0, 0, 2048, 1152, this);
+			 	g.drawImage(titleScreen, 0, 0, 1925, 1020, this);
 			 	break;
 
 			case "Instructions":
-				System.out.println("Drawing rulesBG: " + (rulesBG != null));
-				g.drawImage(rulesBG, 0, 0, 1925, 1050, this);
+				g.drawImage(rulesBG, 0, 0, 1920, 1080, this);
 				switch(rulecounter) {
-					case 0: g.drawImage(rules1, 400, 0, 1024, 1152, this); break;
-					case 1: g.drawImage(rules2, 400, 0, 1024, 1152, this); break;
-					case 2: g.drawImage(rules3, 400, 0, 1024, 1152, this); break;
-					case 3: g.drawImage(rules4, 400, 0, 1024, 1152, this); break;
-					case 4: g.drawImage(rules5, 400, 0, 1024, 1152, this); break;
-					case 5: g.drawImage(rules6, 400, 0, 1024, 1152, this); break;
-					case 6: g.drawImage(rules7, 400, 0, 1024, 1152, this); break;
-					case 7: g.drawImage(rules8, 400, 0, 1024, 1152, this); break;
-					case 8: g.drawImage(rules9, 400, 0, 1024, 1152,this); break;
-					case 9: g.drawImage(rules10,400 ,0 ,1024 ,1152 ,this); break;
-					case 10: g.drawImage(rules11 ,400 ,0 ,1024 ,1152 ,this); break;
-					case 11: g.drawImage(rules12 ,400 ,0 ,1024 ,1152 ,this); break;
+					case 0: g.drawImage(rules1, 600, 0, 700, 1000, this); break;
+					case 1: g.drawImage(rules2, 600, 0, 700, 1000, this); break;
+					case 2: g.drawImage(rules3, 600, 0, 700, 1000, this); break;
+					case 3: g.drawImage(rules4, 600, 0, 700, 1000, this); break;
+					case 4: g.drawImage(rules5, 600, 0, 700, 1000, this); break;
+					case 5: g.drawImage(rules6, 600, 0, 700, 1000, this); break;
+					case 6: g.drawImage(rules7, 600, 0, 700, 1000, this); break;
+					case 7: g.drawImage(rules8, 600, 0, 700, 1000, this); break;
+					case 8: g.drawImage(rules9, 600, 0, 700, 1000,this); break;
+					case 9: g.drawImage(rules10,600 ,0 ,700 ,1000 ,this); break;
+					case 10: g.drawImage(rules11 ,600 ,0 ,700 ,1000 ,this); break;
+					case 11: g.drawImage(rules12 ,600 ,0 ,700 ,1000 ,this); break;
 				}
 				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 30f));
 				break;
@@ -752,13 +751,13 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
 				// Check if Play button was clicked
-				if (x >= 1280 && x <= 1800 && y >= 800 && y <= 900) {
+				if (x >= 1200 && x <= 1700 && y >= 700 && y <= 800) {
 					GameState.currentEvent.removeLast();
 					GameState.currentEvent.add("Color Selection");
 					repaint();
 				}
 				// Check if Rules button was clicked
-				else if (x >= 1280 && x <= 1800 && y >= 950 && y <= 1050) {
+				else if (x >= 1200 && x <= 1700 && y >= 830 && y <= 914) {
 					GameState.currentEvent.removeLast();
 					GameState.currentEvent.add("Instructions");
 					repaint();
@@ -786,9 +785,13 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				} else if (rulecounter > 11) {
 					rulecounter = 0;
 				}
-
+				// return button in iunctructions page
+				if (x >= 80 && x <= 325 && y >= 30 && y <= 87) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Title Screen");
+					repaint();
+				}
 				repaint();
-				System.out.println("ruleCounter is now: " + rulecounter);
 				break;
 
 			case "Color Selection":
