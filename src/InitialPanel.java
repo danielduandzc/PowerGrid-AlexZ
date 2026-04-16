@@ -14,9 +14,11 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
 	private Graphics g;
+	private int rulecounter = 0;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
-	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack;
+	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack, rules1, rules2, rules3, rules4, rules5, 
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -24,6 +26,19 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		
 		//Load all images
 		try{
+			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
+			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
+			rules2 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules2.png"));
+			rules3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules3.png"));
+			rules4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules4.png"));
+			rules5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules5.png"));
+			rules6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules6.png"));
+			rules7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules7.png"));
+			rules8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules8.png"));
+			rules9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules9.png"));
+			rules10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules10.png"));
+			rules11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules11.png"));
+			rules12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules12.png"));
 			scoringTrack = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Scoring_Track.png"));
 			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
 			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
@@ -87,6 +102,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
             System.out.println("No workie because idk 🤷‍♂️");
             System.out.println(e);
         }
+		System.out.println("rulesBG loaded: " + (rulesBG != null));
 		
 		try {
 			
@@ -100,12 +116,32 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	
 	public void paint(Graphics g) {
 		super.paint(g);
+		System.out.println("Painting: " + GameState.currentEvent.getLast());
 		switch(GameState.currentEvent.getLast()) {
 			 case "Title Screen":
 			// 	// title screen with proper layout
 			 	g.drawImage(titleScreen, 0, 0, 2048, 1152, this);
 			 	break;
-		
+
+			case "Instructions":
+				System.out.println("Drawing rulesBG: " + (rulesBG != null));
+				g.drawImage(rulesBG, 0, 0, 1925, 1050, this);
+				switch(rulecounter) {
+					case 0: g.drawImage(rules1, 400, 0, 1024, 1152, this); break;
+					case 1: g.drawImage(rules2, 400, 0, 1024, 1152, this); break;
+					case 2: g.drawImage(rules3, 400, 0, 1024, 1152, this); break;
+					case 3: g.drawImage(rules4, 400, 0, 1024, 1152, this); break;
+					case 4: g.drawImage(rules5, 400, 0, 1024, 1152, this); break;
+					case 5: g.drawImage(rules6, 400, 0, 1024, 1152, this); break;
+					case 6: g.drawImage(rules7, 400, 0, 1024, 1152, this); break;
+					case 7: g.drawImage(rules8, 400, 0, 1024, 1152, this); break;
+					case 8: g.drawImage(rules9, 400, 0, 1024, 1152,this); break;
+					case 9: g.drawImage(rules10,400 ,0 ,1024 ,1152 ,this); break;
+					case 10: g.drawImage(rules11 ,400 ,0 ,1024 ,1152 ,this); break;
+					case 11: g.drawImage(rules12 ,400 ,0 ,1024 ,1152 ,this); break;
+				}
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 30f));
+				break;
 			
 			case "Color Selection":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -122,65 +158,65 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
 		
-		//continue button
-		//height: 950
-		Font font = new Font("Arial", Font.BOLD, 30);
-		g.setFont(font);
-		
-		g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		g.setColor(Color.WHITE);
-		g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		g.setColor(Color.BLACK);
-		
-		Graphics2D g2 = (Graphics2D)(g);
-		g2.setStroke(new BasicStroke(5));
-		g2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		
-		centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-		g2.setStroke(new BasicStroke(15));
-			g.setColor(new Color(0, 128, 128));//teal
-			g.fillRect(180, 150, 75, 75);
-		if(GameState.isZoneSelected[0]){
-			g2.setColor(new Color(0,0,0));//black
-			g2.drawLine(180, 150, 255, 225);
-			g2.drawLine(255, 150, 180, 225);
-		}
-		
-			g.setColor(new Color(255, 165,0));//orange
-			g.fillRect(180,250, 75, 75);
-		if(GameState.isZoneSelected[1]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 250, 255, 325);
-			g2.drawLine(255, 250, 180, 325);
-		}
-		g.setColor(new Color(255, 0, 0));//red
-		g.fillRect(180, 350, 75, 75);
-		if(GameState.isZoneSelected[2]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 350, 255, 425);
-			g2.drawLine(255, 350, 180, 425);
-		}
-		g.setColor(new Color(255,255,0));//yellow
-		g.fillRect(180, 450, 75, 75);
-		if(GameState.isZoneSelected[3]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 450, 255, 525);
-			g2.drawLine(255, 450, 180, 525);
-		}
-		g.setColor(new Color(0, 0, 128));//blue
-		g.fillRect(180, 550, 75, 75);
-		if(GameState.isZoneSelected[4]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 550, 255, 625);
-			g2.drawLine(255, 550, 180, 625);
-		}
-		g.setColor(new Color(128, 0, 128));//purple
-		g.fillRect(180, 650, 75, 75);
-		if(GameState.isZoneSelected[5]){
-			g2.setColor(new Color(0, 0, 0));//black
-			g2.drawLine(180, 650, 255, 725);
-			g2.drawLine(255, 650, 180, 725);
-		}
+				//continue button
+				//height: 950
+				Font font = new Font("Arial", Font.BOLD, 30);
+				g.setFont(font);
+				
+				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.WHITE);
+				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g.setColor(Color.BLACK);
+				
+				Graphics2D g2 = (Graphics2D)(g);
+				g2.setStroke(new BasicStroke(5));
+				g2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				
+				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				g2.setStroke(new BasicStroke(15));
+					g.setColor(new Color(0, 128, 128));//teal
+					g.fillRect(180, 150, 75, 75);
+				if(GameState.isZoneSelected[0]){
+					g2.setColor(new Color(0,0,0));//black
+					g2.drawLine(180, 150, 255, 225);
+					g2.drawLine(255, 150, 180, 225);
+				}
+				
+					g.setColor(new Color(255, 165,0));//orange
+					g.fillRect(180,250, 75, 75);
+				if(GameState.isZoneSelected[1]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 250, 255, 325);
+					g2.drawLine(255, 250, 180, 325);
+				}
+				g.setColor(new Color(255, 0, 0));//red
+				g.fillRect(180, 350, 75, 75);
+				if(GameState.isZoneSelected[2]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 350, 255, 425);
+					g2.drawLine(255, 350, 180, 425);
+				}
+				g.setColor(new Color(255,255,0));//yellow
+				g.fillRect(180, 450, 75, 75);
+				if(GameState.isZoneSelected[3]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 450, 255, 525);
+					g2.drawLine(255, 450, 180, 525);
+				}
+				g.setColor(new Color(0, 0, 128));//blue
+				g.fillRect(180, 550, 75, 75);
+				if(GameState.isZoneSelected[4]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 550, 255, 625);
+					g2.drawLine(255, 550, 180, 625);
+				}
+				g.setColor(new Color(128, 0, 128));//purple
+				g.fillRect(180, 650, 75, 75);
+				if(GameState.isZoneSelected[5]){
+					g2.setColor(new Color(0, 0, 0));//black
+					g2.drawLine(180, 650, 255, 725);
+					g2.drawLine(255, 650, 180, 725);
+				}
 				break;
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -307,7 +343,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font sizedFont;
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
-			g.setFont(sizedFont);
+				g.setFont(sizedFont);
 			
 			 sizedFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
@@ -463,21 +499,21 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						
 						// Display how many are available at cheapest price (as tokens)
 						int availableCount = 0;
-						int[] market = null;
-						if(r == 0) market = GameState.resourceMarket.getCoalMarket();
-						else if(r == 1) market = GameState.resourceMarket.getOilMarket();
-						else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
-						else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
+					//	int[] market = null;
+					//	if(r == 0) market = GameState.resourceMarket.getCoalMarket();
+					//	else if(r == 1) market = GameState.resourceMarket.getOilMarket();
+					//	else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
+					//	else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
 						
-						if(market != null) {
-							for(int i = 1; i < market.length; i++) {
-								if(market[i] > 0) {
-									availableCount = market[i];
-									break;
-								}
-							}
-						}
-						
+					//	if(market != null) {
+					//		for(int i = 1; i < market.length; i++) {
+					//			if(market[i] > 0) {
+					//				availableCount = market[i];
+					//				break;
+					//			}
+					//		}
+					//	}
+					//	
 						// Draw resource tokens for available count
 						int tokenX = 400;
 						for(int t = 0; t < availableCount && t < 5; t++) {
@@ -729,6 +765,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 
 
+			
 		}
 	}
 	public void centerString(Graphics g, String text, int xRect, int yRect, int rectWidth, int rectHeight) {
@@ -792,7 +829,20 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			case 50: return pp50; 
 			
 		}
-		return null; // default case, should not happen if input is valid
+		return null;
+	}
+	
+	private Color getColorFromString(String colorString) {
+		if(colorString == null) return Color.BLACK;
+		switch(colorString) {
+			case "Red": return new Color(255, 0, 0);
+			case "Yellow": return new Color(255, 255, 0);
+			case "Green": return new Color(0, 128, 0);
+			case "Blue": return new Color(0, 0, 128);
+			case "Purple": return new Color(128, 0, 128);
+			case "White": return Color.WHITE;
+			default: return Color.BLACK;
+		}
 	}
 	
 	private Color getColorFromString(String colorString) {
@@ -827,7 +877,6 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Graphics g = getGraphics();
 		int x = e.getX();
         int y = e.getY();
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
@@ -842,18 +891,37 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				// Check if Rules button was clicked
 				else if (x >= 1280 && x <= 1800 && y >= 950 && y <= 1050) {
 					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Color Selection");
+					GameState.currentEvent.add("Instructions");
 					repaint();
 				}
 				break;
 			
 			case "Instructions":
-				if (x >= 300 && x <= 700 && y >= 350 && y <= 450) {
-					GameState.currentEvent.removeLast();
-   					GameState.currentEvent.add("Color Selection");
-					repaint();
+				// Rectangle for increasing ruleCounter
+				int incX1 = 1724, incY1 = 87;   // top-left
+				int incX2 = 1852, incY2 = 958;  // bottom-right
+
+				// Rectangle for decreasing ruleCounter
+				int decX1 = 76, decY1 = 108;    // top-left
+				int decX2 = 200, decY2 = 969;   // bottom-right
+
+				if (x >= incX1 && x <= incX2 && y >= incY1 && y <= incY2) {
+					rulecounter++;
+				} else if (x >= decX1 && x <= decX2 && y >= decY1 && y <= decY2) {
+					rulecounter--;
 				}
+
+				// Wrap-around logic
+				if (rulecounter < 0) {
+					rulecounter = 11;
+				} else if (rulecounter > 11) {
+					rulecounter = 0;
+				}
+
+				repaint();
+				System.out.println("ruleCounter is now: " + rulecounter);
 				break;
+
 			case "Color Selection":
 				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isColorSelected[0]) {
 					GameState.isColorSelected[0] = true;
@@ -1158,26 +1226,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					}
 					
 					// Resource buy buttons
-					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
-					Player buyPlayer = GameState.players[GameState.currentPlayerIndex];
-					ArrayList<PowerPlant> playerPowerPlantsClick = buyPlayer.getPowerPlants();
 					
-					// Calculate ppYPos the same way as in paint method
-					int ppYPosClick = 230;
-					int ppXPosClick = 100;
-					if(playerPowerPlantsClick.size() > 0) {
-						for(int i = 0; i < playerPowerPlantsClick.size(); i++) {
-							ppXPosClick += 120;
-							if(ppXPosClick > getWidth() - 150) {
-								ppXPosClick = 100;
-								ppYPosClick += 200;
-							}
-						}
-					}
-					
-					int marketStartYClick = ppYPosClick + 220;
-					int resourceYPosClick = marketStartYClick + 50;
-					
+				/*
 					for(int r = 0; r < 4; r++) {
 						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
 						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
@@ -1201,7 +1251,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							}
 						}
 						resourceYPosClick += 60;
-					}
+					}   */
 					repaint();
 					break;
 				case "Buy Cities":
