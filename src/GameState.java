@@ -1,4 +1,4 @@
-package src;
+//package src;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.util.*;

@@ -1,4 +1,4 @@
-package src;
+//package src;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -1096,11 +1096,8 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							GameState.currentEvent.removeLast();
 							GameState.currentEvent.add("Buy Cities");
 						}
-					}
-					
-					// Resource buy buttons
-					
-				/*
+					}					
+				
 					for(int r = 0; r < 4; r++) {
 						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
 						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
@@ -1124,7 +1121,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							}
 						}
 						resourceYPosClick += 60;
-					}   */
+					}   
 					repaint();
 					break;
 				case "Buy Cities":
