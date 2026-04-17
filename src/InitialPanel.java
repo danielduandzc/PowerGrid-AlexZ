@@ -1458,6 +1458,10 @@ private void loadCityCoordinates() {
 							// Check if click is within radius of city
 							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size()==0){
 								GameState.setPriceForCity=10;
+							}else{
+								for(String cityNameIter:GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
+									
+								}
 							}
 							   
 

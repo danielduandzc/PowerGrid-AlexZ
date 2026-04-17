@@ -2,8 +2,8 @@ package src;
 import java.util.*;
 
 public class CityGraph {
-    private ArrayList<CityNode> nodes;
-    private ArrayList<Edge> edges;
+    private static ArrayList<CityNode> nodes;
+    private static  ArrayList<Edge> edges;
     public int x;
     public int y;
 
@@ -136,14 +136,36 @@ public class CityGraph {
         }
     }
 
-    public ArrayList<Edge> getShortestPath(CityNode startNode, CityNode targetNode) {
+    public static int getShortestPath(CityNode startNode, CityNode targetNode) {
         // Implementation for shortest path algorithm (e.g., Dijkstra's)
+        PriorityQueue<CityNode> adjacentCities = new PriorityQueue<CityNode>();
+        HashSet<CityNode> visitedNodes = new HashSet<>();
+        CityNode currentNode = startNode;
+        adjacentCities.offer(currentNode);
         startNode.setDistance(0);
         for(CityNode n: nodes)
             n.setDistance(Integer.MAX_VALUE);
         
-        
-        return new ArrayList<>();
+        while(!adjacentCities.isEmpty()){ 
+            if(visitedNodes.containsAll(nodes))
+               return targetNode.getDistance();
+            
+            currentNode = adjacentCities.poll();
+            visitedNodes.add(currentNode);
+            
+            for(Edge e: currentNode.getAdjacentEdges()){
+                if(e.getOtherNode(currentNode).equals(targetNode))
+                    return targetNode.getDistance();
+                if(visitedNodes.contains(e.getOtherNode(currentNode)))
+                    continue;
+                else{
+                    adjacentCities.offer(e.getOtherNode(currentNode));
+                    if((currentNode.getDistance() + e.getCost()) < e.getOtherNode(currentNode).getDistance())
+                        e.getOtherNode(currentNode).setDistance(currentNode.getDistance() + e.getCost());
+                }
+            }
+        }
+        return targetNode.getDistance();
     }
 
     public void addNode(CityNode n) {
