@@ -1,12 +1,10 @@
-//package src;
-
-import java.util.*;
+package src;
 public class ResourceHub {
     // Market spaces 1-16, tracking how many of each resource are at each price point
-    private int[] coalMarket = new int[17];      // Spaces 1-16
-    private int[] oilMarket = new int[17];       // Spaces 1-16
-    private int[] garbageMarket = new int[17];   // Spaces 1-16
-    private int[] uraniumMarket = new int[17];   // Spaces 1-16
+    public int[] coalMarket = new int[17];      // Spaces 1-16
+    public int[] oilMarket = new int[17];       // Spaces 1-16
+    public int[] garbageMarket = new int[17];   // Spaces 1-16
+    public int[] uraniumMarket = new int[17];   // Spaces 1-16
     
     // Price for each space
     private int[] spacePrice = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
@@ -60,6 +58,23 @@ public class ResourceHub {
         }
     }
     
+    // Get methods for each market
+    public int[] getCoalMarket() {
+        return coalMarket;
+    }
+    
+    public int[] getOilMarket() {
+        return oilMarket;
+    }
+    
+    public int[] getGarbageMarket() {
+        return garbageMarket;
+    }
+    
+    public int[] getUraniumMarket() {
+        return uraniumMarket;
+    }
+    
     // Get the price of the cheapest available resource
     public int getCheapestPrice(Resource resource) {
         int[] market = getMarketForResource(resource);
@@ -69,5 +84,19 @@ public class ResourceHub {
             }
         }
         return  69;
+    }
+    
+    // Buy a resource from the market (from the cheapest available space)
+    public boolean buyResource(Resource resource) {
+        int[] market = getMarketForResource(resource);
+        if(market == null) return false;
+        
+        for(int i = 1; i < market.length; i++) {
+            if(market[i] > 0) {
+                market[i]--;
+                return true;
+            }
+        }
+        return false;
     }
 }

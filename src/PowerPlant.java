@@ -10,7 +10,8 @@ public class PowerPlant {
     int price;
     int fuelCost;
     ArrayList<Resource> fuelType;
-    ArrayList<Resource> currentResources = new ArrayList<Resource>();  
+    ArrayList<Resource> currentResources = new ArrayList<Resource>();
+    boolean isActivated = false;  
    
 
 
@@ -48,5 +49,13 @@ public class PowerPlant {
             return true;
         }
         return false;
+    }
+    
+    public boolean isActivated() {
+        return isActivated;
+    }
+    
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 }

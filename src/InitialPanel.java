@@ -15,7 +15,12 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	public static int numMouseClicks = 0;
 	private Graphics g;
 	private int rulecounter = 0;
-	
+	private Resource[] resourceTypes = {
+		Resource.COAL,
+		Resource.OIL,
+		Resource.GARBAGE,
+		Resource.URANIUM
+	};	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, rules1, rules2, rules3, rules4, rules5, 
 	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG;
@@ -468,7 +473,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				
 				// Draw the resource market grid
 				String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};
-				Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+				
 				Color[] sphereColors = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
 				
 				// Display each resource type with its market spaces
