@@ -4,12 +4,22 @@ import java.util.*;
 public class CityGraph {
     private ArrayList<CityNode> nodes;
     private ArrayList<Edge> edges;
+    public int x;
+    public int y;
 
     public CityGraph() {
         this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
         initializeGraph();
     }
+    public boolean contains(String cityName) {
+    for (CityNode node : nodes) {
+        if (node.getName().equalsIgnoreCase(cityName)) {
+            return true;
+        }
+    }
+    return false;
+}
 
     private void initializeGraph() {
         // Create all nodes

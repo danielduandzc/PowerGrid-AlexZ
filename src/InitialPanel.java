@@ -11,6 +11,52 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class InitialPanel extends JPanel implements KeyListener, MouseListener {
+	private HashMap<String, Point> cityCoords = new HashMap<>();
+
+private void loadCityCoordinates() {
+    cityCoords.put("Flensburg", new Point(867, 36));
+    cityCoords.put("Kiel", new Point(918, 101));
+    cityCoords.put("Rostock", new Point(1114, 122));
+    cityCoords.put("Lubeck", new Point(989, 146));
+    cityCoords.put("Cuxhaven", new Point(802, 163));
+    cityCoords.put("Wilhelmshaven", new Point(736, 203));
+    cityCoords.put("Hamburg", new Point(913, 203));
+    cityCoords.put("Schwerin", new Point(1053, 206));
+    cityCoords.put("Torgelow", new Point(1294, 198));
+    cityCoords.put("Bremen", new Point(818, 266));
+    cityCoords.put("Berlin", new Point(1236, 331));
+    cityCoords.put("Osnabruck", new Point(747, 344));
+    cityCoords.put("Hannover", new Point(919, 360));
+    cityCoords.put("Magdeburg", new Point(1092, 367));
+    cityCoords.put("Frankfurt-O", new Point(1336, 358));
+    cityCoords.put("Munster", new Point(694, 405));
+    cityCoords.put("Duisburg", new Point(559, 432));
+    cityCoords.put("Essen", new Point(623, 446));
+    cityCoords.put("Dortmund", new Point(710, 475));
+    cityCoords.put("Halle", new Point(869, 492));
+    cityCoords.put("Kassel", new Point(869, 490));
+    cityCoords.put("Leipzig", new Point(1165, 491));
+    cityCoords.put("Dusseldorf", new Point(577, 504));
+    cityCoords.put("Erfurt", new Point(1038, 535));
+    cityCoords.put("Dresden", new Point(1297, 533));
+    cityCoords.put("Koln", new Point(642, 552));
+    cityCoords.put("Aachen", new Point(548, 570));
+    cityCoords.put("Fulda", new Point(916, 589));
+    cityCoords.put("Frankfurt-M", new Point(814, 629));
+    cityCoords.put("Wiesbaden", new Point(750, 652));
+    cityCoords.put("Trier", new Point(586, 692));
+    cityCoords.put("Wurzburg", new Point(934, 687));
+    cityCoords.put("Nurnberg", new Point(1043, 725));
+    cityCoords.put("Mannheim", new Point(804, 746));
+    cityCoords.put("Saarbrucken", new Point(671, 771));
+    cityCoords.put("Regensburg", new Point(1124, 789));
+    cityCoords.put("Stuttgart", new Point(837, 828));
+    cityCoords.put("Augsburg", new Point(998, 856));
+    cityCoords.put("Passau", new Point(1272, 849));
+    cityCoords.put("Freiburg", new Point(712, 916));
+    cityCoords.put("Munchen", new Point(1095, 910));
+    cityCoords.put("Konstanz", new Point(831, 958));
+}
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
 	private Graphics g;
@@ -24,7 +70,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
 	public InitialPanel() {
-		
+		loadCityCoordinates();
 		//Load all images
 		try{
 			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
@@ -629,13 +675,37 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				buyG2.setStroke(new BasicStroke(5));
 				buyG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				CityGraph graph = GameState.fullGraph; // however you store it
+				
+				for (CityNode node : graph.getNodes()) {
+				String name = node.getName();
+				
+				Point p = cityCoords.get(name);
+
+				if (p == null) continue;
+
+				boolean allowed = GameState.graphOfCity.contains(name);
+					
+
+				if (!allowed) {
+					 g2 = (Graphics2D) g;
+					g2.setStroke(new BasicStroke(6));
+					g2.setColor(Color.RED);
+
+					int x = p.x;
+					int y = p.y;
+
+					g2.drawLine(x - 20, y - 20, x + 20, y + 20);
+					g2.drawLine(x + 20, y - 20, x - 20, y + 20);
+				}
+				}
 				break;
 			case "Confirm City Purchase":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font confirmFont = new Font("Arial", Font.BOLD, 40);
 				g.setFont(confirmFont);
 				g.setColor(Color.BLACK);
-				String confirmMsg = "Confirm Purchase?";
+				String confirmMsg = "Confirm Purchase Of "+GameState.cityNameForPurchase+" For "+GameState.setPriceForCity+" Elektro?";
 				FontMetrics fm = g.getFontMetrics();
 				int msgWidth = fm.stringWidth(confirmMsg);
 				g.drawString(confirmMsg, (getWidth() - msgWidth) / 2, getHeight() / 2 - 100);
@@ -817,6 +887,35 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 			
 		}
 	}
+			public boolean isCityInSelectedZone(String cityName, boolean[] isZoneSelected) {
+			HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
+
+			zoneMap.put(0, new ArrayList<>(Arrays.asList(
+				"Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover", "Lubeck"
+			)));
+			zoneMap.put(1, new ArrayList<>(Arrays.asList(
+				"Lubeck", "Schwerin", "Rostock", "Torgelow", "Magdeburg", "Berlin", "Frankfurt-O"
+			)));
+			zoneMap.put(2, new ArrayList<>(Arrays.asList(
+				"Osnabruck", "Munster", "Duisburg", "Essen", "Dortmund", "Dusseldorf", "Kassel"
+			)));
+			zoneMap.put(3, new ArrayList<>(Arrays.asList(
+				"Halle", "Leipzig", "Dresden", "Erfurt", "Fulda", "Wurzburg", "Nurnberg"
+			)));
+			zoneMap.put(4, new ArrayList<>(Arrays.asList(
+				"Aachen", "Koln", "Trier", "Wiesbaden", "Frankfurt-M", "Saarbrucken", "Mannheim"
+			)));
+			zoneMap.put(5, new ArrayList<>(Arrays.asList(
+				"Stuttgart", "Freiburg", "Konstanz", "Augsburg", "Munchen", "Regensburg", "Passau"
+			)));
+
+			for (int i = 0; i < isZoneSelected.length; i++) {
+				if (isZoneSelected[i] && zoneMap.get(i).contains(cityName)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	public void centerString(Graphics g, String text, int xRect, int yRect, int rectWidth, int rectHeight) {
 	    // Get the FontMetrics
 	    FontMetrics fm = g.getFontMetrics();
@@ -1062,7 +1161,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
 				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 				GameState.continueAuction();
 
 			} else if (x >= 375 && x <= 525) {
@@ -1073,7 +1172,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
 				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 				GameState.continueAuction();
 			
 			} else if (x >= 575 && x <= 725) {
@@ -1084,7 +1183,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
 				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 				GameState.continueAuction();
 
 			} else if (x >= 775 && x <= 925) {
@@ -1095,7 +1194,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
 				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
 				GameState.currentEvent.removeLast();
-				GameState.currentEvent.add("Auction");
+				
 				GameState.continueAuction();
 			}
 		}
@@ -1357,8 +1456,14 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 							int cityY = cityCords[c][1];
 							
 							// Check if click is within radius of city
-							if(Math.sqrt(Math.pow(x - cityX, 2) + Math.pow(y - cityY, 2)) <= clickRadius) {
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size()==0){
+								GameState.setPriceForCity=10;
+							}
+							   
+
+							if(Math.sqrt(Math.pow(x - cityX, 2) + Math.pow(y - cityY, 2)) <= clickRadius && GameState.graphOfCity.contains(cityNames[c])) {
 								System.out.println("Clicked city: " + cityNames[c]);
+								GameState.cityNameForPurchase = cityNames[c];
 								GameState.currentEvent.add("Confirm City Purchase");
 								break;
 							}
@@ -1371,6 +1476,13 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 					if(x >= (int)(getWidth() * 0.25) && x <= (int)(getWidth() * 0.25) + (int)(getWidth() * 0.15)
 					   && y >= (int)(getHeight() * 0.55) && y <= (int)(getHeight() * 0.55) + (int)(getHeight() * 0.08)) {
 						// Confirm purchase - add logic to purchase city
+						if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro() >= GameState.setPriceForCity) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].addCity(GameState.cityNameForPurchase);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].addElektro(-GameState.setPriceForCity);
+							System.out.println("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " bought " + GameState.cityNameForPurchase + " for " + GameState.setPriceForCity + " Elektro");
+						} else {
+							System.out.println("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " does not have enough Elektro to buy " + GameState.cityNameForPurchase);
+						}
 						GameState.currentEvent.removeLast();
 						repaint();
 					}

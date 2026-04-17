@@ -9,7 +9,7 @@ public class Player {
       private int ghostBid;
       private boolean hasPassed;
       private ArrayList<PowerPlant> powerPlants = new ArrayList<PowerPlant>();   
-      private HashSet<CityNode> cities = new HashSet<CityNode>();
+      private ArrayList<String> cities = new ArrayList<>();
       private HashMap<Resource, Integer> resources = new HashMap<Resource, Integer>();
       private int earnedIncome;
 
@@ -17,7 +17,14 @@ public class Player {
             this.earnedIncome = income;
       }
 
-      public HashSet<CityNode> getCities() {
+      public void addCity(String cityName) {
+            
+                  cities.add(cityName);
+                  numHouses++;
+            
+      }
+
+      public ArrayList<String> getCities() {
             return cities;
       }
 
