@@ -3,9 +3,7 @@ import javax.swing.*;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 public class PowerGridFrame extends JFrame {
 	private final int WIDTH = 2048;
 	private final int HEIGHT = 1152;
@@ -14,6 +12,7 @@ public class PowerGridFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(WIDTH, HEIGHT);
 		GameState.initialPanel = new InitialPanel();
+		GameState.currentEvent.add("Title Screen");
 		add(GameState.initialPanel);
 		setVisible(true);
 	}
@@ -23,14 +22,10 @@ public class PowerGridFrame extends JFrame {
 		try {
 			File fontFile = new File("resources/Bungee-Regular.ttf");
 			if (fontFile.exists()) {
-				Main.customFont = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(fontFile));
+				Main.customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 			} else {
-				InputStream is = PowerGridFrame.class.getResourceAsStream("/resources/Bungee-Regular.ttf");
-				if (is != null) {
-					Main.customFont = Font.createFont(Font.TRUETYPE_FONT, is);
-				} else {
-					System.err.println("Font file not found!");
-				}
+				System.err.println("Font file not found!");
+				Main.customFont = new Font("Arial", Font.PLAIN, 22);
 			}
 			if (Main.customFont != null) {
 				java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();

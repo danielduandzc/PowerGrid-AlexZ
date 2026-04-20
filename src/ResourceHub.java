@@ -1,4 +1,4 @@
-package src;
+//package src;
 public class ResourceHub {
     // Market spaces 1-16, tracking how many of each resource are at each price point
     public int[] coalMarket = new int[17];      // Spaces 1-16

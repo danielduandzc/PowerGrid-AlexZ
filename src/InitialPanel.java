@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,76 +32,76 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		
 		//Load all images
 		try{
-			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
-			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
-			rules2 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules2.png"));
-			rules3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules3.png"));
-			rules4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules4.png"));
-			rules5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules5.png"));
-			rules6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules6.png"));
-			rules7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules7.png"));
-			rules8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules8.png"));
-			rules9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules9.png"));
-			rules10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules10.png"));
-			rules11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules11.png"));
-			rules12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules12.png"));
-			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
-			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
-            titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Powergrid.png"));
-            gameBackground = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Background.png"));
-            redHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Red_House.png"));
-            yellowHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Yellow_House.png"));
-            greenHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Green_House.png"));
-            blueHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Blue_House.png"));
-            purpleHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Purple_House.png"));
-            whiteHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/White_House.png"));
-			auctionImagePlayerOne = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_1.png"));
-			auctionImagePlayerTwo = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png"));
-			auctionImagePlayerThree = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png"));
-			auctionImagePlayerFour = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png"));
-			arrow= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Arrow.png"));
-			pp3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/3.jpeg"));
-			pp4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/4.jpeg"));
-			pp5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/5.jpeg"));
-			pp6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/6.jpeg"));
-			pp7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/7.jpeg"));
-			pp8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/8.jpeg"));
-			pp9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/9.jpeg"));
-			pp10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/10.png"));
-			pp11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/11.png"));
-			pp12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/12.jpeg"));
-			pp13 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/13.jpeg"));
-			pp14 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/14.jpeg"));
-			pp15 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/15.jpeg"));
-			pp16 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/16.jpeg"));
-			pp17 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/17.jpeg"));
-			pp18 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/18.jpeg"));
-			pp19 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/19.jpeg"));
-			pp20 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/20.jpeg"));
-			pp21 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/21.jpeg"));
-			pp22 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/22.jpeg"));
-			pp23 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/23.jpeg"));
-			pp24 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/24.jpeg"));
-			pp25 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/25.jpeg"));
-			pp26 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/26.jpeg"));
-			pp27 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/27.jpeg"));
-			pp28 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/28.jpeg"));
-			pp29 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/29.jpeg"));
-			pp30 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/30.jpeg"));
-			pp31 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/31.jpeg"));
-			pp32 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/32.jpeg"));
-			pp33 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/33.jpeg"));
-			pp34 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/34.jpeg"));
-			pp35 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/35.jpeg"));
-			pp36 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/36.jpeg"));
-			pp37 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/37.jpeg"));
-			pp38 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/38.jpeg"));
-			pp39 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/39.jpeg"));
-			pp40 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/40.jpeg"));
-			pp42 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/42.jpeg"));
-			pp44 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/44.jpeg"));
-			pp46 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/46.jpeg"));
-			pp50 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/50.jpeg"));
+			rulesBG = ImageIO.read(new File("resources/Rules Background.png"));
+			rules1 = ImageIO.read(new File("resources/Rules1.png"));
+			rules2 = ImageIO.read(new File("resources/Rules2.png"));
+			rules3 = ImageIO.read(new File("resources/Rules3.png"));
+			rules4 = ImageIO.read(new File("resources/Rules4.png"));
+			rules5 = ImageIO.read(new File("resources/Rules5.png"));
+			rules6 = ImageIO.read(new File("resources/Rules6.png"));
+			rules7 = ImageIO.read(new File("resources/Rules7.png"));
+			rules8 = ImageIO.read(new File("resources/Rules8.png"));
+			rules9 = ImageIO.read(new File("resources/Rules9.png"));
+			rules10 = ImageIO.read(new File("resources/Rules10.png"));
+			rules11 = ImageIO.read(new File("resources/Rules11.png"));
+			rules12 = ImageIO.read(new File("resources/Rules12.png"));
+			bigBoard = ImageIO.read(new File("resources/Board.png"));
+			board = ImageIO.read(new File("resources/Cropped Board.png"));
+            titleScreen = ImageIO.read(new File("Powergrid.png"));
+            gameBackground = ImageIO.read(new File("resources/Background.png"));
+            redHouse = ImageIO.read(new File("resources/Red_House.png"));
+            yellowHouse = ImageIO.read(new File("resources/Yellow_House.png"));
+            greenHouse = ImageIO.read(new File("resources/Green_House.png"));
+            blueHouse = ImageIO.read(new File("resources/Blue_House.png"));
+            purpleHouse = ImageIO.read(new File("resources/Purple_House.png"));
+            whiteHouse = ImageIO.read(new File("resources/White_House.png"));
+			auctionImagePlayerOne = ImageIO.read(new File("resources/Player_1.png"));
+			auctionImagePlayerTwo = ImageIO.read(new File("resources/Player_2.png"));
+			auctionImagePlayerThree = ImageIO.read(new File("resources/Player_3.png"));
+			auctionImagePlayerFour = ImageIO.read(new File("resources/Player_4.png"));
+			arrow= ImageIO.read(new File("resources/Arrow.png"));
+			pp3 = ImageIO.read(new File("resources/3.jpeg"));
+			pp4 = ImageIO.read(new File("resources/4.jpeg"));
+			pp5 = ImageIO.read(new File("resources/5.jpeg"));
+			pp6 = ImageIO.read(new File("resources/6.jpeg"));
+			pp7 = ImageIO.read(new File("resources/7.jpeg"));
+			pp8 = ImageIO.read(new File("resources/8.jpeg"));
+			pp9 = ImageIO.read(new File("resources/9.jpeg"));
+			pp10 = ImageIO.read(new File("resources/10.png"));
+			pp11 = ImageIO.read(new File("resources/11.png"));
+			pp12 = ImageIO.read(new File("resources/12.jpeg"));
+			pp13 = ImageIO.read(new File("resources/13.jpeg"));
+			pp14 = ImageIO.read(new File("resources/14.jpeg"));
+			pp15 = ImageIO.read(new File("resources/15.jpeg"));
+			pp16 = ImageIO.read(new File("resources/16.jpeg"));
+			pp17 = ImageIO.read(new File("resources/17.jpeg"));
+			pp18 = ImageIO.read(new File("resources/18.jpeg"));
+			pp19 = ImageIO.read(new File("resources/19.jpeg"));
+			pp20 = ImageIO.read(new File("resources/20.jpeg"));
+			pp21 = ImageIO.read(new File("resources/21.jpeg"));
+			pp22 = ImageIO.read(new File("resources/22.jpeg"));
+			pp23 = ImageIO.read(new File("resources/23.jpeg"));
+			pp24 = ImageIO.read(new File("resources/24.jpeg"));
+			pp25 = ImageIO.read(new File("resources/25.jpeg"));
+			pp26 = ImageIO.read(new File("resources/26.jpeg"));
+			pp27 = ImageIO.read(new File("resources/27.jpeg"));
+			pp28 = ImageIO.read(new File("resources/28.jpeg"));
+			pp29 = ImageIO.read(new File("resources/29.jpeg"));
+			pp30 = ImageIO.read(new File("resources/30.jpeg"));
+			pp31 = ImageIO.read(new File("resources/31.jpeg"));
+			pp32 = ImageIO.read(new File("resources/32.jpeg"));
+			pp33 = ImageIO.read(new File("resources/33.jpeg"));
+			pp34 = ImageIO.read(new File("resources/34.jpeg"));
+			pp35 = ImageIO.read(new File("resources/35.jpeg"));
+			pp36 = ImageIO.read(new File("resources/36.jpeg"));
+			pp37 = ImageIO.read(new File("resources/37.jpeg"));
+			pp38 = ImageIO.read(new File("resources/38.jpeg"));
+			pp39 = ImageIO.read(new File("resources/39.jpeg"));
+			pp40 = ImageIO.read(new File("resources/40.jpeg"));
+			pp42 = ImageIO.read(new File("resources/42.jpeg"));
+			pp44 = ImageIO.read(new File("resources/44.jpeg"));
+			pp46 = ImageIO.read(new File("resources/46.jpeg"));
+			pp50 = ImageIO.read(new File("resources/50.jpeg"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -113,7 +114,6 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 		} catch (Exception E) {
 			
 		}
-		GameState.currentEvent.add("Title Screen");
 		addKeyListener(this);
 		addMouseListener(this);
 	}
@@ -1103,20 +1103,22 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 						}
 					}					
 				
+					Player currentPlayer = GameState.players[GameState.currentPlayerIndex];
+					int resourceYPos = 530;
 					for(int r = 0; r < 4; r++) {
 						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
-						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
+						if(x >= 750 && x <= 830 && y >= resourceYPos - 20 && y <= resourceYPos + 20) {
 							// Check if player can afford and has capacity
 							int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
 							if(price >= 0) {
-								if(buyPlayer.getElektro() >= price && buyPlayer.canAddResource(resourceTypes[r], 1)) {
+								if(currentPlayer.getElektro() >= price && currentPlayer.canAddResource(resourceTypes[r], 1)) {
 									boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
 									if(bought) {
-										buyPlayer.addResource(resourceTypes[r], 1);
-										buyPlayer.addElektro(-price);
+										currentPlayer.addResource(resourceTypes[r], 1);
+										currentPlayer.addElektro(-price);
 										System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " bought " + resourceTypes[r] + " for " + price + " Elektro");
 									}
-								} else if(!buyPlayer.canAddResource(resourceTypes[r], 1)) {
+								} else if(!currentPlayer.canAddResource(resourceTypes[r], 1)) {
 									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have capacity for more resources");
 								} else {
 									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have enough Elektro");
@@ -1125,7 +1127,7 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 								System.out.println("Resource " + resourceTypes[r] + " is sold out");
 							}
 						}
-						resourceYPosClick += 60;
+						resourceYPos += 60;
 					}   
 					repaint();
 					break;

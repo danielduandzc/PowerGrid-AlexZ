@@ -22,8 +22,8 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		
 		try {
 			startScreenImg = ImageIO.read(new File("Powergrid.png"));
-		} catch (Exception E) {
-				System.out.println("Error loading images: " + E.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error loading images: " + e.getMessage());
 		}
 		
 		addKeyListener(this);
@@ -38,7 +38,7 @@ public class PowerGridPanel extends JPanel implements KeyListener, MouseListener
 		} else if (screenNum == 1) {
 			// instructions
 			g.setFont(new Font("Arial", Font.BOLD, 50));
-			g.drawString("Instructions", 1920, 1080);
+			g.drawString("Instructions", 100, 100);
 			g.setFont(new Font("Arial", Font.PLAIN, 30));
 			g.drawString("1. Click to place power plants.", 100, 200);
 			g.drawString("2. Connect cities to power plants.", 100, 250);
