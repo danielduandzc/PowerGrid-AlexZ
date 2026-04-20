@@ -136,37 +136,59 @@ public class CityGraph {
         }
     }
 
-    public int getShortestPath(CityNode startNode, CityNode targetNode) {
-        // Implementation for shortest path algorithm (e.g., Dijkstra's)
-        PriorityQueue<CityNode> adjacentCities = new PriorityQueue<CityNode>();
-        HashSet<CityNode> visitedNodes = new HashSet<>();
-        CityNode currentNode = startNode;
-        adjacentCities.offer(currentNode);
-        startNode.setDistance(0);
-        for(CityNode n: nodes)
-            n.setDistance(Integer.MAX_VALUE);
-        
-        while(!adjacentCities.isEmpty()){ 
-            if(visitedNodes.containsAll(nodes))
-               return targetNode.getDistance();
-            
-            currentNode = adjacentCities.poll();
-            visitedNodes.add(currentNode);
-            
-            for(Edge e: currentNode.getAdjacentEdges()){
-                if(e.getOtherNode(currentNode).equals(targetNode))
-                    return targetNode.getDistance();
-                if(visitedNodes.contains(e.getOtherNode(currentNode)))
-                    continue;
-                else{
-                    adjacentCities.offer(e.getOtherNode(currentNode));
-                    if((currentNode.getDistance() + e.getCost()) < e.getOtherNode(currentNode).getDistance())
-                        e.getOtherNode(currentNode).setDistance(currentNode.getDistance() + e.getCost());
-                }
+    public int getShortestPath(String startName, String targetName) {
+    CityNode startNode = null;
+    CityNode targetNode = null;
+
+    // Find the nodes by name
+    for (CityNode n : nodes) {
+        if (n.getName().equalsIgnoreCase(startName)) startNode = n;
+        if (n.getName().equalsIgnoreCase(targetName)) targetNode = n;
+    }
+
+    if (startNode == null || targetNode == null) {
+        return -1; // city not found
+    }
+
+    // Reset distances
+    for (CityNode n : nodes) {
+        n.setDistance(Integer.MAX_VALUE);
+    }
+    startNode.setDistance(0);
+
+    // Priority queue sorted by distance
+    PriorityQueue<CityNode> pq = new PriorityQueue<>(Comparator.comparingInt(CityNode::getDistance));
+    pq.add(startNode);
+
+    HashSet<CityNode> visited = new HashSet<>();
+
+    while (!pq.isEmpty()) {
+        CityNode current = pq.poll();
+
+        if (visited.contains(current)) continue;
+        visited.add(current);
+
+        // If we reached the target, we are done
+        if (current.equals(targetNode)) {
+            return current.getDistance();
+        }
+
+        // Relax edges
+        for (Edge e : current.getAdjacentEdges()) {
+            CityNode neighbor = e.getOtherNode(current);
+
+            if (visited.contains(neighbor)) continue;
+
+            int newDist = current.getDistance() + e.getCost();
+            if (newDist < neighbor.getDistance()) {
+                neighbor.setDistance(newDist);
+                pq.add(neighbor);
             }
         }
-        return targetNode.getDistance();
     }
+
+    return targetNode.getDistance();
+}
 
     public void addNode(CityNode n) {
         if (n != null && !nodes.contains(n)) {

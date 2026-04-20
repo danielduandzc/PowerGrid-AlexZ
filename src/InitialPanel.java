@@ -1469,24 +1469,33 @@ private void loadCityCoordinates() {
 						for(int c = 0; c < cityNames.length; c++) {
 							int cityX = cityCords[c][0];
 							int cityY = cityCords[c][1];
-							
-							// Check if click is within radius of city
-							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size()==0){
-								GameState.setPriceForCity=10;
-							}else{
-								for(String cityNameIter:GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
-									
-								}
-							}
-							   
-
 							if(Math.sqrt(Math.pow(x - cityX, 2) + Math.pow(y - cityY, 2)) <= clickRadius && GameState.graphOfCity.contains(cityNames[c])) {
 								System.out.println("Clicked city: " + cityNames[c]);
 								GameState.cityNameForPurchase = cityNames[c];
-								GameState.currentEvent.add("Confirm City Purchase");
-								break;
 							}
+							// Check if click is within radius of city
+							
+							   
+
+							
 						}
+						if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size()==0){
+								GameState.setPriceForCity=10;
+								
+								GameState.currentEvent.add("Confirm City Purchase");
+								
+							}else{
+								int lowestShortestPath = Integer.MAX_VALUE;
+								
+								for(String cityNameIter:GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
+									System.out.println(GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase));
+									if(lowestShortestPath>GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase))
+										lowestShortestPath=GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase);
+								}
+								GameState.setPriceForCity=lowestShortestPath;
+								GameState.currentEvent.add("Confirm City Purchase");
+								
+							}
 					}
 					repaint();
 					break;
