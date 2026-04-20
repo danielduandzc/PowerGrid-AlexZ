@@ -2,8 +2,8 @@
 import java.util.*;
 
 public class CityGraph {
-    private static ArrayList<CityNode> nodes;
-    private static  ArrayList<Edge> edges;
+    private  ArrayList<CityNode> nodes;
+    private   ArrayList<Edge> edges;
     public int x;
     public int y;
 
@@ -136,7 +136,7 @@ public class CityGraph {
         }
     }
 
-    public static int getShortestPath(CityNode startNode, CityNode targetNode) {
+    public int getShortestPath(CityNode startNode, CityNode targetNode) {
         // Implementation for shortest path algorithm (e.g., Dijkstra's)
         PriorityQueue<CityNode> adjacentCities = new PriorityQueue<CityNode>();
         HashSet<CityNode> visitedNodes = new HashSet<>();

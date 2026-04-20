@@ -16,50 +16,57 @@ public class InitialPanel extends JPanel implements KeyListener, MouseListener {
 
 private void loadCityCoordinates() {
     
-    cityCoords.put("Flensburg", new Point((int)(getWidth() * (867 / 2048.0)), (int)(getHeight() * (36 / 1152.0))));
-    cityCoords.put("Kiel", new Point((int)(getWidth() * (918 / 2048.0)), (int)(getHeight() * (101 / 1152.0))));
-    cityCoords.put("Rostock", new Point((int)(getWidth() * (1114 / 2048.0)), (int)(getHeight() * (122 / 1152.0))));
-    cityCoords.put("Lubeck", new Point((int)(getWidth() * (989 / 2048.0)), (int)(getHeight() * (146 / 1152.0))));
-    cityCoords.put("Cuxhaven", new Point((int)(getWidth() * (802 / 2048.0)), (int)(getHeight() * (163 / 1152.0))));
-    cityCoords.put("Wilhelmshaven", new Point((int)(getWidth() * (736 / 2048.0)), (int)(getHeight() * (203 / 1152.0))));
-    cityCoords.put("Hamburg", new Point((int)(getWidth() * (913 / 2048.0)), (int)(getHeight() * (203 / 1152.0))));
-    cityCoords.put("Schwerin", new Point((int)(getWidth() * (1053 / 2048.0)), (int)(getHeight() * (206 / 1152.0))));
-    cityCoords.put("Torgelow", new Point((int)(getWidth() * (1294 / 2048.0)), (int)(getHeight() * (198 / 1152.0))));
-    cityCoords.put("Bremen", new Point((int)(getWidth() * (818 / 2048.0)), (int)(getHeight() * (266 / 1152.0))));
-    cityCoords.put("Berlin", new Point((int)(getWidth() * (1236 / 2048.0)), (int)(getHeight() * (331 / 1152.0))));
-    cityCoords.put("Osnabruck", new Point((int)(getWidth() * (747 / 2048.0)), (int)(getHeight() * (344 / 1152.0))));
-    cityCoords.put("Hannover", new Point((int)(getWidth() * (919 / 2048.0)), (int)(getHeight() * (360 / 1152.0))));
-    cityCoords.put("Magdeburg", new Point((int)(getWidth() * (1092 / 2048.0)), (int)(getHeight() * (367 / 1152.0))));
-    cityCoords.put("Frankfurt-O", new Point((int)(getWidth() * (1336 / 2048.0)), (int)(getHeight() * (358 / 1152.0))));
-    cityCoords.put("Munster", new Point((int)(getWidth() * (694 / 2048.0)), (int)(getHeight() * (405 / 1152.0))));
-    cityCoords.put("Duisburg", new Point((int)(getWidth() * (559 / 2048.0)), (int)(getHeight() * (432 / 1152.0))));
-    cityCoords.put("Essen", new Point((int)(getWidth() * (623 / 2048.0)), (int)(getHeight() * (446 / 1152.0))));
-    cityCoords.put("Dortmund", new Point((int)(getWidth() * (710 / 2048.0)), (int)(getHeight() * (475 / 1152.0))));
-    cityCoords.put("Halle", new Point((int)(getWidth() * (869 / 2048.0)), (int)(getHeight() * (492 / 1152.0))));
-    cityCoords.put("Kassel", new Point((int)(getWidth() * (869 / 2048.0)), (int)(getHeight() * (490 / 1152.0))));
-    cityCoords.put("Leipzig", new Point((int)(getWidth() * (1165 / 2048.0)), (int)(getHeight() * (491 / 1152.0))));
-    cityCoords.put("Dusseldorf", new Point((int)(getWidth() * (577 / 2048.0)), (int)(getHeight() * (504 / 1152.0))));
-    cityCoords.put("Erfurt", new Point((int)(getWidth() * (1038 / 2048.0)), (int)(getHeight() * (535 / 1152.0))));
-    cityCoords.put("Dresden", new Point((int)(getWidth() * (1297 / 2048.0)), (int)(getHeight() * (533 / 1152.0))));
-    cityCoords.put("Koln", new Point((int)(getWidth() * (642 / 2048.0)), (int)(getHeight() * (552 / 1152.0))));
-    cityCoords.put("Aachen", new Point((int)(getWidth() * (548 / 2048.0)), (int)(getHeight() * (570 / 1152.0))));
-    cityCoords.put("Fulda", new Point((int)(getWidth() * (916 / 2048.0)), (int)(getHeight() * (589 / 1152.0))));
-    cityCoords.put("Frankfurt-M", new Point((int)(getWidth() * (814 / 2048.0)), (int)(getHeight() * (629 / 1152.0))));
-    cityCoords.put("Wiesbaden", new Point((int)(getWidth() * (750 / 2048.0)), (int)(getHeight() * (652 / 1152.0))));
-    cityCoords.put("Trier", new Point((int)(getWidth() * (586 / 2048.0)), (int)(getHeight() * (692 / 1152.0))));
-    cityCoords.put("Wurzburg", new Point((int)(getWidth() * (934 / 2048.0)), (int)(getHeight() * (687 / 1152.0))));
-    cityCoords.put("Nurnberg", new Point((int)(getWidth() * (1043 / 2048.0)), (int)(getHeight() * (725 / 1152.0))));
-    cityCoords.put("Mannheim", new Point((int)(getWidth() * (804 / 2048.0)), (int)(getHeight() * (746 / 1152.0))));
-    cityCoords.put("Saarbrucken", new Point((int)(getWidth() * (671 / 2048.0)), (int)(getHeight() * (771 / 1152.0))));
-    cityCoords.put("Regensburg", new Point((int)(getWidth() * (1124 / 2048.0)), (int)(getHeight() * (789 / 1152.0))));
-    cityCoords.put("Stuttgart", new Point((int)(getWidth() * (837 / 2048.0)), (int)(getHeight() * (828 / 1152.0))));
-    cityCoords.put("Augsburg", new Point((int)(getWidth() * (998 / 2048.0)), (int)(getHeight() * (856 / 1152.0))));
-    cityCoords.put("Passau", new Point((int)(getWidth() * (1272 / 2048.0)), (int)(getHeight() * (849 / 1152.0))));
-    cityCoords.put("Freiburg", new Point((int)(getWidth() * (712 / 2048.0)), (int)(getHeight() * (916 / 1152.0))));
-    cityCoords.put("Munchen", new Point((int)(getWidth() * (1095 / 2048.0)), (int)(getHeight() * (910 / 1152.0))));
-    cityCoords.put("Konstanz", new Point((int)(getWidth() * (831 / 2048.0)), (int)(getHeight() * (958 / 1152.0))));
+  cityCoords.put("Flensburg", new Point((int)(getWidth() * (867 / 1920.0)), (int)(getHeight() * (36 / 1070.0))));
+    cityCoords.put("Kiel", new Point((int)(getWidth() * (918 / 1920.0)), (int)(getHeight() * (101 / 1070.0))));
+    cityCoords.put("Rostock", new Point((int)(getWidth() * (1114 / 1920.0)), (int)(getHeight() * (122 / 1070.0))));
+    cityCoords.put("Lubeck", new Point((int)(getWidth() * (989 / 1920.0)), (int)(getHeight() * (146 / 1070.0))));
+    cityCoords.put("Cuxhaven", new Point((int)(getWidth() * (802 / 1920.0)), (int)(getHeight() * (163 / 1070.0))));
+    cityCoords.put("Wilhelmshaven", new Point((int)(getWidth() * (736 / 1920.0)), (int)(getHeight() * (203 / 1070.0))));
+    cityCoords.put("Hamburg", new Point((int)(getWidth() * (913 / 1920.0)), (int)(getHeight() * (203 / 1070.0))));
+    cityCoords.put("Schwerin", new Point((int)(getWidth() * (1053 / 1920.0)), (int)(getHeight() * (206 / 1070.0))));
+    cityCoords.put("Torgelow", new Point((int)(getWidth() * (1294 / 1920.0)), (int)(getHeight() * (198 / 1070.0))));
+    cityCoords.put("Bremen", new Point((int)(getWidth() * (818 / 1920.0)), (int)(getHeight() * (266 / 1070.0))));
+    cityCoords.put("Berlin", new Point((int)(getWidth() * (1236 / 1920.0)), (int)(getHeight() * (331 / 1070.0))));
+    cityCoords.put("Osnabruck", new Point((int)(getWidth() * (747 / 1920.0)), (int)(getHeight() * (344 / 1070.0))));
+    cityCoords.put("Hannover", new Point((int)(getWidth() * (919 / 1920.0)), (int)(getHeight() * (360 / 1070.0))));
+    cityCoords.put("Magdeburg", new Point((int)(getWidth() * (1092 / 1920.0)), (int)(getHeight() * (367 / 1070.0))));
+    cityCoords.put("Frankfurt-O", new Point((int)(getWidth() * (1336 / 1920.0)), (int)(getHeight() * (358 / 1070.0))));
+    cityCoords.put("Munster", new Point((int)(getWidth() * (694 / 1920.0)), (int)(getHeight() * (405 / 1070.0))));
+    cityCoords.put("Duisburg", new Point((int)(getWidth() * (559 / 1920.0)), (int)(getHeight() * (432 / 1070.0))));
+    cityCoords.put("Essen", new Point((int)(getWidth() * (623 / 1920.0)), (int)(getHeight() * (446 / 1070.0))));
+    cityCoords.put("Dortmund", new Point((int)(getWidth() * (710 / 1920.0)), (int)(getHeight() * (475 / 1070.0))));
+    cityCoords.put("Halle", new Point((int)(getWidth() * (869 / 1920.0)), (int)(getHeight() * (492 / 1070.0))));
+    cityCoords.put("Kassel", new Point((int)(getWidth() * (869 / 1920.0)), (int)(getHeight() * (490 / 1070.0))));
+    cityCoords.put("Leipzig", new Point((int)(getWidth() * (1165 / 1920.0)), (int)(getHeight() * (491 / 1070.0))));
+    cityCoords.put("Dusseldorf", new Point((int)(getWidth() * (577 / 1920.0)), (int)(getHeight() * (504 / 1070.0))));
+    cityCoords.put("Erfurt", new Point((int)(getWidth() * (1038 / 1920.0)), (int)(getHeight() * (535 / 1070.0))));
+    cityCoords.put("Dresden", new Point((int)(getWidth() * (1297 / 1920.0)), (int)(getHeight() * (533 / 1070.0))));
+    cityCoords.put("Koln", new Point((int)(getWidth() * (642 / 1920.0)), (int)(getHeight() * (552 / 1070.0))));
+    cityCoords.put("Aachen", new Point((int)(getWidth() * (548 / 1920.0)), (int)(getHeight() * (570 / 1070.0))));
+    cityCoords.put("Fulda", new Point((int)(getWidth() * (916 / 1920.0)), (int)(getHeight() * (589 / 1070.0))));
+    cityCoords.put("Frankfurt-M", new Point((int)(getWidth() * (814 / 1920.0)), (int)(getHeight() * (629 / 1070.0))));
+    cityCoords.put("Wiesbaden", new Point((int)(getWidth() * (750 / 1920.0)), (int)(getHeight() * (652 / 1070.0))));
+    cityCoords.put("Trier", new Point((int)(getWidth() * (586 / 1920.0)), (int)(getHeight() * (692 / 1070.0))));
+    cityCoords.put("Wurzburg", new Point((int)(getWidth() * (934 / 1920.0)), (int)(getHeight() * (687 / 1070.0))));
+    cityCoords.put("Nurnberg", new Point((int)(getWidth() * (1043 / 1920.0)), (int)(getHeight() * (725 / 1070.0))));
+    cityCoords.put("Mannheim", new Point((int)(getWidth() * (804 / 1920.0)), (int)(getHeight() * (746 / 1070.0))));
+    cityCoords.put("Saarbrucken", new Point((int)(getWidth() * (671 / 1920.0)), (int)(getHeight() * (771 / 1070.0))));
+    cityCoords.put("Regensburg", new Point((int)(getWidth() * (1124 / 1920.0)), (int)(getHeight() * (789 / 1070.0))));
+    cityCoords.put("Stuttgart", new Point((int)(getWidth() * (837 / 1920.0)), (int)(getHeight() * (828 / 1070.0))));
+    cityCoords.put("Augsburg", new Point((int)(getWidth() * (998 / 1920.0)), (int)(getHeight() * (856 / 1070.0))));
+    cityCoords.put("Passau", new Point((int)(getWidth() * (1272 / 1920.0)), (int)(getHeight() * (849 / 1070.0))));
+    cityCoords.put("Freiburg", new Point((int)(getWidth() * (712 / 1920.0)), (int)(getHeight() * (916 / 1070.0))));
+    cityCoords.put("Munchen", new Point((int)(getWidth() * (1095 / 1920.0)), (int)(getHeight() * (910 / 1070.0))));
+    cityCoords.put("Konstanz", new Point((int)(getWidth() * (831 / 1920.0)), (int)(getHeight() * (958 / 1070.0))));
+
+
+
+
+
+
 
 }
+	private boolean hasLoadedCoords=false;
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
 	private Graphics g;
@@ -77,7 +84,7 @@ private void loadCityCoordinates() {
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
 	public InitialPanel() {
-		loadCityCoordinates();
+		
 		//Load all images
 		try{
 			rulesBG = ImageIO.read(new File("resources/Rules Background.png"));
@@ -167,10 +174,16 @@ private void loadCityCoordinates() {
 	}
 	
 	public void paint(Graphics g) {
+		if(!hasLoadedCoords){
+			hasLoadedCoords=true;
+			loadCityCoordinates();
+		}
+
 		super.paint(g);
 		System.out.println("Painting: " + GameState.currentEvent.getLast());
 		switch(GameState.currentEvent.getLast()) {
 			 case "Title Screen":
+				
 			// 	// title screen with proper layout
 			 	g.drawImage(titleScreen, 0, 0, 1925, 1020, this);
 			 	break;
@@ -1347,11 +1360,15 @@ private void loadCityCoordinates() {
 	}
 	
 	public void mouseEntered(MouseEvent e) {
-		
+		cityCoords=new HashMap<>();
+		loadCityCoordinates();
+		repaint();
 	}
 	
 	public void mouseExited(MouseEvent e) {
-		
+		cityCoords=new HashMap<>();
+		loadCityCoordinates();
+		repaint();
 	}
 	
 	public void addNotify() {
