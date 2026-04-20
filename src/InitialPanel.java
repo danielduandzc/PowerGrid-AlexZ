@@ -60,11 +60,6 @@ private void loadCityCoordinates() {
     cityCoords.put("Konstanz", new Point((int)(getWidth() * (831 / 1920.0)), (int)(getHeight() * (958 / 1070.0))));
 
 
-
-
-
-
-
 }
 	private boolean hasLoadedCoords=false;
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
@@ -79,7 +74,7 @@ private void loadCityCoordinates() {
 	};	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, rules1, rules2, rules3, rules4, rules5, 
-	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG;
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menuscreen, menutile;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -114,6 +109,8 @@ private void loadCityCoordinates() {
 			auctionImagePlayerTwo = ImageIO.read(new File("resources/Player_2.png"));
 			auctionImagePlayerThree = ImageIO.read(new File("resources/Player_3.png"));
 			auctionImagePlayerFour = ImageIO.read(new File("resources/Player_4.png"));
+			menuscreen = ImageIO.read(new File("resources/Menu Screen.png"));
+			menutile = ImageIO.read(new File("resources/menutile.png"));
 			arrow= ImageIO.read(new File("resources/Arrow.png"));
 			pp3 = ImageIO.read(new File("resources/3.jpeg"));
 			pp4 = ImageIO.read(new File("resources/4.jpeg"));
@@ -190,6 +187,7 @@ private void loadCityCoordinates() {
 
 			case "Instructions":
 				g.drawImage(rulesBG, 0, 0, 1920, 1080, this);
+				g.drawImage(menutile, 1604, 59, 218, 75, this);
 				switch(rulecounter) {
 					case 0: g.drawImage(rules1, 600, 0, 700, 1000, this); break;
 					case 1: g.drawImage(rules2, 600, 0, 700, 1000, this); break;
@@ -208,7 +206,7 @@ private void loadCityCoordinates() {
 				break;
 			
 			case "Color Selection":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				//Draw the houses	
 				if(!GameState.isColorSelected[0]) g.drawImage(redHouse, 574, 501, 150, 150, this);
 				if(!GameState.isColorSelected[1]) g.drawImage(yellowHouse, 724, 501,150, 150, this);
@@ -216,6 +214,11 @@ private void loadCityCoordinates() {
 				if(!GameState.isColorSelected[3]) g.drawImage(blueHouse, 1024, 501, 150, 150,this);
 				if(!GameState.isColorSelected[4]) g.drawImage(purpleHouse, 1174, 501,150, 150, this);
 				if(!GameState.isColorSelected[5]) g.drawImage(whiteHouse, 1324, 501, 150, 150,this);
+				break;
+
+			case "Menu Screen":
+				g.drawImage(menuscreen, 0, 0, 1920, 1080, this);
+				g.setFont(new Font("Arial", Font.BOLD, 50));
 				break;
 			case "Zone Selection":
 				// zone selection
@@ -910,6 +913,10 @@ private void loadCityCoordinates() {
 					GameState.currentEvent.add("Title Screen");
 					repaint();
 				}
+				if(x >= 1604 && x <= 1822 && y >= 75 && y <= 135) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Menu Screen");
+				}
 				repaint();
 				break;
 
@@ -978,8 +985,9 @@ private void loadCityCoordinates() {
 					GameState.currentPlayerIndex = 0;
 					GameState.setUpAuction();
 				}
+			repaint();
+			break;
 
-		repaint();
 				case "Pick Powerplant":
 					// code for picking power plant
 					/*	
