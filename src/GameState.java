@@ -20,8 +20,12 @@ public class GameState{
     public static ArrayList<PowerPlant> powerPlantsInMarket=new ArrayList<PowerPlant>();
     public static ArrayList<Integer> playerOrderInAuction=new ArrayList<Integer>();
     public static ResourceHub resourceMarket = new ResourceHub();
+    public static CityGraph fullGraph = new CityGraph();
+    public static String cityNameForPurchase;
+    public static int setPriceForCity;
 
     public static void setUpDeckAndMarket(){
+        
         for(Player k : players) {
             k.addElektro(50);
         }
@@ -95,9 +99,9 @@ public class GameState{
                     }
                 }
                 // Power cities based on powerCount
-                for(int i=0; i<4; i++){
-                    players[i].setEarnedIncome(calculateIncome(Math.min(powerCount, players[i].getCities().size())));
-                }
+                
+                    p.setEarnedIncome(calculateIncome(Math.min(powerCount,p.getCities().size())));
+                
             }
      }
 
@@ -131,7 +135,7 @@ public class GameState{
     
 
     public static void setUpAuction(){
-        
+        graphOfCity.removeUnselectedZones(isZoneSelected);
         currentPlayerIndex=0;
         minBid=0;
         playerOrderInAuction.clear();
