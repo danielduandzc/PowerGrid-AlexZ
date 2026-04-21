@@ -1523,50 +1523,131 @@ private void loadCityCoordinates() {
 				break;
 
 				case "Buy Resources":
-					// Done button clicked
-					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
-					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
-						GameState.currentPlayerIndex++;
-						if(GameState.currentPlayerIndex == 4) {
-							GameState.currentPlayerIndex = 0;
-							GameState.currentEvent.removeLast();
-							GameState.currentEvent.add("Buy Cities");
-						}
-					}
 					
-					// Get current player and resource types
-					Player buyPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
-					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
-					
-					// Resource buy buttons - use class field that's set during paint
-					int resourceYPosClick = resourceButtonStartY;
-				
-					for(int r = 0; r < 4; r++) {
-						// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
-						if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
-							// Check if player can afford and has capacity
-							int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
-							if(price >= 0) {
-								if(buyPlayer.getElektro() >= price && buyPlayer.canAddResource(resourceTypes[r], 1)) {
-									boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
-									if(bought) {
-										buyPlayer.addResource(resourceTypes[r], 1);
-										buyPlayer.addElektro(-price);
-										System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " bought " + resourceTypes[r] + " for " + price + " Elektro");
-									}
-								} else if(!buyPlayer.canAddResource(resourceTypes[r], 1)) {
-									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have capacity for more resources");
-								} else {
-									System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have enough Elektro");
-								}
-							} else {
-								System.out.println("Resource " + resourceTypes[r] + " is sold out");
+
+						// Done button clicked
+						if (x >= getWidth()/2 - (getWidth()/10) &&
+							x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 &&
+							y >= (int)(getHeight() * 0.9) &&
+							y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
+
+							GameState.currentPlayerIndex++;
+
+							if (GameState.currentPlayerIndex == 4) {
+								GameState.currentPlayerIndex = 0;
+								GameState.currentEvent.removeLast();
+								GameState.currentEvent.add("Buy Cities");
 							}
 						}
-						resourceYPosClick += 60;
-					}   
-					repaint();
-					break;
+
+						// Current player
+						Player buyPlayer = GameState.players[
+							GameState.playerOrder[GameState.currentPlayerIndex] - 1
+						];
+
+						Resource[] resourceTypes = {
+							Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM
+						};
+
+						int resourceYPosClick = resourceButtonStartY;
+
+						for (int r = 0; r < 4; r++) {
+
+							// Buy button hitbox
+							if (x >= 750 && x <= 830 &&
+								y >= resourceYPosClick - 20 &&
+								y <= resourceYPosClick + 20) {
+
+								int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
+
+								if (price >= 0) {
+
+									if (buyPlayer.getElektro() >= price &&
+										buyPlayer.canAddResource(resourceTypes[r], 1)) {
+
+										boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
+
+										if (bought) {
+											buyPlayer.addResource(resourceTypes[r], 1);
+											buyPlayer.addElektro(-price);
+
+											System.out.println(
+												"Player " + (GameState.currentPlayerIndex + 1) +
+												" bought " + resourceTypes[r] +
+												" for " + price + " Elektro"
+											);
+										}
+
+									} else if (!buyPlayer.canAddResource(resourceTypes[r], 1)) {
+
+										System.out.println(
+											"Player " + (GameState.currentPlayerIndex + 1) +
+											" does not have capacity for more resources"
+										);
+
+									} else {
+
+										System.out.println(
+											"Player " + (GameState.currentPlayerIndex + 1) +
+											" does not have enough Elektro"
+										);
+									}
+
+								} else {
+									System.out.println(resourceTypes[r] + " is sold out");
+								}
+							}
+
+							resourceYPosClick += 60;
+						}
+
+						repaint();
+						break;
+
+				// 	// Done button clicked
+				// 	if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+				// 	   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
+				// 		GameState.currentPlayerIndex++;
+				// 		if(GameState.currentPlayerIndex == 4) {
+				// 			GameState.currentPlayerIndex = 0;
+				// 			GameState.currentEvent.removeLast();
+				// 			GameState.currentEvent.add("Buy Cities");
+				// 		}
+				// 	}
+					
+				// 	// Get current player and resource types
+				// 	Player buyPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
+				// 	Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+					
+				// 	// Resource buy buttons - use class field that's set during paint
+				// 	int resourceYPosClick = resourceButtonStartY;
+				
+				// 	for(int r = 0; r < 4; r++) {
+				// 		// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
+				// 		if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
+				// 			// Check if player can afford and has capacity
+				// 			int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
+				// 			if(price >= 0) {
+				// 				if(buyPlayer.getElektro() >= price && buyPlayer.canAddResource(resourceTypes[r], 1)) {
+				// 					boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
+				// 					if(bought) {
+				// 						buyPlayer.addResource(resourceTypes[r], 1);
+				// 						buyPlayer.addElektro(-price);
+				// 						System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " bought " + resourceTypes[r] + " for " + price + " Elektro");
+				// 					}
+				// 				} else if(!buyPlayer.canAddResource(resourceTypes[r], 1)) {
+				// 					System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have capacity for more resources");
+				// 				} else {
+				// 					System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have enough Elektro");
+				// 				}
+				// 			} else {
+				// 				System.out.println("Resource " + resourceTypes[r] + " is sold out");
+				// 			}
+				// 		}
+				// 		resourceYPosClick += 60;
+				// 	}   
+				// 	repaint();
+				// 	break;
 							case "Buy Cities":
 				// Check if Done button was clicked
 				if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 

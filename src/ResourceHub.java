@@ -1,11 +1,12 @@
 package src;
 public class ResourceHub {
     // Market spaces 1-16, tracking how many of each resource are at each price point
-    public int[][] coalMarket = new boolean[8][3];      // Spaces 1-16
-    public int[][] oilMarket = new boolean[8][3];       // Spaces 1-16
-    public int[][] garbageMarket = new boolean[8][3];   // Spaces 1-16
-    public int[] uraniumMarket = new boolean[12][1];   // Spaces 1-16
-    
+    public boolean[][] coalMarket = new boolean[8][3];      // Spaces 1-16
+    public boolean[][] oilMarket = new boolean[8][3];       // Spaces 1-16
+    public boolean[][] garbageMarket = new boolean[8][3];   // Spaces 1-16
+    public boolean[] uraniumMarket = new boolean[12][1];   // Spaces 1-16
+    private int[] prices = {1,2,3,4,5,6,7,8,10,12,14,16};
+
     // Price for each space
     
 
@@ -22,7 +23,7 @@ public class ResourceHub {
     }
 
             private void addResource(boolean[][] market, int num) {
-            if (num == 0)
+            if (num <= 0)
                 return;
 
             // find first non-full row
@@ -43,6 +44,30 @@ public class ResourceHub {
 
             addResource(market, num - 1);
         }
+    
+        private void removeResource(boolean[][] market, int num) {
+        if (num == 0)
+            return;
+
+        // find last non-empty row
+        int index = market.length - 1;
+        while (index >= 0 && isEmpty(market[index]))
+            index--;
+
+        if (index < 0)
+            return; // nothing to remove
+
+        // remove last true in that row
+        for (int i = market[index].length - 1; i >= 0; i--) {
+            if (market[index][i]) {
+                market[index][i] = false;
+                break;
+            }
+        }
+
+        removeResource(market, num - 1);
+    }
+
 
     
     public void initializeMarket() {
@@ -93,26 +118,20 @@ public class ResourceHub {
     
     // Get the price of the cheapest available resource
     public int getCheapestPrice(Resource resource) {
-        int[] market = getMarketForResource(resource);
-        for(int i = 1; i < market.length; i++) {
-            if(market[i] > 0) {
-                return spacePrice[i];
-            }
+        boolean[][] market = getMarketForResource(resource);
+        for(int i = 0; i < market.length; i++) {
+         if(notEmpty(market[i]))
+         return prices[i];   
         }
-        return  69;
+        return -1;
     }
-    
-    // Buy a resource from the market (from the cheapest available space)
-    public boolean buyResource(Resource resource) {
-        int[] market = getMarketForResource(resource);
-        if(market == null) return false;
-        
-        for(int i = 1; i < market.length; i++) {
-            if(market[i] > 0) {
-                market[i]--;
-                return true;
-            }
-        }
+
+    private boolean notEmpty(boolean[] x){
+        for(boolean b: x)
+        if(b)
+        return true;
         return false;
-    }
+        }
+    
+    
 }
