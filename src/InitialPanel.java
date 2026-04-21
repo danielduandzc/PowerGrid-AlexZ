@@ -1238,6 +1238,7 @@ private void loadCityCoordinates() {
 				}
 
 		repaint();
+		break;
 				case "Pick Powerplant":
 					// code for picking power plant
 					/*	

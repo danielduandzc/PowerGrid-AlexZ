@@ -1,49 +1,65 @@
 package src;
 public class ResourceHub {
     // Market spaces 1-16, tracking how many of each resource are at each price point
-    public int[] coalMarket = new int[17];      // Spaces 1-16
-    public int[] oilMarket = new int[17];       // Spaces 1-16
-    public int[] garbageMarket = new int[17];   // Spaces 1-16
-    public int[] uraniumMarket = new int[17];   // Spaces 1-16
+    public int[][] coalMarket = new boolean[8][3];      // Spaces 1-16
+    public int[][] oilMarket = new boolean[8][3];       // Spaces 1-16
+    public int[][] garbageMarket = new boolean[8][3];   // Spaces 1-16
+    public int[] uraniumMarket = new boolean[12][1];   // Spaces 1-16
     
     // Price for each space
-    private int[] spacePrice = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    
 
     public ResourceHub() {
         initializeMarket();
     }
+
+    private boolean isFull(boolean[] x){
+        boolean ret=true;
+        for(boolean b: x){
+            ret=ret&&b;
+        }
+        return ret;
+    }
+
+            private void addResource(boolean[][] market, int num) {
+            if (num == 0)
+                return;
+
+            // find first non-full row
+            int index = 0;
+            while (index < market.length && isFull(market[index]))
+                index++;
+
+            if (index == market.length)
+                return; // all full
+
+            // fill first empty slot in that row
+            for (int i = 0; i < market[index].length; i++) {
+                if (!market[index][i]) {
+                    market[index][i] = true;
+                    break;
+                }
+            }
+
+            addResource(market, num - 1);
+        }
+
     
     public void initializeMarket() {
         // Clear all markets
-        for(int i = 0; i < 17; i++) {
-            coalMarket[i] = 0;
-            oilMarket[i] = 0;
-            garbageMarket[i] = 0;
-            uraniumMarket[i] = 0;
-        }
         
-        // Initial setup per rules:
-        // 3 coal on spaces 1-8
-        for(int i = 1; i <= 8; i++) {
-            coalMarket[i] = 3;
-        }
+
+            addResource(coalMarket, 24);
+            addResource(oilMarket, 18);
+            addResource(garbageMarket, 9);
+            addResource(uraniumMarket, 2)
         
-        // 3 oil on spaces 3-8
-        for(int i = 3; i <= 8; i++) {
-            oilMarket[i] = 3;
-        }
         
-        // 3 garbage on spaces 7-8
-        garbageMarket[7] = 3;
-        garbageMarket[8] = 3;
         
-        // 1 uranium on spaces 14 and 16
-        uraniumMarket[14] = 1;
-        uraniumMarket[16] = 1;
     }
     
     // Get the market array for a specific resource
-    public int[] getMarketForResource(Resource resource) {
+    public boolean[][] getMarketForResource(Resource resource) {
         switch(resource) {
             case COAL:
                 return coalMarket;
@@ -59,19 +75,19 @@ public class ResourceHub {
     }
     
     // Get methods for each market
-    public int[] getCoalMarket() {
+    public boolean[][] getCoalMarket() {
         return coalMarket;
     }
     
-    public int[] getOilMarket() {
+    public boolean[][] getOilMarket() {
         return oilMarket;
     }
     
-    public int[] getGarbageMarket() {
+    public boolean[][] getGarbageMarket() {
         return garbageMarket;
     }
     
-    public int[] getUraniumMarket() {
+    public boolean[][] getUraniumMarket() {
         return uraniumMarket;
     }
     
