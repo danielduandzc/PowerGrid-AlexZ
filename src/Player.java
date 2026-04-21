@@ -16,6 +16,17 @@ public class Player {
       public void setEarnedIncome(int income) {
             this.earnedIncome = income;
       }
+
+            public int getHighestPowerPlant() {
+      int max = 0;
+      for (PowerPlant p : powerPlants) {
+            if (p.getPrice() > max) {
+                  max = p.getPrice();
+            }
+      }
+      return max;
+      }
+
       
 
       public void addCity(String cityName) {

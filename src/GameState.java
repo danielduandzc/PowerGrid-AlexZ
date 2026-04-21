@@ -139,10 +139,10 @@ public class GameState{
         currentPlayerIndex=0;
         minBid=0;
         playerOrderInAuction.clear();
-        playerOrderInAuction.add(0);
-        playerOrderInAuction.add(1);
-        playerOrderInAuction.add(2);
-        playerOrderInAuction.add(3);
+        playerOrderInAuction.add(playerOrder[0]-1);
+        playerOrderInAuction.add(playerOrder[1]-1);
+        playerOrderInAuction.add(playerOrder[2]-1);
+        playerOrderInAuction.add(playerOrder[3]-1);
         for(Player k : players)
         {
             k.setInAuction(true);
@@ -155,37 +155,55 @@ public class GameState{
            
         
     }
-    public static void newRound(){
-        int mostCities=0;
-        
-        int i=0;
-        for(Player k : players) {
-            
-            if(mostCities<k.getCities().size()) {
-                mostCities=k.getCities().size();
-            }
-        }
-        if(mostCities>=7) {
-            currentStep=2;
-        }
-        if(mostCities>=17) {
-            //endGame
-            return;
-        }
-        
+            public static void newRound() {
 
-        currentEvent.add("Player Order");
-    }
+            // Determine Step 2 or Step 3
+            int mostCities = 0;
+            for (Player p : players) {
+                mostCities = Math.max(mostCities, p.getCities().size());
+            }
+
+            if (mostCities >= 7) {
+                currentStep = 2;
+            }
+            if (mostCities >= 17) {
+                // End game
+                return;
+            }
+
+            // Sort players by:
+            // 1. Most cities (descending)
+            // 2. Highest power plant (descending)
+            Integer[] order = {0, 1, 2, 3};
+
+            Arrays.sort(order, (a, b) -> {
+                Player pA = players[a];
+                Player pB = players[b];
+
+                int cityDiff = pB.getCities().size() - pA.getCities().size();
+                if (cityDiff != 0) return cityDiff;
+
+                int plantDiff = pB.getHighestPowerPlant() - pA.getHighestPowerPlant();
+                return plantDiff;
+            });
+
+            // Save sorted order back into playerOrder
+            for (int i = 0; i < 4; i++) {
+                playerOrder[i] = order[i] + 1; // +1 because your array uses 1–4 instead of 0–3
+            }
+
+            currentEvent.add("Player Order");
+        }
     public static void continueAuction(){
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
-        minBid=Math.max(minBid, players[currentPlayerIndex].getBid());
+        minBid=Math.max(minBid, players[playerOrder[currentPlayerIndex]-1].getBid());
         currentPlayerIndex++;
         if(currentPlayerIndex==4) {
             currentPlayerIndex=0;
         }
-        if(!players[currentPlayerIndex].getInAuction()||players[currentPlayerIndex].getHasPassed()) {
+        if(!players[playerOrder[currentPlayerIndex]-1].getInAuction()||players[playerOrder[currentPlayerIndex]-1].getHasPassed()) {
             continueAuction();
         }
         int numPlayersInAuction=0;

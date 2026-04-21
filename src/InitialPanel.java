@@ -493,10 +493,10 @@ private void loadCityCoordinates() {
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Buy Resources", 100, 100);
 				
 				g.setFont(customFontMed);
-				g.drawString("Elektro: " + GameState.players[GameState.currentPlayerIndex].getElektro(), 100, 150);
+				g.drawString("Elektro: " + GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro(), 100, 150);
 				
 				// Display player's powerplants as images with their individual resources
-				Player currentPlayer = GameState.players[GameState.currentPlayerIndex];
+				Player currentPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
 				ArrayList<PowerPlant> playerPowerPlants = currentPlayer.getPowerPlants();
 				
 				g.setFont(customFontMed);
@@ -765,7 +765,7 @@ private void loadCityCoordinates() {
 				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
 				g.setFont(bureaucracyFont);
 				g.setColor(Color.BLACK);
-				String bureauMsg = "Player " + (GameState.currentPlayerIndex + 1) + " has earned " + GameState.players[GameState.currentPlayerIndex].getEarnedIncome() + " Elektro";
+				String bureauMsg = "Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " has earned " + GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].getEarnedIncome() + " Elektro";
 				FontMetrics bureauFm = g.getFontMetrics();
 				int bureauMsgWidth = bureauFm.stringWidth(bureauMsg);
 				g.drawString(bureauMsg, (getWidth() - bureauMsgWidth) / 2, getHeight() / 2);
@@ -793,9 +793,9 @@ private void loadCityCoordinates() {
 				
 				// Draw one circle for each player at their city count position
 				
-					int cityCount = GameState.players[GameState.currentPlayerIndex].getCities().size();
+					int cityCount = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].getCities().size();
 					
-						String playerColorStr = GameState.players[GameState.currentPlayerIndex].getColor();
+						String playerColorStr = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].getColor();
 						Color playerColor = getColorFromString(playerColorStr);
 						
 						// Position is cityCount - 1 since arrays are 0-indexed
@@ -820,7 +820,7 @@ private void loadCityCoordinates() {
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Activate Powerplants", 100, 100);
 				
 				// Display player's powerplants with images
-				Player currentPPPlayer = GameState.players[GameState.currentPlayerIndex];
+				Player currentPPPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
 				ArrayList<PowerPlant> playerPPs = currentPPPlayer.getPowerPlants();
 				
 				g.setFont(ppFontSmall);
@@ -916,9 +916,11 @@ private void loadCityCoordinates() {
 				Font orderFont = new Font("Arial", Font.BOLD, 40);
 				g.setFont(orderFont);
 				g.setColor(Color.BLACK);
-				g.drawString("Player Order For This Round:" + "Player "+GameState.playerOrder[0]+
+				g.drawString("Player Order For This Round: " + "Player "+GameState.playerOrder[0]+
 				", Player "+GameState.playerOrder[1]+", Player "+GameState.playerOrder[2]+", Player "+GameState.playerOrder[3]
-				, (getWidth() - 500) / 2, getHeight() / 2 - 150);
+				, (getWidth() - 850) / 2, getHeight() / 2 - 150);
+				GameState.currentPlayerIndex=0;
+
 				
 				
 
@@ -1168,27 +1170,27 @@ private void loadCityCoordinates() {
 			case "Color Selection":
 				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isColorSelected[0]) {
 					GameState.isColorSelected[0] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Red");
+					GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].setColor("Red");
 					GameState.currentPlayerIndex++;
 				} else if (x>=724 && x <= 874 && y >= 501 && y <= 651 && !GameState.isColorSelected[1]) {
 					GameState.isColorSelected[1] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Yellow");
+					GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].setColor("Yellow");
 					GameState.currentPlayerIndex++;
 				} else if (x >= 874 && x <= 1024 && y >= 501 && y <= 651 && !GameState.isColorSelected[2]) {
 					GameState.isColorSelected[2] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Green");
+					GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].setColor("Green");
 					GameState.currentPlayerIndex++;
 				} else if (x >= 1024 && x <= 1174 && y >= 501 && y <= 651 && !GameState.isColorSelected[3]) {
 					GameState.isColorSelected[3] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Blue");
+					GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].setColor("Blue");
 					GameState.currentPlayerIndex++;
 				} else if (x >= 1174 && x <= 1324 && y >= 501 && y <= 651 && !GameState.isColorSelected[4]) {
 					GameState.isColorSelected[4] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Purple");
+					GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].setColor("Purple");
 					GameState.currentPlayerIndex++;
 				} else if (x >= 1324 && x <= 1474 && y >= 501 && y <= 651 && !GameState.isColorSelected[5]) {
 					GameState.isColorSelected[5] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("White");
+					GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].setColor("White");
 					GameState.currentPlayerIndex++;
 				}
 				
@@ -1376,95 +1378,95 @@ private void loadCityCoordinates() {
 						}
 					if(y>=920&&y<=970){
 						if(x>=100&&x<=100+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+1);
 							}
 						}else if(x>=250&&x<=250+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()-1);
 							}
 						}else if(x>=320&&x<=320+80) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
-							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
-							GameState.players[GameState.currentPlayerIndex].setBid(0);
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(0);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setHasPassed(true);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setBid(0);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(0);
 							GameState.continueAuction();
 							repaint();
 
 							}
 						}else if(x>=410&&x<=410+70) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
-							if(GameState.players[GameState.currentPlayerIndex].getGhostBid()+ GameState.players[GameState.currentPlayerIndex].getBid() > GameState.minBid){
-								GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==1) {
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+ GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getBid() > GameState.minBid){
+								GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].useGhostBid();
 								GameState.continueAuction();
 							}
 						}
 						}else if(x>=500&&x<=500+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+1);
 							}
 						}else if(x>=650&&x<=650+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()-1);
 							}
 						}else if(x>=720&&x<=720+80) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
-							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
-							GameState.players[GameState.currentPlayerIndex].setBid(0);
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(0);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setHasPassed(true);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setBid(0);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(0);
 							GameState.continueAuction();
 							repaint();
 							}
 						}else if(x>=810&&x<=810+70) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
-							if(GameState.players[GameState.currentPlayerIndex].getGhostBid()+ GameState.players[GameState.currentPlayerIndex].getBid() > GameState.minBid){
-								GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==2) {
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+ GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getBid() > GameState.minBid){
+								GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].useGhostBid();
 								GameState.continueAuction();
 							}
 							}
 						}else if(x>=900&&x<=900+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+1);
 							}
 						}else if(x>=1050&&x<=1050+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()-1);
 							}
 						}else if(x>=1120&&x<=1120+80) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
-							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
-							GameState.players[GameState.currentPlayerIndex].setBid(0);
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(0);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setHasPassed(true);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setBid(0);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(0);
 							GameState.continueAuction();
 							repaint();
 							}
 						}else if(x>=1210&&x<=1210+70) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
-							if(GameState.players[GameState.currentPlayerIndex].getGhostBid()+ GameState.players[GameState.currentPlayerIndex].getBid() > GameState.minBid){
-								GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==3) {
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+ GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getBid() > GameState.minBid){
+								GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].useGhostBid();
 								GameState.continueAuction();
 							}
 							}
 						}else if(x>=1300&&x<=1300+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()+1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+1);
 							}
 						}else if(x>=1450&&x<=1450+50) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(GameState.players[GameState.currentPlayerIndex].getGhostBid()-1);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()-1);
 							}
 						}else if(x>=1520&&x<=1520+80) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
-							GameState.players[GameState.currentPlayerIndex].setHasPassed(true);
-							GameState.players[GameState.currentPlayerIndex].setBid(0);
-							GameState.players[GameState.currentPlayerIndex].setGhostBid(0);
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setHasPassed(true);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setBid(0);
+							GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].setGhostBid(0);
 							GameState.continueAuction();
 							repaint();
 							}
 						}else if(x>=1610&&x<=1610+70) {
-							if(GameState.players[GameState.currentPlayerIndex].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
-							if(GameState.players[GameState.currentPlayerIndex].getGhostBid()+ GameState.players[GameState.currentPlayerIndex].getBid() > GameState.minBid){
-								GameState.players[GameState.currentPlayerIndex].useGhostBid();
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getInAuction()&&GameState.playerOrder[GameState.currentPlayerIndex]==4) {
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getGhostBid()+ GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getBid() > GameState.minBid){
+								GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].useGhostBid();
 								GameState.continueAuction();
 							}
 							}
@@ -1489,7 +1491,7 @@ private void loadCityCoordinates() {
 					}
 					
 					// Get current player and resource types
-					Player buyPlayer = GameState.players[GameState.currentPlayerIndex];
+					Player buyPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
 					Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
 					
 					// Resource buy buttons - use class field that's set during paint
@@ -1640,7 +1642,7 @@ private void loadCityCoordinates() {
 						}
 					} else {
 						// Check if a powerplant was clicked
-						Player clickedPPPlayer = GameState.players[GameState.currentPlayerIndex];
+						Player clickedPPPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
 						ArrayList<PowerPlant> clickedPlayerPPs = clickedPPPlayer.getPowerPlants();
 						
 						int ppDisplayXPos = 100;
@@ -1681,7 +1683,7 @@ private void loadCityCoordinates() {
 					break;
 				case "Player Order":
 					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Pick Powerplant");
+					GameState.setUpAuction();
 					repaint();
 					break;
 					
