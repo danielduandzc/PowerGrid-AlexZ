@@ -155,6 +155,27 @@ public class GameState{
            
         
     }
+    public static void newRound(){
+        int mostCities=0;
+        
+        int i=0;
+        for(Player k : players) {
+            
+            if(mostCities<k.getCities().size()) {
+                mostCities=k.getCities().size();
+            }
+        }
+        if(mostCities>=7) {
+            currentStep=2;
+        }
+        if(mostCities>=17) {
+            //endGame
+            return;
+        }
+        
+
+        currentEvent.add("Player Order");
+    }
     public static void continueAuction(){
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;

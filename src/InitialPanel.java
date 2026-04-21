@@ -34,8 +34,8 @@ private void loadCityCoordinates() {
     cityCoords.put("Duisburg", new Point((int)(getWidth() * (559 / 1920.0)), (int)(getHeight() * (432 / 1070.0))));
     cityCoords.put("Essen", new Point((int)(getWidth() * (623 / 1920.0)), (int)(getHeight() * (446 / 1070.0))));
     cityCoords.put("Dortmund", new Point((int)(getWidth() * (710 / 1920.0)), (int)(getHeight() * (475 / 1070.0))));
-    cityCoords.put("Halle", new Point((int)(getWidth() * (869 / 1920.0)), (int)(getHeight() * (492 / 1070.0))));
-    cityCoords.put("Kassel", new Point((int)(getWidth() * (869 / 1920.0)), (int)(getHeight() * (490 / 1070.0))));
+    cityCoords.put("Halle", new Point((int)(getWidth() * (1105 / 1920.0)), (int)(getHeight() * (478 / 1070.0))));
+    cityCoords.put("Kassel", new Point((int)(getWidth() * (869 / 1920.0)), (int)(getHeight() * (492 / 1070.0))));
     cityCoords.put("Leipzig", new Point((int)(getWidth() * (1165 / 1920.0)), (int)(getHeight() * (491 / 1070.0))));
     cityCoords.put("Dusseldorf", new Point((int)(getWidth() * (577 / 1920.0)), (int)(getHeight() * (504 / 1070.0))));
     cityCoords.put("Erfurt", new Point((int)(getWidth() * (1038 / 1920.0)), (int)(getHeight() * (535 / 1070.0))));
@@ -177,7 +177,7 @@ private void loadCityCoordinates() {
 		}
 
 		super.paint(g);
-		System.out.println("Painting: " + GameState.currentEvent.getLast());
+		
 		switch(GameState.currentEvent.getLast()) {
 			 case "Title Screen":
 				
@@ -712,8 +712,14 @@ private void loadCityCoordinates() {
 
 					g2.drawLine(x - 20, y - 20, x + 20, y + 20);
 					g2.drawLine(x + 20, y - 20, x - 20, y + 20);
+				} else {
+					// Draw sectors for cities that are owned by players
+					drawCitySectors(g, name, p);
 				}
 				}
+				
+				 
+				
 				break;
 			case "Confirm City Purchase":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -724,6 +730,15 @@ private void loadCityCoordinates() {
 				FontMetrics fm = g.getFontMetrics();
 				int msgWidth = fm.stringWidth(confirmMsg);
 				g.drawString(confirmMsg, (getWidth() - msgWidth) / 2, getHeight() / 2 - 100);
+				
+				// Display player's current elektro
+				Player confirmPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+				Font elektroFont = new Font("Arial", Font.BOLD, 30);
+				g.setFont(elektroFont);
+				String elektroMsg = "You have: " + confirmPlayer.getElektro() + " Elektro";
+				FontMetrics elektroFm = g.getFontMetrics();
+				int elektroMsgWidth = elektroFm.stringWidth(elektroMsg);
+				g.drawString(elektroMsg, (getWidth() - elektroMsgWidth) / 2, getHeight() / 2);
 				
 				// Yes button
 				g.drawRect((int)(getWidth() * 0.25), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
@@ -895,6 +910,16 @@ private void loadCityCoordinates() {
 				hybridG2.setStroke(new BasicStroke(5));
 				hybridG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
 				centerString(g, "Confirm", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
+				break;
+			case "Player Order":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Font orderFont = new Font("Arial", Font.BOLD, 40);
+				g.setFont(orderFont);
+				g.setColor(Color.BLACK);
+				g.drawString("Player Order For This Round:" + "Player "+GameState.playerOrder[0]+
+				", Player "+GameState.playerOrder[1]+", Player "+GameState.playerOrder[2]+", Player "+GameState.playerOrder[3]
+				, (getWidth() - 500) / 2, getHeight() / 2 - 150);
+				
 				
 
 
@@ -1006,6 +1031,64 @@ private void loadCityCoordinates() {
 			case "White": return Color.WHITE;
 			default: return Color.BLACK;
 		}
+	}
+
+	private void drawCitySectors(Graphics g, String cityName, Point p) {
+		// Define sector positions relative to city center
+		// Sector 0: top (player 1)
+		// Sector 1: bottom-left (player 2)
+		// Sector 2: bottom-right (player 3)
+		
+		int sectorSize = 12; // diameter of sector circle
+		int vertOffset = 12;  // vertical offset from center
+		int horzOffset = 15;  // horizontal offset from center
+		
+		int[][] sectorPositions = {
+			{0, -vertOffset},      // Sector 0: top
+			{-horzOffset, vertOffset},   // Sector 1: bottom-left
+			{horzOffset, vertOffset}     // Sector 2: bottom-right
+		};
+		
+		// Collect all players who own this city
+		ArrayList<Integer> owningPlayers = new ArrayList<>();
+		for(int i = 0; i < 4; i++) {
+			if(GameState.players[i].getCities().contains(cityName)) {
+				owningPlayers.add(i);
+			}
+		}
+		
+		// Draw a sector for each player that owns this city
+		for(int idx = 0; idx < owningPlayers.size() && idx < 3; idx++) {
+			int playerIndex = owningPlayers.get(idx);
+			Color playerColor = getColorFromString(GameState.players[playerIndex].getColor());
+			
+			// Calculate sector position
+			int sectorX = p.x + sectorPositions[idx][0];
+			int sectorY = p.y + sectorPositions[idx][1];
+			
+			// Draw filled circle for the sector
+			g.setColor(playerColor);
+			g.fillOval(sectorX - sectorSize/2, sectorY - sectorSize/2, sectorSize, sectorSize);
+		}
+	}
+	
+	private int countPlayerSectorsInCity(String cityName) {
+		int count = 0;
+		Player currentPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+		if(currentPlayer.getCities().contains(cityName)) {
+			count = 1;
+		}
+		return count;
+	}
+	
+	private int countTotalSectorsInCity(String cityName) {
+		int count = 0;
+		for(int i = 0; i < 4; i++) {
+			if(GameState.players[i].getCities().contains(cityName)) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	
@@ -1467,17 +1550,40 @@ private void loadCityCoordinates() {
 					
 					// Only proceed if a city was actually selected
 					if (GameState.cityNameForPurchase != null) {
-						if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0){
-							GameState.setPriceForCity = 10;
-							GameState.currentEvent.add("Confirm City Purchase");
+						// Check if player already owns a sector in this city
+						if(countPlayerSectorsInCity(GameState.cityNameForPurchase) > 0) {
+							System.out.println("Player already owns a sector in " + GameState.cityNameForPurchase);
+						} else if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0 
+								&& countTotalSectorsInCity(GameState.cityNameForPurchase) > 0) {
+							// Player has no cities and cannot buy in a city that already has a player
+							System.out.println("Player must build their first city in an empty city");
 						} else {
-							int lowestShortestPath = Integer.MAX_VALUE;
-							for(String cityNameIter : GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
-								int pathLength = GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase);
-								if(lowestShortestPath > pathLength)
-									lowestShortestPath = pathLength;
+							// Calculate base price
+							int basePrice;
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0){
+								basePrice = 10;
+							} else {
+								int lowestShortestPath = Integer.MAX_VALUE;
+								for(String cityNameIter : GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
+									int pathLength = GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase);
+									if(lowestShortestPath > pathLength)
+										lowestShortestPath = pathLength;
+								}
+								basePrice = lowestShortestPath;
 							}
-							GameState.setPriceForCity = lowestShortestPath;
+							
+							// Add sector cost on top of base price
+							int totalSectors = countTotalSectorsInCity(GameState.cityNameForPurchase);
+							if(totalSectors == 0) {
+								// First sector: base price
+								GameState.setPriceForCity = basePrice;
+							} else if(totalSectors == 1) {
+								// Second sector: base price + 15
+								GameState.setPriceForCity = basePrice + 15;
+							} else if(totalSectors == 2) {
+								// Third sector: base price + 20
+								GameState.setPriceForCity = basePrice + 20;
+							}
 							GameState.currentEvent.add("Confirm City Purchase");
 						}
 					}
@@ -1516,7 +1622,7 @@ private void loadCityCoordinates() {
 						if(GameState.currentPlayerIndex == 4) {
 							GameState.currentPlayerIndex = 0;
 							GameState.currentEvent.removeLast();
-							// GameState.newRound();
+							 GameState.newRound();
 						}
 					}
 					repaint();
@@ -1571,7 +1677,14 @@ private void loadCityCoordinates() {
 						// Confirm resource selection and return to Activate Powerplants
 						GameState.currentEvent.removeLast();
 					}
+					repaint();
 					break;
+				case "Player Order":
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Pick Powerplant");
+					repaint();
+					break;
+					
 		
 		}
 }

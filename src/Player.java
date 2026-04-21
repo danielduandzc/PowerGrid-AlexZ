@@ -16,6 +16,7 @@ public class Player {
       public void setEarnedIncome(int income) {
             this.earnedIncome = income;
       }
+      
 
       public void addCity(String cityName) {
             
