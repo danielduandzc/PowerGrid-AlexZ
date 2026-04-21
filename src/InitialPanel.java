@@ -74,7 +74,7 @@ private void loadCityCoordinates() {
 	};	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, rules1, rules2, rules3, rules4, rules5, 
-	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menuscreen, menutile;
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menuscreen, menutile, colorselection;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -154,6 +154,7 @@ private void loadCityCoordinates() {
 			pp44 = ImageIO.read(new File("resources/44.jpeg"));
 			pp46 = ImageIO.read(new File("resources/46.jpeg"));
 			pp50 = ImageIO.read(new File("resources/50.jpeg"));
+			colorselection = ImageIO.read(new File("resources/Color Selection.png"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -206,20 +207,34 @@ private void loadCityCoordinates() {
 				break;
 			
 			case "Color Selection":
-				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
-				//Draw the houses	
-				if(!GameState.isColorSelected[0]) g.drawImage(redHouse, 574, 501, 150, 150, this);
-				if(!GameState.isColorSelected[1]) g.drawImage(yellowHouse, 724, 501,150, 150, this);
-				if(!GameState.isColorSelected[2]) g.drawImage(greenHouse, 874, 501, 150, 150,this);
-				if(!GameState.isColorSelected[3]) g.drawImage(blueHouse, 1024, 501, 150, 150,this);
-				if(!GameState.isColorSelected[4]) g.drawImage(purpleHouse, 1174, 501,150, 150, this);
-				if(!GameState.isColorSelected[5]) g.drawImage(whiteHouse, 1324, 501, 150, 150,this);
-				break;
+				g.drawImage(colorselection, 0, 0, 1920, 1080, this);
+
+				int startX = 124;
+				int startY = 399;
+				int boxW = 193;
+				int boxH = 192;
+				int step = 196; // real spacing from your data
+
+				Color overlay = new Color(0, 0, 0, 127);
+				g.setColor(overlay);
+
+				for (int i = 0; i < 6; i++) {
+
+					if (GameState.isColorSelected[i]) {
+
+						int x = startX + (i * step);
+
+						g.fillRect(x, startY, boxW, boxH);
+					}
+				}
+
+			break;
 
 			case "Menu Screen":
 				g.drawImage(menuscreen, 0, 0, 1920, 1080, this);
 				g.setFont(new Font("Arial", Font.BOLD, 50));
 				break;
+
 			case "Zone Selection":
 				// zone selection
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -870,6 +885,19 @@ private void loadCityCoordinates() {
 		int x = e.getX();
         int y = e.getY();
 		System.out.println("Mouse clicked at: " + x + ", " + y +"\t|\t"+"Mouse clicks: " + ++numMouseClicks);
+		
+		// Check if on Menu Screen and menu button was clicked (Return to Previous State)
+		if (GameState.currentEvent.getLast().equals("Menu Screen")) {
+			if (x >= 280 && x <= 475 && y >= 335 && y <= 430) {
+				if (!GameState.previousStates.isEmpty()) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add(GameState.previousStates.pop());
+					repaint();
+					return;
+				}
+			}
+		}
+		
 		switch(GameState.currentEvent.getLast()) {
 			case "Title Screen":
 				// Check if Play button was clicked
@@ -914,6 +942,7 @@ private void loadCityCoordinates() {
 					repaint();
 				}
 				if(x >= 1604 && x <= 1822 && y >= 75 && y <= 135) {
+					GameState.previousStates.push(GameState.currentEvent.getLast());
 					GameState.currentEvent.removeLast();
 					GameState.currentEvent.add("Menu Screen");
 				}
@@ -921,31 +950,55 @@ private void loadCityCoordinates() {
 				break;
 
 			case "Color Selection":
-				if (x >= 574 && x <= 724 && y >= 501 && y <= 651 && !GameState.isColorSelected[0]) {
-					GameState.isColorSelected[0] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Red");
-					GameState.currentPlayerIndex++;
-				} else if (x>=724 && x <= 874 && y >= 501 && y <= 651 && !GameState.isColorSelected[1]) {
-					GameState.isColorSelected[1] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Yellow");
-					GameState.currentPlayerIndex++;
-				} else if (x >= 874 && x <= 1024 && y >= 501 && y <= 651 && !GameState.isColorSelected[2]) {
-					GameState.isColorSelected[2] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Green");
-					GameState.currentPlayerIndex++;
-				} else if (x >= 1024 && x <= 1174 && y >= 501 && y <= 651 && !GameState.isColorSelected[3]) {
-					GameState.isColorSelected[3] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Blue");
-					GameState.currentPlayerIndex++;
-				} else if (x >= 1174 && x <= 1324 && y >= 501 && y <= 651 && !GameState.isColorSelected[4]) {
-					GameState.isColorSelected[4] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("Purple");
-					GameState.currentPlayerIndex++;
-				} else if (x >= 1324 && x <= 1474 && y >= 501 && y <= 651 && !GameState.isColorSelected[5]) {
-					GameState.isColorSelected[5] = true;
-					GameState.players[GameState.currentPlayerIndex].setColor("White");
-					GameState.currentPlayerIndex++;
-				}
+					int startX = 124;
+					int startY = 399;
+
+					int boxW = 193;
+					int boxH = 192;
+
+					int step = 196; // real spacing from your data
+
+					if (y >= startY && y <= startY + boxH) {
+
+						String[] colors = {
+							"Red", "Yellow", "Green",
+							"Blue", "Purple", "White"
+						};
+
+						for (int i = 0; i < 6; i++) {
+
+							int xMin = startX + (i * step);
+							int xMax = xMin + boxW;
+
+							System.out.println("BOX " + i +
+								" -> xMin=" + xMin +
+								" xMax=" + xMax +
+								" yRange=" + startY + "-" + (startY + boxH));
+
+							if (x >= xMin && x <= xMax && y >= startY && y <= startY + boxH) {
+
+								System.out.println("HIT BOX " + i);
+
+								if (!GameState.isColorSelected[i]) {
+
+									GameState.isColorSelected[i] = true;
+
+									System.out.println("SELECTED COLOR: " + colors[i]);
+
+									GameState.players[GameState.currentPlayerIndex]
+										.setColor(colors[i]);
+
+									GameState.currentPlayerIndex++;
+
+								} else {
+									System.out.println("BOX " + i + " already selected");
+								}
+
+								break;
+							}
+						}
+					}
+
 				
 				if(GameState.currentPlayerIndex == 4) {
 					GameState.currentEvent.removeLast();
@@ -987,7 +1040,6 @@ private void loadCityCoordinates() {
 				}
 			repaint();
 			break;
-
 				case "Pick Powerplant":
 					// code for picking power plant
 					/*	
