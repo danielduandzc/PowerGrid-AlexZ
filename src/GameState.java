@@ -200,7 +200,16 @@ public class GameState{
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
-        minBid=Math.max(minBid, players[playerOrder[auctionPlayerIndex]-1].getBid());
+        
+        // Make sure auctionPlayerIndex is valid
+        if(playerOrderInAuction.isEmpty()) {
+            return;
+        }
+        if(auctionPlayerIndex >= playerOrderInAuction.size()) {
+            auctionPlayerIndex = 0;
+        }
+        
+        minBid=Math.max(minBid, players[playerOrderInAuction.get(auctionPlayerIndex)-1].getBid());
         auctionPlayerIndex++;
         if(auctionPlayerIndex==playerOrderInAuction.size()) {
             auctionPlayerIndex=0;

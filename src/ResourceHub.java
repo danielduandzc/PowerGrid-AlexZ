@@ -4,7 +4,7 @@ public class ResourceHub {
     public boolean[][] coalMarket = new boolean[8][3];      // Spaces 1-16
     public boolean[][] oilMarket = new boolean[8][3];       // Spaces 1-16
     public boolean[][] garbageMarket = new boolean[8][3];   // Spaces 1-16
-    public boolean[] uraniumMarket = new boolean[12][1];   // Spaces 1-16
+    public boolean[][] uraniumMarket = new boolean[12][1];   // Spaces 1-16
     private int[] prices = {1,2,3,4,5,6,7,8,10,12,14,16};
 
     // Price for each space
@@ -20,6 +20,13 @@ public class ResourceHub {
             ret=ret&&b;
         }
         return ret;
+    }
+    
+    private boolean isEmpty(boolean[] x){
+        for(boolean b: x){
+            if(b) return false;
+        }
+        return true;
     }
 
             private void addResource(boolean[][] market, int num) {
@@ -77,7 +84,7 @@ public class ResourceHub {
             addResource(coalMarket, 24);
             addResource(oilMarket, 18);
             addResource(garbageMarket, 9);
-            addResource(uraniumMarket, 2)
+            addResource(uraniumMarket, 2);
         
         
         
@@ -124,6 +131,26 @@ public class ResourceHub {
          return prices[i];   
         }
         return -1;
+    }
+    
+    // Buy a resource at the cheapest available price
+    public boolean buyResource(Resource resource) {
+        boolean[][] market = getMarketForResource(resource);
+        if(market == null) return false;
+        
+        // Find the first non-empty row and remove one resource
+        for(int i = 0; i < market.length; i++) {
+            if(notEmpty(market[i])) {
+                // Remove one resource from this row
+                for(int j = market[i].length - 1; j >= 0; j--) {
+                    if(market[i][j]) {
+                        market[i][j] = false;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean notEmpty(boolean[] x){

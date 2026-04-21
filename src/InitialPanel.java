@@ -329,109 +329,9 @@ private void loadCityCoordinates() {
 				break;
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				    g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
-					switch(GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)) {
-					case 0: g.drawImage(arrow, 220, 500, 250, 200, this); break;
-					case 1: g.drawImage(arrow, 620, 500, 250, 200, this); break;
-					case 2: g.drawImage(arrow, 1020, 500, 250, 200, this); break;
-					case 3: g.drawImage(arrow, 1420, 500, 250, 200, this); break;
-					}
-					 font = new Font("Arial", Font.BOLD, 30);
-					g.setFont(font);
-
-					
-					
-					g.drawImage(auctionImagePlayerOne, 100, 800, 400, 175, this);
-					if(!GameState.players[0].getInAuction()||GameState.players[0].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(100, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[0].getElektro() + " Elektro", 200, 750);
-					}
-					if(GameState.players[0].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() <= GameState.minBid ||
-							GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.players[0].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					g.drawString((GameState.players[0].getBid() + GameState.players[0].getGhostBid()) + "", 200, 950);
-					g.drawImage(auctionImagePlayerTwo, 500, 800, 400, 175, this);
-					if(!GameState.players[1].getInAuction()||GameState.players[1].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(500, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[1].getElektro() + " Elektro", 600, 750);
-					}
-					if(GameState.players[1].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() <= GameState.minBid ||
-							GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.players[1].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					
-					g.drawString((GameState.players[1].getBid() + GameState.players[1].getGhostBid()) + "", 600, 950);
-					g.drawImage(auctionImagePlayerThree, 900, 800, 400, 175, this);
-					if(!GameState.players[2].getInAuction()||GameState.players[2].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(900, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[2].getElektro() + " Elektro", 1000, 750);
-					}
-					if(GameState.players[2].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() <= GameState.minBid ||
-							GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.players[2].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					g.drawString((GameState.players[2].getBid() + GameState.players[2].getGhostBid()) + "", 1000, 950);
-					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
-					if(!GameState.players[3].getInAuction()||GameState.players[3].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(1300, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[3].getElektro() + " Elektro", 1400, 750);
-					}
-				
-					if(GameState.players[3].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() <= GameState.minBid ||
-							GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.players[3].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					g.drawString((GameState.players[3].getBid() + GameState.players[3].getGhostBid()) + "", 1400, 950);
-			break;
+				g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
+				drawAuctionUI(g);
+				break;
 			case "Pick Powerplant":
 				/*	
 					First powerplant is at 175 150. 150x150. each has 50 pixels between them.
@@ -611,22 +511,25 @@ private void loadCityCoordinates() {
 						g.setFont(customFontSmall);
 						g.drawString("$" + cheapestPrice, 320, resourceYPos);
 						
-						// Display how many are available at cheapest price (as tokens)
-						int availableCount = 0;
-						int[] market = null;
-						if(r == 0) market = GameState.resourceMarket.getCoalMarket();
-						else if(r == 1) market = GameState.resourceMarket.getOilMarket();
-						else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
-						else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
-						
-						if(market != null) {
-							for(int i = 1; i < market.length; i++) {
-								if(market[i] > 0) {
-									availableCount = market[i];
+					// Display how many are available at cheapest price (as tokens)
+					int availableCount = 0;
+					boolean[][] market = null;
+					if(r == 0) market = GameState.resourceMarket.getCoalMarket();
+					else if(r == 1) market = GameState.resourceMarket.getOilMarket();
+					else if(r == 2) market = GameState.resourceMarket.getGarbageMarket();
+					else if(r == 3) market = GameState.resourceMarket.getUraniumMarket();
+					
+					if(market != null) {
+						// Count available resources in first row (cheapest price)
+						if(market.length > 0) {
+							for(int i = 0; i < market[0].length; i++) {
+								if(!market[0][i]) {
+									availableCount = market[0].length - i;
 									break;
 								}
 							}
 						}
+					}
 					//	
 						// Draw resource tokens for available count
 						int tokenX = 400;
@@ -683,47 +586,12 @@ private void loadCityCoordinates() {
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1), 100, 100);
 				g.drawString("Buy Cities", 100, 150);
 				
-				// Draw the board and city houses - UI will be implemented with board drawing
 				// Draw continue button
 				g.setFont(citiesFontSmall);
-				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-				g.setColor(Color.WHITE);
-				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-				g.setColor(Color.BLACK);
-				Graphics2D buyG2 = (Graphics2D)(g);
-				buyG2.setStroke(new BasicStroke(5));
-				buyG2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-				CityGraph graph = GameState.fullGraph; // however you store it
+				drawDoneButton(g);
 				
-				for (CityNode node : graph.getNodes()) {
-				String name = node.getName();
-				
-				Point p = cityCoords.get(name);
-
-				if (p == null) continue;
-
-				boolean allowed = GameState.graphOfCity.contains(name);
-					
-
-				if (!allowed) {
-					 g2 = (Graphics2D) g;
-					g2.setStroke(new BasicStroke(6));
-					g2.setColor(Color.RED);
-
-					int x = p.x;
-					int y = p.y;
-
-					g2.drawLine(x - 20, y - 20, x + 20, y + 20);
-					g2.drawLine(x + 20, y - 20, x - 20, y + 20);
-				} else {
-					// Draw sectors for cities that are owned by players
-					drawCitySectors(g, name, p);
-				}
-				}
-				
-				 
-				
+				// Draw all cities with their states
+				drawBuyCitiesUI(g);
 				break;
 			case "Confirm City Purchase":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -1038,6 +906,60 @@ private void loadCityCoordinates() {
 			default: return Color.BLACK;
 		}
 	}
+	
+	// Draw the "Done" button for Buy Cities phase
+	private void drawDoneButton(Graphics g) {
+		g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+		g.setColor(Color.WHITE);
+		g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+		g.setColor(Color.BLACK);
+		Graphics2D g2d = (Graphics2D)(g);
+		g2d.setStroke(new BasicStroke(5));
+		g2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+		centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+	}
+	
+	// Draw all cities for the Buy Cities UI - uses 2D structure for city data
+	private void drawBuyCitiesUI(Graphics g) {
+		CityGraph graph = GameState.fullGraph;
+		Graphics2D g2d = (Graphics2D) g;
+		
+		// Build 2D array of city data: [[cityName, status, x, y], ...]
+		java.util.List<Object[]> cityData = new java.util.ArrayList<>();
+		
+		for (CityNode node : graph.getNodes()) {
+			String name = node.getName();
+			Point p = cityCoords.get(name);
+			
+			if (p == null) continue;
+			
+			boolean allowed = GameState.graphOfCity.contains(name);
+			String status = allowed ? "available" : "unavailable";
+			
+			// Store city data as object array [name, status, x, y, point]
+			cityData.add(new Object[]{name, status, p.x, p.y, p});
+		}
+		
+		// Draw each city based on its status
+		for (Object[] city : cityData) {
+			String name = (String) city[0];
+			String status = (String) city[1];
+			int x = (int) city[2];
+			int y = (int) city[3];
+			Point p = (Point) city[4];
+			
+			if (status.equals("unavailable")) {
+				// Draw red X for unavailable cities
+				g2d.setStroke(new BasicStroke(6));
+				g2d.setColor(Color.RED);
+				g2d.drawLine(x - 20, y - 20, x + 20, y + 20);
+				g2d.drawLine(x + 20, y - 20, x - 20, y + 20);
+			} else {
+				// Draw sectors for available cities
+				drawCitySectors(g, name, p);
+			}
+		}
+	}
 
 	private void drawCitySectors(Graphics g, String cityName, Point p) {
 		// Define sector positions relative to city center
@@ -1095,6 +1017,93 @@ private void loadCityCoordinates() {
 			}
 		}
 		return count;
+	}
+	
+	// Draw the auction UI with scaled coordinates
+	private void drawAuctionUI(Graphics g) {
+		Font font = new Font("Arial", Font.BOLD, 30);
+		g.setFont(font);
+		
+		// Scaled positions for 4 players (left to right) - scaled from original 100, 500, 900, 1300 at 1920 width
+		int[] playerXPositions = {
+			(int)(getWidth() * (100.0 / 1920.0)),    // Player 1
+			(int)(getWidth() * (500.0 / 1920.0)),    // Player 2
+			(int)(getWidth() * (900.0 / 1920.0)),    // Player 3
+			(int)(getWidth() * (1300.0 / 1920.0))    // Player 4
+		};
+		int playerY = (int)(getHeight() * (800.0 / 1070.0));  
+		int playerWidth = (int)(getWidth() * (400.0 / 1920.0));   
+		int playerHeight = (int)(getHeight() * (175.0 / 1070.0));
+		
+		// Text positions relative to player cards
+		int elektroY = (int)(getHeight() * (750.0 / 1070.0));  // 50 pixels above player cards
+		int bidY = (int)(getHeight() * (950.0 / 1070.0));      // 150 pixels below player cards
+		
+		// Draw each player's auction info
+		for(int i = 0; i < 4; i++) {
+			drawAuctionPlayer(g, i, playerXPositions[i], playerY, playerWidth, playerHeight, elektroY, bidY);
+		}
+		
+		// Draw current player arrow - scaled from original positions (220, 620, 1020, 1420)
+		int[] arrowXPositions = {
+			(int)(getWidth() * (220.0 / 1920.0)),
+			(int)(getWidth() * (620.0 / 1920.0)),
+			(int)(getWidth() * (1020.0 / 1920.0)),
+			(int)(getWidth() * (1420.0 / 1920.0))
+		};
+		int arrowY = (int)(getHeight() * (500.0 / 1070.0));
+		int arrowWidth = (int)(getWidth() * (250.0 / 1920.0));
+		int arrowHeight = (int)(getHeight() * (200.0 / 1070.0));
+		
+		int currentPlayerIndex = GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex);
+		g.drawImage(arrow, arrowXPositions[currentPlayerIndex], arrowY, arrowWidth, arrowHeight, this);
+	}
+	
+	// Draw individual auction player UI
+	private void drawAuctionPlayer(Graphics g, int playerIndex, int x, int y, int width, int height, int elektroY, int bidY) {
+		// Draw player image
+		BufferedImage playerImage = null;
+		if(playerIndex == 0) playerImage = auctionImagePlayerOne;
+		else if(playerIndex == 1) playerImage = auctionImagePlayerTwo;
+		else if(playerIndex == 2) playerImage = auctionImagePlayerThree;
+		else if(playerIndex == 3) playerImage = auctionImagePlayerFour;
+		
+		if(playerImage != null) {
+			g.drawImage(playerImage, x, y, width, height, this);
+		}
+		
+		// Draw grayed out overlay if player is out or passed
+		if(!GameState.players[playerIndex].getInAuction() || GameState.players[playerIndex].getHasPassed()) {
+			Color halfTransparentBlack = new Color(0, 0, 0, 127);
+			g.setColor(halfTransparentBlack);
+			g.fillRect(x, y, width, height);
+		} else {
+			// Draw Elektro amount with original positioning
+			g.setColor(Color.BLACK);
+			Font font = new Font("Arial", Font.BOLD, 30);
+			g.setFont(font);
+			int elektroX = x + (int)(width * 0.25);  // ~100 pixels into player card (original was 200 for player at 100)
+			g.drawString(GameState.players[playerIndex].getElektro() + " Elektro", elektroX, elektroY);
+		}
+		
+		// Draw bid amount with color coding
+		int bid = GameState.players[playerIndex].getBid() + GameState.players[playerIndex].getGhostBid();
+		if(GameState.players[playerIndex].getGhostBid() != 0) {
+			g.setColor(Color.BLUE);
+			if(bid > GameState.minBid) {
+				g.setColor(new Color(0, 100, 0));
+			}
+			if(bid <= GameState.minBid || bid > GameState.players[playerIndex].getElektro()) {
+				g.setColor(Color.RED);
+			}
+		} else {
+			g.setColor(Color.BLACK);
+		}
+		
+		Font bidFont = new Font("Arial", Font.BOLD, 30);
+		g.setFont(bidFont);
+		int bidX = x + (int)(width * 0.25);  // ~100 pixels into player card (original was 200 for player at 100)
+		g.drawString(bid + "", bidX, bidY);
 	}
 
 	
@@ -1370,57 +1379,56 @@ private void loadCityCoordinates() {
 			}
 			repaint();
 				break;
-				case "Auction":
-					if (y >= 920 && y <= 970) {
+			case "Auction":
+				if (y >= 920 && y <= 970) {
 
-					int[][] coords = {
-						{100,250,320,410},     // Player 1
-						{500,650,720,810},     // Player 2
-						{900,1050,1120,1210},  // Player 3
-						{1300,1450,1520,1610}  // Player 4
-					};
+				// Scaled click coordinates from original 1920 width
+				int[][] coords = {
+					{(int)(getWidth() * (100.0/1920.0)), (int)(getWidth() * (250.0/1920.0)), (int)(getWidth() * (320.0/1920.0)), (int)(getWidth() * (410.0/1920.0))},     // Player 1
+					{(int)(getWidth() * (500.0/1920.0)), (int)(getWidth() * (650.0/1920.0)), (int)(getWidth() * (720.0/1920.0)), (int)(getWidth() * (810.0/1920.0))},     // Player 2
+					{(int)(getWidth() * (900.0/1920.0)), (int)(getWidth() * (1050.0/1920.0)), (int)(getWidth() * (1120.0/1920.0)), (int)(getWidth() * (1210.0/1920.0))},  // Player 3
+					{(int)(getWidth() * (1300.0/1920.0)), (int)(getWidth() * (1450.0/1920.0)), (int)(getWidth() * (1520.0/1920.0)), (int)(getWidth() * (1610.0/1920.0))}  // Player 4
+				};
 
-					int pIndex = GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex);  
-					Player p = GameState.players[pIndex];
+				int pIndex = GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex);  
+				Player p = GameState.players[pIndex];
 
-					if (!p.getInAuction()) return;
+				if (!p.getInAuction()) return;
 
-					int[] c = coords[pIndex];
+				int[] c = coords[pIndex];
 
-					// + ghost bid
-					if (x >= c[0] && x <= c[0] + 50) {
-						p.setGhostBid(p.getGhostBid() + 1);
-						repaint();
-						return;
-					}
-
-					// - ghost bid
-					if (x >= c[1] && x <= c[1] + 50) {
-						p.setGhostBid(p.getGhostBid() - 1);
-						repaint();
-						return;
-					}
-
-					// PASS
-					if (x >= c[2] && x <= c[2] + 80) {
-						p.setHasPassed(true);
-						p.setBid(0);
-						p.setGhostBid(0);
-						GameState.continueAuction();
-						repaint();
-						return;
-					}
-
-					// CONFIRM BID
-					if (x >= c[3] && x <= c[3] + 70) {
-						if (p.getGhostBid() + p.getBid() > GameState.minBid) {
-							p.useGhostBid();
-							GameState.continueAuction();
-						}
-					}
+				// + ghost bid
+				if (x >= c[0] && x <= c[0] + 50) {
+					p.setGhostBid(p.getGhostBid() + 1);
+					repaint();
+					return;
 				}
 
-// if(y>=920&&y<=970){
+				// - ghost bid
+				if (x >= c[1] && x <= c[1] + 50) {
+					p.setGhostBid(p.getGhostBid() - 1);
+					repaint();
+					return;
+				}
+
+				// PASS
+				if (x >= c[2] && x <= c[2] + 80) {
+					p.setHasPassed(true);
+					p.setBid(0);
+					p.setGhostBid(0);
+					GameState.continueAuction();
+					repaint();
+					return;
+				}
+
+				// CONFIRM BID
+				if (x >= c[3] && x <= c[3] + 70) {
+					if (p.getGhostBid() + p.getBid() > GameState.minBid) {
+						p.useGhostBid();
+						GameState.continueAuction();
+					}
+				}
+			}// if(y>=920&&y<=970){
 // 	if(x>=100&&x<=100+50) {
 // 		if(GameState.players[0].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==1) {
 // 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+1);
