@@ -23,6 +23,7 @@ public class GameState{
     public static CityGraph fullGraph = new CityGraph();
     public static String cityNameForPurchase;
     public static int setPriceForCity;
+    public static int auctionPlayerIndex=0;
 
     public static void setUpDeckAndMarket(){
         
@@ -135,6 +136,7 @@ public class GameState{
     
 
     public static void setUpAuction(){
+        auctionPlayerIndex=0;
         graphOfCity.removeUnselectedZones(isZoneSelected);
         currentPlayerIndex=0;
         minBid=0;
@@ -198,12 +200,12 @@ public class GameState{
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
-        minBid=Math.max(minBid, players[playerOrder[currentPlayerIndex]-1].getBid());
-        currentPlayerIndex++;
-        if(currentPlayerIndex==4) {
-            currentPlayerIndex=0;
+        minBid=Math.max(minBid, players[playerOrder[auctionPlayerIndex]-1].getBid());
+        auctionPlayerIndex++;
+        if(auctionPlayerIndex==playerOrderInAuction.size()) {
+            auctionPlayerIndex=0;
         }
-        if(!players[playerOrder[currentPlayerIndex]-1].getInAuction()||players[playerOrder[currentPlayerIndex]-1].getHasPassed()) {
+        if(!players[playerOrderInAuction.get(auctionPlayerIndex)-1].getInAuction()||players[playerOrderInAuction.get(auctionPlayerIndex)-1].getHasPassed()) {
             continueAuction();
         }
         int numPlayersInAuction=0;
@@ -222,7 +224,7 @@ public class GameState{
                 return;
             }
                
-                currentPlayerIndex=0;
+                auctionPlayerIndex=0;
                 if(players[k].getInAuction()&&!players[k].getHasPassed()) {
                      System.out.println("Player "+(k+1)+" has won the auction");
                      players[k].setBid(0);
@@ -235,6 +237,7 @@ public class GameState{
                     powerPlantsInMarket.remove(i);
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
+                    playerOrderInAuction.remove(j);
                     players[k].setInAuction(false);
                     lock=j;
                    
