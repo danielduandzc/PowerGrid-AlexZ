@@ -1438,67 +1438,52 @@ private void loadCityCoordinates() {
 					}   
 					repaint();
 					break;
-				case "Buy Cities":
-					// Check if Done button was clicked
-					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
-					   && y >= (int)(getHeight() * 0.925) && y <= (int)(getHeight() * 0.925) + (int)(getHeight() * 0.05)) {
-						GameState.currentPlayerIndex++;
-						if(GameState.currentPlayerIndex == 4) {
-							GameState.currentPlayerIndex = 0;
-							GameState.currentEvent.removeLast();
-							GameState.currentEvent.add("Activate Powerplants");
-						}
-					} else {
-						// Check which city was clicked
-						String[] cityNames = {"Flensburg", "Kiel", "Rostock", "Lubeck", "Cuxhaven", "Wilhelmshaven", "Hamburg", 
-											  "Schwerin", "Torgelow", "Bremen", "Berlin", "Osnabruck", "Hannover", "Magdeburg", 
-											  "Frankfurt-O", "Munster", "Duisburg", "Essen", "Dortmund", "Halle", "Kassel", 
-											  "Leipzig", "Dusseldorf", "Erfurt", "Dresden", "Koln", "Aachen", "Fulda", 
-											  "Frankfurt-M", "Wiesbaden", "Trier", "Wurzburg", "Nurnberg", "Mannheim", 
-											  "Saarbrucken", "Regensburg", "Stuttgart", "Augsburg", "Passau", "Freiburg", 
-											  "Munchen", "Konstanz"};
-						int[][] cityCords = {{867, 36}, {918, 101}, {1114, 122}, {989, 146}, {802, 163}, {736, 203}, 
-											  {913, 203}, {1053, 206}, {1294, 198}, {818, 266}, {1236, 331}, {747, 344}, 
-											  {919, 360}, {1092, 367}, {1336, 358}, {694, 405}, {559, 432}, {623, 446}, 
-											  {710, 475}, {1111, 461}, {869, 490}, {1165, 491}, {577, 504}, {1038, 535}, 
-											  {1297, 533}, {642, 552}, {548, 570}, {916, 589}, {814, 629}, {750, 652}, 
-											  {586, 692}, {934, 687}, {1043, 725}, {804, 746}, {671, 771}, {1124, 789}, 
-											  {837, 828}, {998, 856}, {1272, 849}, {712, 916}, {1095, 910}, {831, 958}};
-						
-						int clickRadius = 30;
-						for(int c = 0; c < cityNames.length; c++) {
-							int cityX = cityCords[c][0];
-							int cityY = cityCords[c][1];
-							if(Math.sqrt(Math.pow(x - cityX, 2) + Math.pow(y - cityY, 2)) <= clickRadius && GameState.graphOfCity.contains(cityNames[c])) {
-								System.out.println("Clicked city: " + cityNames[c]);
-								GameState.cityNameForPurchase = cityNames[c];
-							}
-							// Check if click is within radius of city
-							
-							   
-
-							
-						}
-						if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size()==0){
-								GameState.setPriceForCity=10;
-								
-								GameState.currentEvent.add("Confirm City Purchase");
-								
-							}else{
-								int lowestShortestPath = Integer.MAX_VALUE;
-								
-								for(String cityNameIter:GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
-									System.out.println(GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase));
-									if(lowestShortestPath>GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase))
-										lowestShortestPath=GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase);
-								}
-								GameState.setPriceForCity=lowestShortestPath;
-								GameState.currentEvent.add("Confirm City Purchase");
-								
-							}
+							case "Buy Cities":
+				// Check if Done button was clicked
+				if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
+				&& y >= (int)(getHeight() * 0.925) && y <= (int)(getHeight() * 0.925) + (int)(getHeight() * 0.05)) {
+					GameState.currentPlayerIndex++;
+					if(GameState.currentPlayerIndex == 4) {
+						GameState.currentPlayerIndex = 0;
+						GameState.currentEvent.removeLast();
+						GameState.currentEvent.add("Activate Powerplants");
 					}
-					repaint();
-					break;
+				} else {
+					// Reset previously selected city
+					GameState.cityNameForPurchase = null;
+					
+					// Use the scaled coordinates from cityCoords (populated during paint)
+					int clickRadius = 30;
+					for (Map.Entry<String, Point> entry : cityCoords.entrySet()) {
+						String cityName = entry.getKey();
+						Point p = entry.getValue();
+						double dist = Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
+						if (dist <= clickRadius && GameState.graphOfCity.contains(cityName)) {
+							GameState.cityNameForPurchase = cityName;
+							System.out.println("Clicked city: " + cityName);
+							break;
+						}
+					}
+					
+					// Only proceed if a city was actually selected
+					if (GameState.cityNameForPurchase != null) {
+						if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0){
+							GameState.setPriceForCity = 10;
+							GameState.currentEvent.add("Confirm City Purchase");
+						} else {
+							int lowestShortestPath = Integer.MAX_VALUE;
+							for(String cityNameIter : GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
+								int pathLength = GameState.graphOfCity.getShortestPath(cityNameIter, GameState.cityNameForPurchase);
+								if(lowestShortestPath > pathLength)
+									lowestShortestPath = pathLength;
+							}
+							GameState.setPriceForCity = lowestShortestPath;
+							GameState.currentEvent.add("Confirm City Purchase");
+						}
+					}
+				}
+				repaint();
+				break;
 				case "Confirm City Purchase":
 					// Yes button clicked
 					if(x >= (int)(getWidth() * 0.25) && x <= (int)(getWidth() * 0.25) + (int)(getWidth() * 0.15)
