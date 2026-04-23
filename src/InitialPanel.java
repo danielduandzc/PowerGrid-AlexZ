@@ -348,7 +348,7 @@ private void loadCityCoordinates() {
 					
 					
 					*/
-					System.out.println("works");
+					
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font sizedFont;
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
@@ -521,31 +521,29 @@ private void loadCityCoordinates() {
 					
 					if(market != null) {
 						// Count available resources in first row (cheapest price)
-						if(market.length > 0) {
-							for(int i = 0; i < market[0].length; i++) {
-								if(!market[0][i]) {
-									availableCount = market[0].length - i;
-									break;
+						for (boolean[] row : market) {
+							for (boolean cell : row) {
+								if (cell) {
+									availableCount++;
 								}
 							}
 						}
 					}
 					//	
 						// Draw resource tokens for available count
-						int tokenX = 400;
-						for(int t = 0; t < availableCount && t < 5; t++) {
+						int tokenX = 1600;
+						for(int t = 0; t < availableCount; t++) {
 							g.setColor(sphereColors[r]);
 							g.fillOval(tokenX, resourceYPos - 15, 20, 20);
 							g.setColor(Color.BLACK);
 							g2d.setStroke(new BasicStroke(1));
 							g2d.drawOval(tokenX, resourceYPos - 15, 20, 20);
-							tokenX += 22;
+							if((t+1)%3==0) 
+							tokenX -= 22;
+							tokenX -= 22;
 						}
 						
-						if(availableCount > 5) {
-							g.setFont(customFontSmall);
-							g.drawString("+" + (availableCount - 5), tokenX, resourceYPos);
-						}
+						
 						
 						// Buy button
 						g.setColor(Color.LIGHT_GRAY);
@@ -1112,7 +1110,7 @@ private void loadCityCoordinates() {
 	}
 	
 	public void keyPressed(KeyEvent e) {
-		System.out.println(GameState.currentEvent);
+		System.out.println(GameState.playerOrderInAuction);
 		repaint();
 	}
 	

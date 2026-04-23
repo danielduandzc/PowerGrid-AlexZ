@@ -197,6 +197,7 @@ public class GameState{
             currentEvent.add("Player Order");
         }
     public static void continueAuction(){
+        System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player");
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
@@ -209,12 +210,13 @@ public class GameState{
             auctionPlayerIndex = 0;
         }
         
-        minBid=Math.max(minBid, players[playerOrderInAuction.get(auctionPlayerIndex)-1].getBid());
+        minBid=Math.max(minBid, players[playerOrderInAuction.get(auctionPlayerIndex)].getBid());
         auctionPlayerIndex++;
         if(auctionPlayerIndex==playerOrderInAuction.size()) {
             auctionPlayerIndex=0;
         }
-        if(!players[playerOrderInAuction.get(auctionPlayerIndex)-1].getInAuction()||players[playerOrderInAuction.get(auctionPlayerIndex)-1].getHasPassed()) {
+        if(!players[playerOrderInAuction.get(auctionPlayerIndex)].getInAuction()||players[playerOrderInAuction.get(auctionPlayerIndex)].getHasPassed()) {
+            System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player who was skipped");
             continueAuction();
         }
         int numPlayersInAuction=0;
@@ -227,18 +229,18 @@ public class GameState{
         if(numPlayersInAuction==1) {
             int j=0;
             int lock=0;
-            for(int k : playerOrderInAuction)
+            for(Player k : players)
             {
               if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
                
                 auctionPlayerIndex=0;
-                if(players[k].getInAuction()&&!players[k].getHasPassed()) {
-                     System.out.println("Player "+(k+1)+" has won the auction");
-                     players[k].setBid(0);
-                    players[k].setGhostBid(0);
-                    players[k].buyPowerPlant(auctionedPowerPlant);
+                if(k.getInAuction()&&!k.getHasPassed()) {
+                     System.out.println("Player "+(j+1)+" has won the auction");
+                     k.setBid(0);
+                    k.setGhostBid(0);
+                    k.buyPowerPlant(auctionedPowerPlant);
                     int i=0;
                     while(powerPlantsInMarket.get(i).getPrice()<auctionedPowerPlant.getPrice()) {
                         i++;
@@ -247,22 +249,25 @@ public class GameState{
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
                     playerOrderInAuction.remove(j);
-                    players[k].setInAuction(false);
+                    System.out.println("Player "+(j+1)+" Is out of the auction");
+                    k.setInAuction(false);
                     lock=j;
                    
                     
                     
                 }else{
-                    System.out.println("Player "+(k+1)+" Is still in the auction");
-                    players[k].setBid(0);
-                    players[k].setGhostBid(0);
+                    if(players[j].getInAuction())
+                    System.out.println("Player "+(j+1)+" Is still in the auction");
+                    k.setBid(0);
+                    k.setGhostBid(0);
                     minBid=0;
-                    players[k].setHasPassed(false);
+                    k.setHasPassed(false);
                 }
+                 if(players[j].getInAuction())
                   j++;
                
             }
-             playerOrderInAuction.remove(lock);
+            
             if(playerOrderInAuction.size()==1) {
             System.out.println("I, TONY, have won");
             currentEvent.removeLast();
@@ -273,17 +278,10 @@ public class GameState{
                 return;
             }
             System.out.println("Ts shouldnt appear after i win");
-            currentPlayerIndex=0;
-            int max=0;
-            for(int k=0;k<4;k++){
-                if(players[k].getInAuction()) {
-                    max=k;
-                    break;
-                }
-            }
-            while(currentPlayerIndex==max+1||!players[playerOrder[currentPlayerIndex]-1].getInAuction()){
-                currentPlayerIndex++;
-            }
+            auctionPlayerIndex=0;
+            
+           
+            
             
             currentEvent.add("Pick Powerplant");
             
