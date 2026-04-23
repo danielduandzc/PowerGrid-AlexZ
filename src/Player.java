@@ -160,18 +160,20 @@ public class Player {
             for(PowerPlant plant : powerPlants) {
                   if(plant.getFuelType().contains(resource)) {
                         currentCapacity += plant.getMaxResources();
-                        currentCount += getResourceCountInPlant(plant, resource);
+                        currentCount += getResourceCountInPlant(plant);
                   }
             }
+            System.out.println("currentCount: " + currentCount+ " currentCapacity: " + currentCapacity+ " amount: " + amount);
+            System.out.println(currentCount + amount <= currentCapacity);
             return currentCount + amount <= currentCapacity;
       }
       
-      private int getResourceCountInPlant(PowerPlant plant, Resource resource) {
+      private int getResourceCountInPlant(PowerPlant plant) {
             int count = 0;
             for(Resource r : plant.getCurrentResources()) {
-                  if(r == resource) {
+                  
                         count++;
-                  }
+                  
             }
             return count;
       }

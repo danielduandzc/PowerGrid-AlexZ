@@ -35,11 +35,13 @@ public class ResourceHub {
 
             // find first non-full row
             int index = 0;
-            while (index < market.length && isFull(market[index]))
+            if(isFull(market[0]))
+                return;
+            while (index < market.length && !isFull(market[index]))
                 index++;
 
-            if (index == market.length)
-                return; // all full
+            
+                index--;
 
             // fill first empty slot in that row
             for (int i = 0; i < market[index].length; i++) {
@@ -127,8 +129,10 @@ public class ResourceHub {
     public int getCheapestPrice(Resource resource) {
         boolean[][] market = getMarketForResource(resource);
         for(int i = 0; i < market.length; i++) {
-         if(notEmpty(market[i]))
+         if(notEmpty(market[i])){
          return prices[i];   
+         }
+       
         }
         return -1;
     }
@@ -158,7 +162,7 @@ public class ResourceHub {
         if(b)
         return true;
         return false;
-        }
+    }
     
     
 }

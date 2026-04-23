@@ -455,16 +455,23 @@ private void loadCityCoordinates() {
 						
 						// Draw resource tokens (show coal as example)
 						// Draw resource tokens for all resource types
+						int l=0;
 			for (int i = 0; i < 4; i++) {
 				int count = resourceCounts[i];
 				if (count > 0) {
-					for (int t = 0; t < count && t < 3; t++) {
+					for (int t = 0; t < count; t++) {
 						g.setColor(sphereColorsLocal[i]);
 						g.fillOval(tokenXPos, tokenYPos, 15, 15);
 						g.setColor(Color.WHITE);
 						g2d.setStroke(new BasicStroke(1));
 						g2d.drawOval(tokenXPos, tokenYPos, 15, 15);
 						tokenXPos += 18;
+						l++;
+						if(l%5==0) {
+							tokenXPos = ppXPos;
+							tokenYPos += 18;
+						}
+
 					}
 				}
 			}
@@ -481,7 +488,7 @@ private void loadCityCoordinates() {
 				int marketStartY = ppYPos + 220;
 				g.setFont(customFontLarge);
 				g.setColor(Color.BLACK);
-				g.drawString("Resource Market", 100, marketStartY);
+				
 				
 				// Draw the resource market grid
 				String[] resourceNames = {"Coal", "Oil", "Garbage", "Uranium"};

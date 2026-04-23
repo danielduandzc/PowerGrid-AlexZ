@@ -100,8 +100,9 @@ public class GameState{
                     }
                 }
                 // Power cities based on powerCount
-                
+                   
                     p.setEarnedIncome(calculateIncome(Math.min(powerCount,p.getCities().size())));
+                     p.addElektro(p.getEarnedIncome());
                 
             }
      }
