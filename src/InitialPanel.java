@@ -1931,6 +1931,7 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 					case "Menu":
+					System.out.println(GameState.currentEvent);
 					// Recalculate panel and button positions (same as in paint)
 					int panelW = 800;
 					int panelH = 800;
