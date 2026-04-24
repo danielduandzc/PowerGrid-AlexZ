@@ -332,7 +332,7 @@ private void loadCityCoordinates() {
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
-				drawMenu(g);
+				
 				drawAuctionUI(g);
 				break;
 			case "Pick Powerplant":
@@ -835,8 +835,9 @@ private void loadCityCoordinates() {
 				centerString(g, "Confirm", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Player Order":
-				drawMenu(g);
+				
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				drawMenu(g);
 				Font orderFont = new Font("Arial", Font.BOLD, 40);
 				g.setFont(orderFont);
 				g.setColor(Color.BLACK);
@@ -855,34 +856,26 @@ private void loadCityCoordinates() {
 	}
 			public void drawMenu(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-			g2.setColor(Color.WHITE);
+			
 			// Draw the white background image (or just fill white if image is missing)
-			g.fillRect(1900, 10, 2000, 110);
+			g.drawImage(menu,1900, 10, 120, 110, this);
 			
 			// Draw three black bars (hamburger menu icon) inside the image area
 			
-			g2.setColor(Color.BLACK);
+			// g2.setColor(Color.BLACK);
 			
-			int x = 1900;          // left edge of the menu area
-			int y = 10;            // top edge
-			int width = 2000;
-			int height = 110;
+			// int x = 1900; //1900         // left edge of the menu area
+			// int y = 100;      //100      // top edge
+			// int width = 2000;
+			// int height = 110;
 			
-			int barWidth = 80;      // width of each bar
-			int barHeight = 12;     // height of each bar
-			int spacing = 20;       // space between bars
+			// int barWidth = 80;      // width of each bar
+			// int barHeight = 12;     // height of each bar
+			// int spacing = 20;       // space between bars
+			// g2.fillRect(1900, 30, 150, 12);
+			// g2.fillRect(1900, 59, 150, 12);	
+			// g2.fillRect(1900, 88, 150, 12);
 			
-			// Calculate total height of all bars + spacing
-			int totalBarsHeight = 3 * barHeight + 2 * spacing;
-			int startY = y + (height - totalBarsHeight) / 2;  // vertically centered
-			
-			// Center bars horizontally
-			int startX = x + (width - barWidth) / 2;
-			
-			for (int i = 0; i < 3; i++) {
-				int barY = startY + i * (barHeight + spacing);
-				g2.fillRect(startX, barY, barWidth, barHeight);
-			}
 		}
 			public boolean isCityInSelectedZone(String cityName, boolean[] isZoneSelected) {
 			HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
@@ -1140,6 +1133,7 @@ private void loadCityCoordinates() {
 		
 		int currentPlayerIndex = GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex);
 		g.drawImage(arrow, arrowXPositions[currentPlayerIndex], arrowY, arrowWidth, arrowHeight, this);
+		drawMenu(g);
 	}
 	
 	// Draw individual auction player UI
@@ -1505,7 +1499,7 @@ private void loadCityCoordinates() {
 			repaint();
 				break;
 			case "Auction":
-				if (y >= 900 && y <= 1000) {
+				if (y >= 900 && y <= 950) {
 
 				// Scaled click coordinates from original 1920 width
 				int[][] coords = {
