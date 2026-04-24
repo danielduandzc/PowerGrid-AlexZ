@@ -625,6 +625,112 @@ private void loadCityCoordinates() {
 				g2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
+			case "Select Resource":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				drawMenu(g);
+				
+				Font selectResourceFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
+				Font selectResourceFontSmall = Main.customFont.deriveFont(Font.BOLD, 15f);
+				
+				// Draw title
+				g.setFont(selectResourceFontLarge);
+				g.setColor(Color.BLACK);
+				String resourceName = GameState.selectedResourceForAddition != null ? GameState.selectedResourceForAddition.toString() : "Resource";
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Select Power Plant for " + resourceName, 50, 100);
+				
+				// Get current player's power plants
+				Player selectPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+				ArrayList<PowerPlant> selectPlayerPowerPlants = selectPlayer.getPowerPlants();
+				
+				// Display up to 3 power plants
+				int numPlantsToShow = Math.min(3, selectPlayerPowerPlants.size());
+				
+				if(numPlantsToShow == 0) {
+					g.setFont(selectResourceFontSmall);
+					g.drawString("No power plants to add resources to", 100, 300);
+				} else {
+					// Calculate spacing for 3 plants
+					int plantWidth = (int)(getWidth() * 0.25);
+					int plantHeight = (int)(getHeight() * 0.65);
+					int baseX = (int)(getWidth() * 0.1);
+					int spacing = (int)(getWidth() * 0.3);
+					int baseY = (int)(getHeight() * 0.25);
+					
+					Graphics2D g2dSelect = (Graphics2D) g;
+					
+					for(int i = 0; i < numPlantsToShow; i++) {
+						PowerPlant pp = selectPlayerPowerPlants.get(i);
+						int plantX = baseX + (i * spacing);
+						int plantY = baseY;
+						
+						// Draw plant card background
+						g.setColor(Color.WHITE);
+						g.fillRect(plantX, plantY, plantWidth, plantHeight);
+						g.setColor(Color.BLACK);
+						g2dSelect.setStroke(new BasicStroke(3));
+						g2dSelect.drawRect(plantX, plantY, plantWidth, plantHeight);
+						
+						// Draw power plant image
+						BufferedImage ppImage = getPowerPlantImage(pp.getPrice());
+						if(ppImage != null) {
+							g.drawImage(ppImage, plantX + 30, plantY + 20, 100, 100, this);
+						}
+						
+						// Draw plant info
+						g.setFont(selectResourceFontSmall);
+						g.setColor(Color.BLACK);
+						int infoY = plantY + 135;
+						g.drawString("Price: " + pp.getPrice(), plantX + 20, infoY);
+						g.drawString("Capacity: " + pp.getMaxResources(), plantX + 20, infoY + 25);
+						
+						// Draw fuel types
+						String fuelStr = "";
+						for(Resource r : pp.getFuelType()) {
+							fuelStr += r.toString().substring(0, 1);
+						}
+						if(fuelStr.isEmpty()) fuelStr = "Renewable";
+						if(fuelStr.length() == 2) fuelStr = fuelStr.substring(0, 1) + "/" + fuelStr.substring(1);
+						g.drawString("Fuels: " + fuelStr, plantX + 20, infoY + 50);
+						
+						// Draw current resources
+						int currentCount = pp.getCurrentResources().size();
+						g.drawString("Current: " + currentCount + "/" + pp.getMaxResources(), plantX + 20, infoY + 75);
+						
+						// Draw resource tokens
+						Color[] sphereColorsLocal = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
+						int tokenXPos = plantX + 20;
+						int tokenYPos = infoY + 95;
+						int[] resourceCounts = {0, 0, 0, 0};
+						
+						for(Resource r : pp.getCurrentResources()) {
+							if(r == Resource.COAL) resourceCounts[0]++;
+							else if(r == Resource.OIL) resourceCounts[1]++;
+							else if(r == Resource.GARBAGE) resourceCounts[2]++;
+							else if(r == Resource.URANIUM) resourceCounts[3]++;
+						}
+						
+						int l = 0;
+						for (int j = 0; j < 4; j++) {
+							int count = resourceCounts[j];
+							if (count > 0) {
+								for (int t = 0; t < count; t++) {
+									g.setColor(sphereColorsLocal[j]);
+									g.fillOval(tokenXPos, tokenYPos, 12, 12);
+									g.setColor(Color.WHITE);
+									g2dSelect.setStroke(new BasicStroke(1));
+									g2dSelect.drawOval(tokenXPos, tokenYPos, 12, 12);
+									tokenXPos += 15;
+									l++;
+									if(l%4==0) {
+										tokenXPos = plantX + 20;
+										tokenYPos += 15;
+									}
+								}
+							}
+						}
+					}
+				}
+				break;
 			case "Buy Cities":
 				
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
@@ -1696,6 +1802,7 @@ private void loadCityCoordinates() {
 										boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
 
 										if (bought) {
+											GameState.selectedResourceForAddition = resourceTypes[r];
 											GameState.currentEvent.add("Select Resource");
 											
 											buyPlayer.addElektro(-price);
@@ -1730,6 +1837,66 @@ private void loadCityCoordinates() {
 
 						repaint();
 						break;
+
+			case "Select Resource":
+				// Menu button
+				if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
+					GameState.currentEvent.add("Menu");
+					repaint();
+					return;
+				}
+				
+				Player selectPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+				ArrayList<PowerPlant> selectPlayerPowerPlants = selectPlayer.getPowerPlants();
+				int numPlantsToShow = Math.min(3, selectPlayerPowerPlants.size());
+				
+				if(numPlantsToShow > 0) {
+					// Calculate spacing for 3 plants (matching paint method)
+					int plantWidth = (int)(getWidth() * 0.25);
+					int plantHeight = (int)(getHeight() * 0.65);
+					int baseX = (int)(getWidth() * 0.1);
+					int spacing = (int)(getWidth() * 0.3);
+					int baseY = (int)(getHeight() * 0.25);
+					
+					for(int i = 0; i < numPlantsToShow; i++) {
+						PowerPlant pp = selectPlayerPowerPlants.get(i);
+						int plantX = baseX + (i * spacing);
+						int plantY = baseY;
+						
+						// Check if click is within this plant card
+						if (x >= plantX && x <= plantX + plantWidth && y >= plantY && y <= plantY + plantHeight) {
+							// Add the selected resource to this power plant
+							if(pp.getCurrentResources().size() < pp.getMaxResources()) {
+								// Check if this powerplant can use this resource type
+								boolean canUseResource = false;
+								if(GameState.selectedResourceForAddition == null) {
+									canUseResource = false;
+								} else if(pp.getFuelType().isEmpty()) {
+									// Renewable plant can't use resources
+									canUseResource = false;
+								} else if(pp.getFuelType().contains(GameState.selectedResourceForAddition)) {
+									canUseResource = true;
+								}
+								
+								if(canUseResource) {
+									pp.addResource(GameState.selectedResourceForAddition);
+									
+									
+									// Return to Buy Resources
+									GameState.currentEvent.removeLast();
+									repaint();
+									return;
+								} else {
+									System.out.println("This power plant cannot use " + GameState.selectedResourceForAddition);
+								}
+							} else {
+								System.out.println("This power plant is at maximum capacity");
+							}
+						}
+					}
+				}
+				repaint();
+				break;
 
 				
 							case "Buy Cities":

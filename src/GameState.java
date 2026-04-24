@@ -26,6 +26,7 @@ public class GameState{
     public static String cityNameForPurchase;
     public static int setPriceForCity;
     public static int auctionPlayerIndex=0;
+    public static Resource selectedResourceForAddition = null;
     
 
     public static void setUpDeckAndMarket(){
