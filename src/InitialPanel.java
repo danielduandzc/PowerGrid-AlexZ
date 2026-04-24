@@ -74,7 +74,7 @@ private void loadCityCoordinates() {
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack, rules1, rules2, rules3, rules4, rules5, 
-	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG;
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menu;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -82,6 +82,7 @@ private void loadCityCoordinates() {
 		
 		//Load all images
 		try{
+			menu = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Menu.png"));
 			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
 			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
 			rules2 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules2.png"));
@@ -326,10 +327,12 @@ private void loadCityCoordinates() {
 					g2.drawLine(180, 650, 255, 725);
 					g2.drawLine(255, 650, 180, 725);
 				}
+				drawMenu(g);
 				break;
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
+				drawMenu(g);
 				drawAuctionUI(g);
 				break;
 			case "Pick Powerplant":
@@ -348,7 +351,9 @@ private void loadCityCoordinates() {
 					
 					
 					*/
+				
 					
+					//around x=1600–1800, y=950–1050)
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font sizedFont;
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
@@ -358,16 +363,34 @@ private void loadCityCoordinates() {
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 				g.setFont(sizedFont);
 				g.drawString("Player " + ((GameState.playerOrderInAuction.get(0)) + 1) + " Pick a Power Plant", 100, 900);
+				sizedFont = Main.customFont.deriveFont(Font.BOLD, 25f);
+				g.setFont(sizedFont);
+				g.drawString("Current Elektro: "+GameState.players[GameState.playerOrderInAuction.get(0)].getElektro(), 900, 750);
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
+				if(!GameState.firstRoundOfAuction){
+				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 20f);
+				g.setFont(sizedFont);
+				int skipWidth = 150;
+				int skipHeight = 60;
+				int skipX = getWidth() - skipWidth - 50;
+				int skipY = getHeight() - skipHeight - 50;
+				g.setColor(Color.WHITE);
+				g.fillRect(skipX, skipY, skipWidth, skipHeight);
+				g.setColor(Color.BLACK);
+				Graphics2D g2dSkip = (Graphics2D) g;
+				g2dSkip.setStroke(new BasicStroke(3));
+				g2dSkip.drawRect(skipX, skipY, skipWidth, skipHeight);
+				centerString(g, "SKIP", skipX, skipY, skipWidth, skipHeight);
+				}
 				break;
 			case "Buy Powerplant":
 			g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				
+				drawMenu(g);
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 			g.setFont(sizedFont);
 			
@@ -375,18 +398,37 @@ private void loadCityCoordinates() {
 				sizedFont = Main.customFont.deriveFont(Font.BOLD, 100f);
 				g.setFont(sizedFont);
 				g.drawString("Player " + ((GameState.playerOrderInAuction.get(0)) + 1) + " Buy a Power Plant", 100, 900);
+				sizedFont = Main.customFont.deriveFont(Font.BOLD, 25f);
+				g.setFont(sizedFont);
+				g.drawString("Current Elektro: "+GameState.players[GameState.playerOrderInAuction.get(0)].getElektro(), 900, 750);
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
+				if(!GameState.firstRoundOfAuction){
+				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 20f);
+				g.setFont(sizedFont);
+				int skipWidth = 150;
+				int skipHeight = 60;
+				int skipX = getWidth() - skipWidth - 50;
+				int skipY = getHeight() - skipHeight - 50;
+				g.setColor(Color.WHITE);
+				g.fillRect(skipX, skipY, skipWidth, skipHeight);
+				g.setColor(Color.BLACK);
+				Graphics2D g2dSkip = (Graphics2D) g;
+				g2dSkip.setStroke(new BasicStroke(3));
+				g2dSkip.drawRect(skipX, skipY, skipWidth, skipHeight);
+				centerString(g, "SKIP", skipX, skipY, skipWidth, skipHeight);
+				}
 				break;
 			case "Buy Resources":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				drawMenu(g);
 				Font customFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
 				Font customFontMed = Main.customFont.deriveFont(Font.BOLD, 30f);
-				Font customFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
+				Font customFontSmall = Main.customFont.deriveFont(Font.BOLD, 15f);
 				
 				g.setFont(customFontLarge);
 				g.setColor(Color.BLACK);
@@ -535,7 +577,7 @@ private void loadCityCoordinates() {
 								}
 							}
 						}
-					}
+					}drawMenu(g);
 					//	
 						// Draw resource tokens for available count
 						int tokenX = 1600;
@@ -579,9 +621,10 @@ private void loadCityCoordinates() {
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Buy Cities":
+				
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
-				
+				drawMenu(g);
 				// Draw heading with player info
 				Font citiesFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
 				Font citiesFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
@@ -601,6 +644,7 @@ private void loadCityCoordinates() {
 			case "Confirm City Purchase":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font confirmFont = new Font("Arial", Font.BOLD, 40);
+				drawMenu(g);
 				g.setFont(confirmFont);
 				g.setColor(Color.BLACK);
 				String confirmMsg = "Confirm Purchase Of "+GameState.cityNameForPurchase+" For "+GameState.setPriceForCity+" Elektro?";
@@ -638,6 +682,7 @@ private void loadCityCoordinates() {
 			case "Bureaucracy":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(scoringTrack, 724, 200, 600, 130, this);
+				drawMenu(g);
 				
 				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
 				g.setFont(bureaucracyFont);
@@ -690,6 +735,7 @@ private void loadCityCoordinates() {
 				break;
 			case "Activate Powerplants":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				drawMenu(g);
 				Font ppFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
 				Font ppFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
 				g.setFont(ppFontLarge);
@@ -789,6 +835,7 @@ private void loadCityCoordinates() {
 				centerString(g, "Confirm", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Player Order":
+				drawMenu(g);
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font orderFont = new Font("Arial", Font.BOLD, 40);
 				g.setFont(orderFont);
@@ -805,6 +852,9 @@ private void loadCityCoordinates() {
 
 			
 		}
+	}
+	public void drawMenu(Graphics g){
+		g.drawImage(menu, 1900, 10, 2000, 110, this);
 	}
 			public boolean isCityInSelectedZone(String cityName, boolean[] isZoneSelected) {
 			HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
@@ -1273,7 +1323,10 @@ private void loadCityCoordinates() {
 				if (y >= 150 && y <= 300) {
 
 				if (x >= 175 && x <= 325) {
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
+						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
+					
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
 				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
@@ -1284,6 +1337,8 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 
 			} else if (x >= 375 && x <= 525) {
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1)
+						return;
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -1295,6 +1350,8 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 			
 			} else if (x >= 575 && x <= 725) {
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1)
+						return;
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -1306,6 +1363,8 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 
 			} else if (x >= 775 && x <= 925) {
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
+						return;
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -1317,12 +1376,30 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 			}
 		}
+		else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50){
+			x=0;y=0;
+			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
+			
+			if(GameState.playerOrderInAuction.size()==2){
+			GameState.currentEvent.removeFirst();
+			GameState.currentEvent.removeFirst();
+			System.out.println(GameState.playerOrderInAuction);
+			GameState.playerOrderInAuction.remove(0);
+				GameState.currentEvent.add("Buy Powerplant");
+			}else{ 
+				GameState.playerOrderInAuction.remove(0);
+			}
+
+		}
 					repaint();
 					break;
 			case "Buy Powerplant":
+				System.out.println(GameState.playerOrderInAuction);
 				if (y >= 150 && y <= 300) {
 
 				if (x >= 175 && x <= 325) {
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
+						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -1338,6 +1415,8 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.add("Buy Resources");
 
 				} else if (x >= 375 && x <= 525) {
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1)
+						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -1353,6 +1432,8 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.add("Buy Resources");
 
 				} else if (x >= 575 && x <= 725) {
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1)
+						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -1367,6 +1448,8 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Buy Resources");
 				} else if (x >= 775 && x <= 925) {
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
+						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -1381,11 +1464,20 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.removeLast();
 				GameState.currentEvent.add("Buy Resources");
 				}
+				
+		}else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50){
+			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
+			GameState.playerOrderInAuction.remove(0);
+			
+				GameState.currentEvent.removeFirst();
+				
+				GameState.currentEvent.add("Buy Resources");
+			
 			}
 			repaint();
 				break;
 			case "Auction":
-				if (y >= 920 && y <= 970) {
+				if (y >= 900 && y <= 1000) {
 
 				// Scaled click coordinates from original 1920 width
 				int[][] coords = {
@@ -1701,7 +1793,7 @@ private void loadCityCoordinates() {
 							// Calculate base price
 							int basePrice;
 							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0){
-								basePrice = 10;
+								basePrice = 0;
 							} else {
 								int lowestShortestPath = Integer.MAX_VALUE;
 								for(String cityNameIter : GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities()){
@@ -1716,7 +1808,7 @@ private void loadCityCoordinates() {
 							int totalSectors = countTotalSectorsInCity(GameState.cityNameForPurchase);
 							if(totalSectors == 0) {
 								// First sector: base price
-								GameState.setPriceForCity = basePrice;
+								GameState.setPriceForCity = basePrice+10;
 							} else if(totalSectors == 1) {
 								// Second sector: base price + 15
 								GameState.setPriceForCity = basePrice + 15;
@@ -1724,6 +1816,7 @@ private void loadCityCoordinates() {
 								// Third sector: base price + 20
 								GameState.setPriceForCity = basePrice + 20;
 							}
+							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro()>=GameState.setPriceForCity)
 							GameState.currentEvent.add("Confirm City Purchase");
 						}
 					}

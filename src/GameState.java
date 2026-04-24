@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.util.*;
 public class GameState{
-
+    public static boolean firstRoundOfAuction=true;
     public static ArrayList<String> currentEvent = new ArrayList<>();
     public static int currentPlayerIndex=0;
     public static int currentStep=1;
@@ -85,6 +85,7 @@ public class GameState{
      } 
 
      public static void runBureaucracy(){
+         firstRoundOfAuction=false;
             for(Player p : players) {
                 int powerCount = 0;
                 for(PowerPlant plant : p.getPowerPlants()) {
@@ -137,6 +138,7 @@ public class GameState{
     
 
     public static void setUpAuction(){
+
         auctionPlayerIndex=0;
         graphOfCity.removeUnselectedZones(isZoneSelected);
         currentPlayerIndex=0;
@@ -173,6 +175,7 @@ public class GameState{
                 // End game
                 return;
             }
+            resourceMarket.restockMarket();
 
             // Sort players by:
             // 1. Most cities (descending)
@@ -210,7 +213,7 @@ public class GameState{
         if(auctionPlayerIndex >= playerOrderInAuction.size()) {
             auctionPlayerIndex = 0;
         }
-        
+       
         minBid=Math.max(minBid, players[playerOrderInAuction.get(auctionPlayerIndex)].getBid());
         auctionPlayerIndex++;
         if(auctionPlayerIndex==playerOrderInAuction.size()) {
@@ -229,7 +232,7 @@ public class GameState{
         }
         if(numPlayersInAuction==1) {
             int j=0;
-            int lock=0;
+           
             for(Player k : players)
             {
               if(currentEvent.getLast().equals("Buy Powerplant")){
@@ -238,7 +241,7 @@ public class GameState{
                
                 auctionPlayerIndex=0;
                 if(k.getInAuction()&&!k.getHasPassed()) {
-                     System.out.println("Player "+(j+1)+" has won the auction");
+                     
                      k.setBid(0);
                     k.setGhostBid(0);
                     k.buyPowerPlant(auctionedPowerPlant);
@@ -249,10 +252,14 @@ public class GameState{
                     powerPlantsInMarket.remove(i);
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
-                    playerOrderInAuction.remove(j);
+                    i=0;
+                    System.out.println("j at the time of death "+j);
+                    while(i<j&&playerOrderInAuction.get(i)!=j)
+                        i++;
+                    playerOrderInAuction.remove(i);
                     System.out.println("Player "+(j+1)+" Is out of the auction");
                     k.setInAuction(false);
-                    lock=j;
+                    
                    
                     
                     
@@ -266,15 +273,17 @@ public class GameState{
                 }
                  if(players[j].getInAuction())
                   j++;
-               
+                
             }
             
             if(playerOrderInAuction.size()==1) {
             System.out.println("I, TONY, have won");
             currentEvent.removeLast();
+           
              currentEvent.add("Buy Powerplant");
              return;
             }
+            
               if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }

@@ -77,6 +77,29 @@ public class ResourceHub {
         removeResource(market, num - 1);
     }
 
+    public void restockMarket(){
+        switch(GameState.currentStep){
+            case 1:
+            addResource(coalMarket, 5);
+            addResource(oilMarket, 4);
+            addResource(garbageMarket, 3);
+            addResource(uraniumMarket, 2);
+            break;
+            case 2:
+            addResource(coalMarket, 7);
+            addResource(oilMarket, 5);
+            addResource(garbageMarket, 3);
+            addResource(uraniumMarket, 3);
+            break;
+            case 3:
+            addResource(coalMarket, 5);
+            addResource(oilMarket, 6);
+            addResource(garbageMarket, 5);
+            addResource(uraniumMarket, 2);
+            break;
+
+        }
+    }
 
     
     public void initializeMarket() {
