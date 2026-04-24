@@ -270,7 +270,7 @@ private void loadCityCoordinates() {
 		
 				//continue button
 				//height: 950
-				Font font = new Font("Arial", Font.BOLD, 30);
+				Font font = new Font("Arial", Font.BOLD, 25);
 				g.setFont(font);
 				
 				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
@@ -281,7 +281,7 @@ private void loadCityCoordinates() {
 				Graphics2D g2 = (Graphics2D)(g);
 				g2.setStroke(new BasicStroke(5));
 				g2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
-				
+				g.drawString("Please select the boxes for the zones",57, 848    );
 				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
 				g2.setStroke(new BasicStroke(15));
 					g.setColor(new Color(0, 128, 128));//teal
@@ -369,9 +369,11 @@ private void loadCityCoordinates() {
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}
+				g.drawString("Current Market ", 1000, 200);
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
+				g.drawString("Future Market ", 1000, 400);
 				if(!GameState.firstRoundOfAuction){
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 20f);
 				g.setFont(sizedFont);
@@ -624,7 +626,7 @@ private void loadCityCoordinates() {
 				
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
-				drawMenu(g);
+				
 				// Draw heading with player info
 				Font citiesFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
 				Font citiesFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
@@ -644,7 +646,7 @@ private void loadCityCoordinates() {
 			case "Confirm City Purchase":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font confirmFont = new Font("Arial", Font.BOLD, 40);
-				drawMenu(g);
+				
 				g.setFont(confirmFont);
 				g.setColor(Color.BLACK);
 				String confirmMsg = "Confirm Purchase Of "+GameState.cityNameForPurchase+" For "+GameState.setPriceForCity+" Elektro?";
@@ -1314,7 +1316,10 @@ private void loadCityCoordinates() {
 				} else if(x >= 180 && x <= 255 && y >= 650 && y <= 725 && !GameState.isZoneSelected[5]) {
 					GameState.isZoneSelected[5] = true;
 					GameState.currentPlayerIndex++;
+				}else if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						GameState.currentEvent.add("Menu");
 				}
+				
 				if(GameState.currentPlayerIndex == 4) {
 					x=0;
 					y=0;
@@ -1487,7 +1492,7 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.add("Buy Resources");
 				}
 				
-		}else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50){
+		}else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50&&!GameState.firstRoundOfAuction){
 			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
 			GameState.playerOrderInAuction.remove(0);
 			
@@ -1495,7 +1500,9 @@ private void loadCityCoordinates() {
 				
 				GameState.currentEvent.add("Buy Resources");
 			
-			}
+			}else if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						GameState.currentEvent.add("Menu");
+				}
 			repaint();
 				break;
 			case "Auction":
