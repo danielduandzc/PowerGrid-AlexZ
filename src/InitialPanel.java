@@ -853,9 +853,37 @@ private void loadCityCoordinates() {
 			
 		}
 	}
-	public void drawMenu(Graphics g){
-		g.drawImage(menu, 1900, 10, 2000, 110, this);
-	}
+			public void drawMenu(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(Color.WHITE);
+			// Draw the white background image (or just fill white if image is missing)
+			g.fillRect(1900, 10, 2000, 110);
+			
+			// Draw three black bars (hamburger menu icon) inside the image area
+			
+			g2.setColor(Color.BLACK);
+			
+			int x = 1900;          // left edge of the menu area
+			int y = 10;            // top edge
+			int width = 2000;
+			int height = 110;
+			
+			int barWidth = 80;      // width of each bar
+			int barHeight = 12;     // height of each bar
+			int spacing = 20;       // space between bars
+			
+			// Calculate total height of all bars + spacing
+			int totalBarsHeight = 3 * barHeight + 2 * spacing;
+			int startY = y + (height - totalBarsHeight) / 2;  // vertically centered
+			
+			// Center bars horizontally
+			int startX = x + (width - barWidth) / 2;
+			
+			for (int i = 0; i < 3; i++) {
+				int barY = startY + i * (barHeight + spacing);
+				g2.fillRect(startX, barY, barWidth, barHeight);
+			}
+		}
 			public boolean isCityInSelectedZone(String cityName, boolean[] isZoneSelected) {
 			HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
 
