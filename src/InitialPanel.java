@@ -819,6 +819,7 @@ private void loadCityCoordinates() {
 				ppG2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
+				
 			case "Hybrid Powerplant":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				Font hybridFont = new Font("Arial", Font.BOLD, 40);
@@ -930,6 +931,18 @@ private void loadCityCoordinates() {
 					g.drawString(options[i], textX, textY);
 				}
 				break;
+			case "Step 2":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				drawMenu(g);
+				Font step2Font = new Font("Arial", Font.BOLD, 80);
+				g.setFont(step2Font);
+				g.setColor(Color.BLACK);
+				g.drawString("Step 2", (getWidth() - 200) / 2, getHeight() / 2);
+				break;
+			case "Full Map":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
+				 drawBuyCitiesUI(g);
 
 				
 				
@@ -1683,14 +1696,13 @@ private void loadCityCoordinates() {
 										boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
 
 										if (bought) {
-											buyPlayer.addResource(resourceTypes[r], 1);
+											GameState.currentEvent.add("Select Resource");
+											
 											buyPlayer.addElektro(-price);
+											repaint();
+											return;
 
-											System.out.println(
-												"Player " + (GameState.currentPlayerIndex + 1) +
-												" bought " + resourceTypes[r] +
-												" for " + price + " Elektro"
-											);
+											
 										}
 
 									} else if (!buyPlayer.canAddResource(resourceTypes[r], 1)) {
@@ -1735,6 +1747,11 @@ private void loadCityCoordinates() {
 					if(GameState.currentPlayerIndex == 4) {
 						GameState.currentPlayerIndex = 0;
 						GameState.currentEvent.removeLast();
+						for(Player p : GameState.players) {
+							for(PowerPlant pp : p.getPowerPlants()) {
+								pp.setActivated(false);
+							}
+						}
 						GameState.currentEvent.add("Activate Powerplants");
 					}
 				} else {
@@ -1993,6 +2010,10 @@ private void loadCityCoordinates() {
 						}
 		
 					}
+				case "Step 2":
+					GameState.currentEvent.removeLast();
+					repaint();
+					break;
 				}
 }
 	

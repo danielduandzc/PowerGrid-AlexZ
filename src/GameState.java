@@ -18,12 +18,15 @@ public class GameState{
     public static PowerPlant auctionedPowerPlant;
     public static ArrayList<PowerPlant> powerPlantDeck=new ArrayList<PowerPlant>();
     public static ArrayList<PowerPlant> powerPlantsInMarket=new ArrayList<PowerPlant>();
+    public static ArrayList<PowerPlant> discardPile=new ArrayList<PowerPlant>();
     public static ArrayList<Integer> playerOrderInAuction=new ArrayList<Integer>();
+    
     public static ResourceHub resourceMarket = new ResourceHub();
     public static CityGraph fullGraph = new CityGraph();
     public static String cityNameForPurchase;
     public static int setPriceForCity;
     public static int auctionPlayerIndex=0;
+    
 
     public static void setUpDeckAndMarket(){
         
@@ -97,7 +100,7 @@ public class GameState{
                         powerCount += plant.getPowerOutput();
                         // Remove resources used for this turn
                         for(Resource r : plant.getFuelType()) {
-                            int resourcesToRemove = Math.min(plant.getCurrentResources().size(), plant.getMaxResources());
+                            int resourcesToRemove = plant.getFuelCost();
                             for(int i = 0; i < resourcesToRemove; i++) {
                                 plant.getCurrentResources().remove(r);
                             }
@@ -172,13 +175,7 @@ public class GameState{
                 mostCities = Math.max(mostCities, p.getCities().size());
             }
 
-            if (mostCities >= 7) {
-                currentStep = 2;
-            }
-            if (mostCities >= 17) {
-                // End game
-                return;
-            }
+           
             resourceMarket.restockMarket();
 
             // Sort players by:
@@ -203,6 +200,16 @@ public class GameState{
             }
 
             currentEvent.add("Player Order");
+             if (mostCities >= 7) {
+                currentStep = 2;
+                discardPile.add(powerPlantsInMarket.remove(0)); // Remove the cheapest power plant
+                powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size() - 1)); // Add a new one from the deck
+                currentEvent.add("Step 2");
+            }
+            if (mostCities >= 17) {
+                // End game
+                return;
+            }
         }
     public static void continueAuction(){
         System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player");
