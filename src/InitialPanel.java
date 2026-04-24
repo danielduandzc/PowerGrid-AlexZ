@@ -74,7 +74,7 @@ private void loadCityCoordinates() {
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack, rules1, rules2, rules3, rules4, rules5, 
-	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menu;
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menu, resourceSummary;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -82,6 +82,7 @@ private void loadCityCoordinates() {
 		
 		//Load all images
 		try{
+			resourceSummary= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/Resource Summary/Menu.png"));
 			menu = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Menu.png"));
 			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
 			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
@@ -275,14 +276,14 @@ private void loadCityCoordinates() {
 				
 				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
 				g.setColor(Color.WHITE);
-				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				
 				g.setColor(Color.BLACK);
 				
 				Graphics2D g2 = (Graphics2D)(g);
 				g2.setStroke(new BasicStroke(5));
-				g2.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				
 				g.drawString("Please select the boxes for the zones",57, 848    );
-				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
+				
 				g2.setStroke(new BasicStroke(15));
 					g.setColor(new Color(0, 128, 128));//teal
 					g.fillRect(180, 150, 75, 75);
@@ -847,6 +848,83 @@ private void loadCityCoordinates() {
 				", Player "+GameState.playerOrder[1]+", Player "+GameState.playerOrder[2]+", Player "+GameState.playerOrder[3]
 				, (getWidth() - 850) / 2, getHeight() / 2 - 150);
 				GameState.currentPlayerIndex=0;
+			case "Menu":
+				// Draw the current game state underneath (already drawn by previous paint?)
+				// Actually, when "Menu" is added, the previous screen is still behind.
+				// We'll draw a dark overlay over the existing graphics.
+				Graphics2D menuG2 = (Graphics2D) g;
+				// Semi-transparent overlay
+				menuG2.setColor(new Color(0, 0, 0, 200));
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+
+				// Define the menu panel size (square, e.g. 800x800)
+				int panelW = 800;
+				int panelH = 800;
+				int panelX = (getWidth() - panelW) / 2;
+				int panelY = (getHeight() - panelH) / 2;
+
+				// White background for the menu panel
+				menuG2.setColor(Color.WHITE);
+				menuG2.fillRect(panelX, panelY, panelW, panelH);
+				menuG2.setColor(Color.BLACK);
+				menuG2.setStroke(new BasicStroke(4));
+				menuG2.drawRect(panelX, panelY, panelW, panelH);
+
+				// Title "MENU" using the custom font
+				Font titleFont = Main.customFont.deriveFont(Font.BOLD, 60f);
+				g.setFont(titleFont);
+				g.setColor(Color.BLACK);
+				String title = "MENU";
+				FontMetrics titleFm = g.getFontMetrics();
+				int titleX = panelX + (panelW - titleFm.stringWidth(title)) / 2;
+				int titleY = panelY + 80;
+				g.drawString(title, titleX, titleY);
+
+				// Draw a separator line
+				int separatorY = titleY + 30;
+				g.drawLine(panelX + 50, separatorY, panelX + panelW - 50, separatorY);
+
+				// Options layout: two columns, each button 300x60, spacing 40
+				Font optionFont = Main.customFont.deriveFont(Font.PLAIN, 17f);
+				g.setFont(optionFont);
+				FontMetrics optionFm = g.getFontMetrics();
+
+				String[] options = {
+					"Resource Summary", "Player Profiles",
+					"Discarded Powerplants", "Map",
+					"Resource Market", "Auction Market",
+					"Rules", "Return to Game",
+					"Step Info"
+				};
+				// Store button bounds for mouse click detection (we'll use an array)
+				// But for simplicity, in mousePressed we'll recalc positions.
+
+				int startX = panelX + 100;
+				int startY = panelY + 200;
+				int btnW = 280;
+				int btnH = 60;
+				int colSpacing = 80;
+				int rowSpacing = 70;
+
+				for (int i = 0; i < options.length; i++) {
+					int col = i % 2;
+					int row = i / 2;
+					 x = startX + col * (btnW + colSpacing);
+					 y = startY + row * (btnH + rowSpacing);
+
+					// Draw button background
+					g.setColor(Color.LIGHT_GRAY);
+					g.fillRoundRect(x, y, btnW, btnH, 15, 15);
+					g.setColor(Color.BLACK);
+					g.drawRoundRect(x, y, btnW, btnH, 15, 15);
+
+					// Center the text
+					int textX = x + (btnW - optionFm.stringWidth(options[i])) / 2;
+					int textY = y + (btnH - optionFm.getHeight()) / 2 + optionFm.getAscent();
+					g.setColor(Color.BLACK);
+					g.drawString(options[i], textX, textY);
+				}
+				break;
 
 				
 				
@@ -1500,9 +1578,7 @@ private void loadCityCoordinates() {
 				
 				GameState.currentEvent.add("Buy Resources");
 			
-			}else if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
-						GameState.currentEvent.add("Menu");
-				}
+			}
 			repaint();
 				break;
 			case "Auction":
@@ -1554,110 +1630,24 @@ private void loadCityCoordinates() {
 						GameState.continueAuction();
 					}
 				}
-			}// if(y>=920&&y<=970){
-// 	if(x>=100&&x<=100+50) {
-// 		if(GameState.players[0].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==1) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+1);
-// 		}
-// 	}else if(x>=250&&x<=250+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==1) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()-1);
-// 		}
-// 	}else if(x>=320&&x<=320+80) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==1) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setHasPassed(true);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setBid(0);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(0);
-// 		GameState.continueAuction();
-// 		repaint();
-
-// 		}
-// 	}else if(x>=410&&x<=410+70) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==1) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+ GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getBid() > GameState.minBid){
-// 			GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].useGhostBid();
-// 			GameState.continueAuction();
-// 		}
-// 	}
-// 	}else if(x>=500&&x<=500+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==2) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+1);
-// 		}
-// 	}else if(x>=650&&x<=650+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==2) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()-1);
-// 		}
-// 	}else if(x>=720&&x<=720+80) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==2) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setHasPassed(true);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setBid(0);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(0);
-// 		GameState.continueAuction();
-// 		repaint();
-// 		}
-// 	}else if(x>=810&&x<=810+70) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==2) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+ GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getBid() > GameState.minBid){
-// 			GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].useGhostBid();
-// 			GameState.continueAuction();
-// 		}
-// 		}
-// 	}else if(x>=900&&x<=900+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==3) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+1);
-// 		}
-// 	}else if(x>=1050&&x<=1050+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==3) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()-1);
-// 		}
-// 	}else if(x>=1120&&x<=1120+80) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==3) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setHasPassed(true);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setBid(0);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(0);
-// 		GameState.continueAuction();
-// 		repaint();
-// 		}
-// 	}else if(x>=1210&&x<=1210+70) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==3) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+ GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getBid() > GameState.minBid){
-// 			GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].useGhostBid();
-// 			GameState.continueAuction();
-// 		}
-// 		}
-// 	}else if(x>=1300&&x<=1300+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==4) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+1);
-// 		}
-// 	}else if(x>=1450&&x<=1450+50) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==4) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()-1);
-// 		}
-// 	}else if(x>=1520&&x<=1520+80) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==4) {
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setHasPassed(true);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setBid(0);
-// 		GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].setGhostBid(0);
-// 		GameState.continueAuction();
-// 		repaint();
-// 		}
-// 	}else if(x>=1610&&x<=1610+70) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getInAuction()&&GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)==4) {
-// 		if(GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getGhostBid()+ GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].getBid() > GameState.minBid){
-// 			GameState.players[GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex)-1].useGhostBid();
-// 			GameState.continueAuction();
-// 		}
-// 		}
-// 	}
-
-// }
+			}else if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+				}
 				
 			
 				repaint();
 				break;
 
 				case "Buy Resources":
-					
+					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+						
+				}
 
 						// Done button clicked
 						if (x >= getWidth()/2 - (getWidth()/10) &&
@@ -1738,51 +1728,15 @@ private void loadCityCoordinates() {
 						repaint();
 						break;
 
-				// 	// Done button clicked
-				// 	if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
-				// 	   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
-				// 		GameState.currentPlayerIndex++;
-				// 		if(GameState.currentPlayerIndex == 4) {
-				// 			GameState.currentPlayerIndex = 0;
-				// 			GameState.currentEvent.removeLast();
-				// 			GameState.currentEvent.add("Buy Cities");
-				// 		}
-				// 	}
-					
-				// 	// Get current player and resource types
-				// 	Player buyPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
-				// 	Resource[] resourceTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
-					
-				// 	// Resource buy buttons - use class field that's set during paint
-				// 	int resourceYPosClick = resourceButtonStartY;
 				
-				// 	for(int r = 0; r < 4; r++) {
-				// 		// Buy button at coordinates (750, resourceYPos - 20) with size 80x40
-				// 		if(x >= 750 && x <= 830 && y >= resourceYPosClick - 20 && y <= resourceYPosClick + 20) {
-				// 			// Check if player can afford and has capacity
-				// 			int price = GameState.resourceMarket.getCheapestPrice(resourceTypes[r]);
-				// 			if(price >= 0) {
-				// 				if(buyPlayer.getElektro() >= price && buyPlayer.canAddResource(resourceTypes[r], 1)) {
-				// 					boolean bought = GameState.resourceMarket.buyResource(resourceTypes[r]);
-				// 					if(bought) {
-				// 						buyPlayer.addResource(resourceTypes[r], 1);
-				// 						buyPlayer.addElektro(-price);
-				// 						System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " bought " + resourceTypes[r] + " for " + price + " Elektro");
-				// 					}
-				// 				} else if(!buyPlayer.canAddResource(resourceTypes[r], 1)) {
-				// 					System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have capacity for more resources");
-				// 				} else {
-				// 					System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " does not have enough Elektro");
-				// 				}
-				// 			} else {
-				// 				System.out.println("Resource " + resourceTypes[r] + " is sold out");
-				// 			}
-				// 		}
-				// 		resourceYPosClick += 60;
-				// 	}   
-				// 	repaint();
-				// 	break;
 							case "Buy Cities":
+								 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+						
+				}
 				// Check if Done button was clicked
 				if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
 				&& y >= (int)(getHeight() * 0.925) && y <= (int)(getHeight() * 0.925) + (int)(getHeight() * 0.05)) {
@@ -1854,6 +1808,13 @@ private void loadCityCoordinates() {
 				break;
 				case "Confirm City Purchase":
 					// Yes button clicked
+					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+						
+				}
 					if(x >= (int)(getWidth() * 0.25) && x <= (int)(getWidth() * 0.25) + (int)(getWidth() * 0.15)
 					   && y >= (int)(getHeight() * 0.55) && y <= (int)(getHeight() * 0.55) + (int)(getHeight() * 0.08)) {
 						// Confirm purchase - add logic to purchase city
@@ -1877,6 +1838,13 @@ private void loadCityCoordinates() {
 					break;
 
 				case "Bureaucracy":
+					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+						
+				}
 					// Any click continues to next phase
 					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
 					   && y >= (int)(getHeight() * 0.75) && y <= (int)(getHeight() * 0.75) + (int)(getHeight() * 0.08)) {
@@ -1890,6 +1858,13 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 				case "Activate Powerplants":
+					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+						
+				}
 					// Check if Done button clicked
 					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
 					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
@@ -1942,13 +1917,90 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 				case "Player Order":
+					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+						
+						GameState.currentEvent.add("Menu");
+						repaint();
+						return;
+						
+				}
 					GameState.currentEvent.removeLast();
 					GameState.setUpAuction();
 					repaint();
 					break;
+					case "Menu":
+					// Recalculate panel and button positions (same as in paint)
+					int panelW = 800;
+					int panelH = 800;
+					int panelX = (getWidth() - panelW) / 2;
+					int panelY = (getHeight() - panelH) / 2;
+
+					int startX = panelX + 100;
+					int startY = panelY + 200;
+					int btnW = 280;
+					int btnH = 60;
+					int colSpacing = 80;
+					int rowSpacing = 70;
+
+					String[] options = {
+						"Resource Summary", "Player Profiles",
+						"Discarded Powerplants", "Map",
+						"Resource Market", "Auction Market",
+						"Rules", "Return to Game",
+						"Step Info"
+					};
+
+					for (int i = 0; i < options.length; i++) {
+						int col = i % 2;
+						int row = i / 2;
+						int btnX = startX + col * (btnW + colSpacing);
+						int btnY = startY + row * (btnH + rowSpacing);
+
+						if (x >= btnX && x <= btnX + btnW && y >= btnY && y <= btnY + btnH) {
+							// Handle each option
+							switch (i) {
+								case 0: // Resource Summary
+									// Show resource summary card (implement as new event or dialog)
+									GameState.currentEvent.add("Resource Summary");
+									break;
+								case 1: // Player Profiles
+								//Should show player color, player number of cities (scoring track) player order, powerplants, relevant data concerning said powe
+								//r plants, and elektro
+									GameState.currentEvent.add("Player Profiles");
+									break;
+								case 2: // Discarded Powerplants 
+									GameState.currentEvent.add("Discarded Plants");
+									break;
+								case 3: // Map shows the map with all the cities and the removed zones with the red x's
+									GameState.currentEvent.add("Full Map");
+									break;
+								case 4: // Resource Market shows the resource market (with the better GUI preferrably)
+									GameState.currentEvent.add("Resource Market View");
+									break;
+								case 5: // Auction Market shows the auction market similar to 
+									GameState.currentEvent.add("Auction Market View");
+									break;
+								case 6: // Rules
+									// Reuse instructions but keep menu stack?
+									GameState.currentEvent.add("Instructions");
+									break;
+								case 7: // Return to Game
+									GameState.currentEvent.removeLast(); // remove "Menu"
+									repaint();
+									return;
+								case 8: // Step Info
+									GameState.currentEvent.add("Step Info");
+									break;
+							}
+							repaint();
+							return;
 					
+						
+					
+						}
 		
-		}
+					}
+				}
 }
 	
 	public void mouseReleased(MouseEvent e) {
