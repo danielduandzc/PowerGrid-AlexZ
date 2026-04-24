@@ -77,12 +77,13 @@ private void loadCityCoordinates() {
 	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menu, resourceSummary;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
-	pp42, pp44, pp46, pp50;
+	pp42, pp44, pp46, pp50, step3Card;
 	public InitialPanel() {
 		
 		//Load all images
 		try{
-			resourceSummary= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/Resource Summary/Menu.png"));
+			
+			resourceSummary= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Resource Summary.png"));
 			menu = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Menu.png"));
 			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
 			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
@@ -155,6 +156,7 @@ private void loadCityCoordinates() {
 			pp44 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/44.jpeg"));
 			pp46 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/46.jpeg"));
 			pp50 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/50.jpeg"));
+			step3Card = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Step 3.jpeg"));
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
@@ -177,7 +179,7 @@ private void loadCityCoordinates() {
 			hasLoadedCoords=true;
 			loadCityCoordinates();
 		}
-
+		
 		super.paint(g);
 		
 		switch(GameState.currentEvent.getLast()) {

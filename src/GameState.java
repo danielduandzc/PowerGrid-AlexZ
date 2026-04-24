@@ -82,6 +82,10 @@ public class GameState{
         powerPlantDeck.add(new PowerPlant(0,5,44,0,new ArrayList<Resource>()));
         powerPlantDeck.add(new PowerPlant(6,7,46,3,new ArrayList<Resource>(Arrays.asList(Resource.OIL,Resource.COAL))));
         powerPlantDeck.add(new PowerPlant(0,6,50,0,new ArrayList<Resource>()));
+        Collections.shuffle(powerPlantDeck);
+        powerPlantDeck.add(0, new PowerPlant(0, 0, 51, 0, new ArrayList<Resource>()));
+        
+        
      } 
 
      public static void runBureaucracy(){
