@@ -34,7 +34,7 @@ private void loadCityCoordinates() {
     cityCoords.put("Duisburg", new Point((int)(getWidth() * (559 / 1920.0)), (int)(getHeight() * (432 / 1070.0))));
     cityCoords.put("Essen", new Point((int)(getWidth() * (623 / 1920.0)), (int)(getHeight() * (446 / 1070.0))));
     cityCoords.put("Dortmund", new Point((int)(getWidth() * (710 / 1920.0)), (int)(getHeight() * (475 / 1070.0))));
-    cityCoords.put("Halle", new Point((int)(getWidth() * (1105 / 1920.0)), (int)(getHeight() * (478 / 1070.0))));
+    cityCoords.put("Halle", new Point((int)(getWidth() * (1105 / 1920.0)), (int)(getHeight() * (470 / 1070.0))));
     cityCoords.put("Kassel", new Point((int)(getWidth() * (869 / 1920.0)), (int)(getHeight() * (492 / 1070.0))));
     cityCoords.put("Leipzig", new Point((int)(getWidth() * (1165 / 1920.0)), (int)(getHeight() * (491 / 1070.0))));
     cityCoords.put("Dusseldorf", new Point((int)(getWidth() * (577 / 1920.0)), (int)(getHeight() * (504 / 1070.0))));
@@ -629,6 +629,7 @@ private void loadCityCoordinates() {
 				
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
+				drawMenu(g);
 				
 				// Draw heading with player info
 				Font citiesFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
@@ -850,7 +851,9 @@ private void loadCityCoordinates() {
 				", Player "+GameState.playerOrder[1]+", Player "+GameState.playerOrder[2]+", Player "+GameState.playerOrder[3]
 				, (getWidth() - 850) / 2, getHeight() / 2 - 150);
 				GameState.currentPlayerIndex=0;
+				break;
 			case "Menu":
+				System.out.println(GameState.currentEvent);
 				// Draw the current game state underneath (already drawn by previous paint?)
 				// Actually, when "Menu" is added, the previous screen is still behind.
 				// We'll draw a dark overlay over the existing graphics.
@@ -940,23 +943,9 @@ private void loadCityCoordinates() {
 				Graphics2D g2 = (Graphics2D) g;
 			
 			// Draw the white background image (or just fill white if image is missing)
-			g.drawImage(menu,1900, 10, 120, 110, this);
+			g.drawImage(menu,1700, 10, 120, 110, this);
 			
-			// Draw three black bars (hamburger menu icon) inside the image area
 			
-			// g2.setColor(Color.BLACK);
-			
-			// int x = 1900; //1900         // left edge of the menu area
-			// int y = 100;      //100      // top edge
-			// int width = 2000;
-			// int height = 110;
-			
-			// int barWidth = 80;      // width of each bar
-			// int barHeight = 12;     // height of each bar
-			// int spacing = 20;       // space between bars
-			// g2.fillRect(1900, 30, 150, 12);
-			// g2.fillRect(1900, 59, 150, 12);	
-			// g2.fillRect(1900, 88, 150, 12);
 			
 		}
 			public boolean isCityInSelectedZone(String cityName, boolean[] isZoneSelected) {
@@ -1396,7 +1385,7 @@ private void loadCityCoordinates() {
 				} else if(x >= 180 && x <= 255 && y >= 650 && y <= 725 && !GameState.isZoneSelected[5]) {
 					GameState.isZoneSelected[5] = true;
 					GameState.currentPlayerIndex++;
-				}else if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+				}else if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						GameState.currentEvent.add("Menu");
 				}
 				
@@ -1632,7 +1621,7 @@ private void loadCityCoordinates() {
 						GameState.continueAuction();
 					}
 				}
-			}else if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+			}else if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						GameState.currentEvent.add("Menu");
 						repaint();
 						return;
@@ -1643,7 +1632,7 @@ private void loadCityCoordinates() {
 				break;
 
 				case "Buy Resources":
-					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
 						repaint();
@@ -1732,7 +1721,7 @@ private void loadCityCoordinates() {
 
 				
 							case "Buy Cities":
-								 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+								 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
 						repaint();
@@ -1810,7 +1799,7 @@ private void loadCityCoordinates() {
 				break;
 				case "Confirm City Purchase":
 					// Yes button clicked
-					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
 						repaint();
@@ -1840,7 +1829,7 @@ private void loadCityCoordinates() {
 					break;
 
 				case "Bureaucracy":
-					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
 						repaint();
@@ -1860,7 +1849,7 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 				case "Activate Powerplants":
-					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
 						repaint();
@@ -1919,11 +1908,12 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 				case "Player Order":
-					 if (x >= 1900 && x <= 2020 && y >= 10 && y <= 120) {
+					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
 						repaint();
 						return;
+					
 						
 				}
 					GameState.currentEvent.removeLast();
@@ -1931,7 +1921,7 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 					case "Menu":
-					System.out.println(GameState.currentEvent);
+					
 					// Recalculate panel and button positions (same as in paint)
 					int panelW = 800;
 					int panelH = 800;
