@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -77,90 +78,316 @@ private void loadCityCoordinates() {
 	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menu, resourceSummary;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
-	pp42, pp44, pp46, pp50, step3Card;
+	pp42, pp44, pp46, pp50, step3Card, son;
 	public InitialPanel() {
 		
 		//Load all images
 		try{
+			// Try loading from resources with null checks
+			InputStream is;
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Too Broke.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Too Broke.png");
+			son = ImageIO.read(is);
 			
-			resourceSummary= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Resource Summary.png"));
-			menu = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Menu.png"));
-			rulesBG = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png"));
-			rules1 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png"));
-			rules2 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules2.png"));
-			rules3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules3.png"));
-			rules4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules4.png"));
-			rules5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules5.png"));
-			rules6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules6.png"));
-			rules7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules7.png"));
-			rules8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules8.png"));
-			rules9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules9.png"));
-			rules10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules10.png"));
-			rules11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules11.png"));
-			rules12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Rules12.png"));
-			scoringTrack = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Scoring_Track.png"));
-			bigBoard = ImageIO.read(PowerGridFrame.class.getResource("/resources/Board.png"));
-			board = ImageIO.read(PowerGridFrame.class.getResource("/resources/Cropped Board.png"));
-            titleScreen = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Powergrid.png"));
-            gameBackground = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Background.png"));
-            redHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Red_House.png"));
-            yellowHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Yellow_House.png"));
-            greenHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Green_House.png"));
-            blueHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Blue_House.png"));
-            purpleHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Purple_House.png"));
-            whiteHouse = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/White_House.png"));
-			auctionImagePlayerOne = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_1.png"));
-			auctionImagePlayerTwo = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png"));
-			auctionImagePlayerThree = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png"));
-			auctionImagePlayerFour = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png"));
-			arrow= ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Arrow.png"));
-			pp3 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/3.jpeg"));
-			pp4 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/4.jpeg"));
-			pp5 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/5.jpeg"));
-			pp6 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/6.jpeg"));
-			pp7 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/7.jpeg"));
-			pp8 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/8.jpeg"));
-			pp9 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/9.jpeg"));
-			pp10 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/10.png"));
-			pp11 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/11.png"));
-			pp12 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/12.jpeg"));
-			pp13 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/13.jpeg"));
-			pp14 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/14.jpeg"));
-			pp15 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/15.jpeg"));
-			pp16 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/16.jpeg"));
-			pp17 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/17.jpeg"));
-			pp18 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/18.jpeg"));
-			pp19 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/19.jpeg"));
-			pp20 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/20.jpeg"));
-			pp21 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/21.jpeg"));
-			pp22 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/22.jpeg"));
-			pp23 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/23.jpeg"));
-			pp24 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/24.jpeg"));
-			pp25 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/25.jpeg"));
-			pp26 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/26.jpeg"));
-			pp27 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/27.jpeg"));
-			pp28 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/28.jpeg"));
-			pp29 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/29.jpeg"));
-			pp30 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/30.jpeg"));
-			pp31 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/31.jpeg"));
-			pp32 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/32.jpeg"));
-			pp33 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/33.jpeg"));
-			pp34 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/34.jpeg"));
-			pp35 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/35.jpeg"));
-			pp36 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/36.jpeg"));
-			pp37 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/37.jpeg"));
-			pp38 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/38.jpeg"));
-			pp39 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/39.jpeg"));
-			pp40 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/40.jpeg"));
-			pp42 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/42.jpeg"));
-			pp44 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/44.jpeg"));
-			pp46 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/46.jpeg"));
-			pp50 = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/50.jpeg"));
-			step3Card = ImageIO.read(PowerGridFrame.class.getResourceAsStream("/resources/Step 3.jpeg"));
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Resource Summary.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Resource Summary.png");
+			resourceSummary = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Menu.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Menu.png");
+			menu = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules Background.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules Background.png");
+			rulesBG = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules1.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules1.png");
+			rules1 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules2.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules2.png");
+			rules2 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules3.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules3.png");
+			rules3 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules4.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules4.png");
+			rules4 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules5.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules5.png");
+			rules5 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules6.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules6.png");
+			rules6 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules7.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules7.png");
+			rules7 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules8.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules8.png");
+			rules8 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules9.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules9.png");
+			rules9 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules10.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules10.png");
+			rules10 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules11.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules11.png");
+			rules11 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Rules12.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Rules12.png");
+			rules12 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Scoring_Track.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Scoring_Track.png");
+			scoringTrack = ImageIO.read(is);
+			
+			java.net.URL url = PowerGridFrame.class.getResource("/resources/Board.png");
+			if(url != null) bigBoard = ImageIO.read(url);
+			else bigBoard = ImageIO.read(new java.io.File("resources/Board.png"));
+			
+			url = PowerGridFrame.class.getResource("/resources/Cropped Board.png");
+			if(url != null) board = ImageIO.read(url);
+			else board = ImageIO.read(new java.io.File("resources/Cropped Board.png"));
+			
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Powergrid.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Powergrid.png");
+            titleScreen = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Background.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Background.png");
+            gameBackground = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Red_House.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Red_House.png");
+            redHouse = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Yellow_House.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Yellow_House.png");
+            yellowHouse = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Green_House.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Green_House.png");
+            greenHouse = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Blue_House.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Blue_House.png");
+            blueHouse = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/Purple_House.png");
+            if(is == null) is = new java.io.FileInputStream("resources/Purple_House.png");
+            purpleHouse = ImageIO.read(is);
+            
+            is = PowerGridFrame.class.getResourceAsStream("/resources/White_House.png");
+            if(is == null) is = new java.io.FileInputStream("resources/White_House.png");
+            whiteHouse = ImageIO.read(is);
+            
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Player_1.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Player_1.png");
+			auctionImagePlayerOne = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Player_2.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Player_2.png");
+			auctionImagePlayerTwo = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Player_3.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Player_3.png");
+			auctionImagePlayerThree = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Player_4.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Player_4.png");
+			auctionImagePlayerFour = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Arrow.png");
+			if(is == null) is = new java.io.FileInputStream("resources/Arrow.png");
+			arrow = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/3.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/3.jpeg");
+			pp3 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/4.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/4.jpeg");
+			pp4 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/5.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/5.jpeg");
+			pp5 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/6.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/6.jpeg");
+			pp6 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/7.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/7.jpeg");
+			pp7 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/8.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/8.jpeg");
+			pp8 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/9.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/9.jpeg");
+			pp9 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/10.png");
+			if(is == null) is = new java.io.FileInputStream("resources/10.png");
+			pp10 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/11.png");
+			if(is == null) is = new java.io.FileInputStream("resources/11.png");
+			pp11 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/12.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/12.jpeg");
+			pp12 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/13.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/13.jpeg");
+			pp13 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/14.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/14.jpeg");
+			pp14 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/15.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/15.jpeg");
+			pp15 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/16.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/16.jpeg");
+			pp16 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/17.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/17.jpeg");
+			pp17 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/18.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/18.jpeg");
+			pp18 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/19.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/19.jpeg");
+			pp19 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/20.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/20.jpeg");
+			pp20 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/21.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/21.jpeg");
+			pp21 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/22.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/22.jpeg");
+			pp22 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/23.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/23.jpeg");
+			pp23 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/24.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/24.jpeg");
+			pp24 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/25.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/25.jpeg");
+			pp25 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/26.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/26.jpeg");
+			pp26 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/27.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/27.jpeg");
+			pp27 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/28.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/28.jpeg");
+			pp28 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/29.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/29.jpeg");
+			pp29 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/30.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/30.jpeg");
+			pp30 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/31.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/31.jpeg");
+			pp31 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/32.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/32.jpeg");
+			pp32 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/33.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/33.jpeg");
+			pp33 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/34.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/34.jpeg");
+			pp34 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/35.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/35.jpeg");
+			pp35 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/36.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/36.jpeg");
+			pp36 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/37.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/37.jpeg");
+			pp37 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/38.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/38.jpeg");
+			pp38 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/39.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/39.jpeg");
+			pp39 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/40.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/40.jpeg");
+			pp40 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/42.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/42.jpeg");
+			pp42 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/44.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/44.jpeg");
+			pp44 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/46.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/46.jpeg");
+			pp46 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/50.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/50.jpeg");
+			pp50 = ImageIO.read(is);
+			
+			is = PowerGridFrame.class.getResourceAsStream("/resources/Step 3.jpeg");
+			if(is == null) is = new java.io.FileInputStream("resources/Step 3.jpeg");
+			step3Card = ImageIO.read(is);
 
         } catch (Exception e){
             System.out.println("No workie because idk 🤷‍♂️");
-            System.out.println(e);
+            e.printStackTrace();
         }
 		System.out.println("rulesBG loaded: " + (rulesBG != null));
 		
@@ -173,6 +400,10 @@ private void loadCityCoordinates() {
 		addKeyListener(this);
 		addMouseListener(this);
 	}
+
+	// Move Resources UI state
+	private int moveSourceIndex = -1;
+	private int moveTargetIndex = -1;
 	
 	public void paint(Graphics g) {
 		if(!hasLoadedCoords){
@@ -252,7 +483,7 @@ private void loadCityCoordinates() {
 				g.setColor(Color.BLACK);
 				g2d.setStroke(new BasicStroke(3));
 				g2d.drawRect(returnButtonX, returnButtonY, returnButtonWidth, returnButtonHeight);
-				g.setFont(Main.customFont.deriveFont(Font.BOLD, 20f));
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 18f));
 				centerString(g, "Return", returnButtonX, returnButtonY, returnButtonWidth, returnButtonHeight);
 				break;
 			
@@ -273,8 +504,7 @@ private void loadCityCoordinates() {
 		
 				//continue button
 				//height: 950
-				Font font = new Font("Arial", Font.BOLD, 25);
-				g.setFont(font);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
 				
 				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.925), getWidth()/5, (int)(getHeight() * 0.05));
 				g.setColor(Color.WHITE);
@@ -395,7 +625,7 @@ private void loadCityCoordinates() {
 				break;
 			case "Buy Powerplant":
 			g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				drawMenu(g);
+				
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 			g.setFont(sizedFont);
 			
@@ -755,9 +985,7 @@ private void loadCityCoordinates() {
 				break;
 			case "Confirm City Purchase":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				Font confirmFont = new Font("Arial", Font.BOLD, 40);
-				
-				g.setFont(confirmFont);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 30f));
 				g.setColor(Color.BLACK);
 				String confirmMsg = "Confirm Purchase Of "+GameState.cityNameForPurchase+" For "+GameState.setPriceForCity+" Elektro?";
 				FontMetrics fm = g.getFontMetrics();
@@ -766,8 +994,7 @@ private void loadCityCoordinates() {
 				
 				// Display player's current elektro
 				Player confirmPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
-				Font elektroFont = new Font("Arial", Font.BOLD, 30);
-				g.setFont(elektroFont);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
 				String elektroMsg = "You have: " + confirmPlayer.getElektro() + " Elektro";
 				FontMetrics elektroFm = g.getFontMetrics();
 				int elektroMsgWidth = elektroFm.stringWidth(elektroMsg);
@@ -791,13 +1018,50 @@ private void loadCityCoordinates() {
 				confirmG2.drawRect((int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
 				centerString(g, "No", (int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
 				break;
+		case "Too Broke":
+			// Draw background
+			g.drawImage(gameBackground, 0, 0, getWidth(), getHeight(), this);
+			// Draw a smaller centered Too Broke image (if available)
+			int imgWidth = 0;
+			int imgHeight = 0;
+			if (son != null) {
+				imgWidth = son.getWidth();
+				imgHeight = son.getHeight();
+				int targetW = Math.min(getWidth() / 3, imgWidth);
+				int targetH = (int) ((double) imgHeight / imgWidth * targetW);
+				int imgX = (getWidth() - targetW) / 2;
+				int imgY = (getHeight() - targetH) / 2 - 40; // lift a bit to make room for text
+				g.drawImage(son, imgX, imgY, targetW, targetH, this);
+				// Draw the text below the image
+				g.setColor(Color.WHITE);
+				g.setFont(Main.customFont.deriveFont(Font.BOLD, 36f));
+				FontMetrics fmTB = g.getFontMetrics();
+				String msg = "You're too broke";
+				int msgW = fmTB.stringWidth(msg);
+				int msgX = (getWidth() - msgW) / 2;
+				int msgY = imgY + targetH + 50;
+				// draw shadow for readability
+				g.setColor(Color.BLACK);
+				g.drawString(msg, msgX + 2, msgY + 2);
+				g.setColor(Color.WHITE);
+				g.drawString(msg, msgX, msgY);
+			} else {
+				// No image: show message centered on background
+				g.setColor(Color.WHITE);
+				g.setFont(Main.customFont.deriveFont(Font.BOLD, 36f));
+				FontMetrics fmTB = g.getFontMetrics();
+				String msg = "You're too broke";
+				int msgW = fmTB.stringWidth(msg);
+				g.drawString(msg, (getWidth() - msgW) / 2, getHeight() / 2);
+			}
+			// Click to return to Buy Cities
+			break;
 			case "Bureaucracy":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(scoringTrack, 724, 200, 600, 130, this);
 				drawMenu(g);
 				
-				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
-				g.setFont(bureaucracyFont);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 32f));
 				g.setColor(Color.BLACK);
 				String bureauMsg = "Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " has earned " + GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].getEarnedIncome() + " Elektro";
 				FontMetrics bureauFm = g.getFontMetrics();
@@ -917,18 +1181,33 @@ private void loadCityCoordinates() {
 				}
 				
 				// Done button
-				g.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				// Move Resources button (moved to far left)
+				int moveBtnW = getWidth()/5;
+				int moveBtnH = (int)(getHeight() * 0.08);
+				int moveBtnX = 40; // fixed left margin
+				int moveBtnY = (int)(getHeight() * 0.9);
 				g.setColor(Color.WHITE);
-				g.fillRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				g.fillRect(moveBtnX, moveBtnY, moveBtnW, moveBtnH);
+				g.setColor(Color.BLACK);
+				ppG2d.setStroke(new BasicStroke(4));
+				ppG2d.drawRect(moveBtnX, moveBtnY, moveBtnW, moveBtnH);
+				centerString(g, "Move Resources", moveBtnX, moveBtnY, moveBtnW, moveBtnH);
+
+				// Done button
+				int doneBtnW = getWidth()/5;
+				int doneBtnX = getWidth()/2 - (getWidth()/10);
+				int doneBtnY = (int)(getHeight() * 0.9);
+				g.setColor(Color.WHITE);
+				g.fillRect(doneBtnX, doneBtnY, doneBtnW, moveBtnH);
 				g.setColor(Color.BLACK);
 				ppG2d.setStroke(new BasicStroke(5));
-				ppG2d.drawRect(getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
-				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
+				ppG2d.drawRect(doneBtnX, doneBtnY, doneBtnW, moveBtnH);
+				centerString(g, "Done", doneBtnX, doneBtnY, doneBtnW, moveBtnH);
 				break;
 				
 			case "Hybrid Powerplant":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				Font hybridFont = new Font("Arial", Font.BOLD, 40);
+				Font hybridFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 				g.setFont(hybridFont);
 				g.setColor(Color.BLACK);
 				g.drawString("Select Resources", (getWidth() - 300) / 2, getHeight() / 2 - 150);
@@ -951,7 +1230,7 @@ private void loadCityCoordinates() {
 				
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				drawMenu(g);
-				Font orderFont = new Font("Arial", Font.BOLD, 40);
+				Font orderFont = Main.customFont.deriveFont(Font.PLAIN, 30f);
 				g.setFont(orderFont);
 				g.setColor(Color.BLACK);
 				g.drawString("Player Order For This Round: " + "Player "+GameState.playerOrder[0]+
@@ -959,8 +1238,348 @@ private void loadCityCoordinates() {
 				, (getWidth() - 850) / 2, getHeight() / 2 - 150);
 				GameState.currentPlayerIndex=0;
 				break;
+			
+				case "Move Resources": {
+					g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+					drawMenu(g);
+					g.setColor(Color.BLACK);
+					g.setFont(Main.customFont.deriveFont(Font.PLAIN, 28f));
+					g.drawString("Move Resources - Select source then target", 100, 100);
+					// Detailed instructions (right side, above powerplants)
+					Font instrFont = Main.customFont.deriveFont(Font.PLAIN, 16f);
+					g.setFont(instrFont);
+					int instrX = getWidth()/2 + 100; // place on right half
+					int instrY = 140;
+					int lineH = 20;
+					g.drawString("How to use:", instrX, instrY);
+					g.drawString("1) Click a SOURCE plant (becomes BLUE)", instrX, instrY + lineH);
+					g.drawString("2) Click a TARGET plant (becomes ORANGE)", instrX, instrY + 2*lineH);
+					g.drawString("3) 'Move One' = move 1 resource", instrX, instrY + 3*lineH);
+					g.drawString("4) 'Move All' = move all compatible", instrX, instrY + 4*lineH);
+					Player mrPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
+					ArrayList<PowerPlant> mrPPs = mrPlayer.getPowerPlants();
+					int mr_ppDisplayXPos = 100;
+					int mr_ppDisplayYPos = 160;
+					int mr_ppImageWidth = 220;
+					int mr_ppImageHeight = 220;
+					int mr_ppSpacing = 270;
+					Graphics2D mrG2 = (Graphics2D) g;
+					for (int i = 0; i < mrPPs.size(); i++) {
+						PowerPlant pp = mrPPs.get(i);
+						int xPos = mr_ppDisplayXPos + (i % 8) * mr_ppSpacing;
+						int yPos = mr_ppDisplayYPos + (i / 8) * mr_ppSpacing;
+						BufferedImage ppImage = getPowerPlantImage(pp.getPrice());
+						if (ppImage != null) g.drawImage(ppImage, xPos, yPos, mr_ppImageWidth, mr_ppImageHeight, this);
+						else {
+							g.setColor(Color.LIGHT_GRAY);
+							g.fillRect(xPos, yPos, mr_ppImageWidth, mr_ppImageHeight);
+							g.setColor(Color.BLACK);
+							mrG2.setStroke(new BasicStroke(2));
+							mrG2.drawRect(xPos, yPos, mr_ppImageWidth, mr_ppImageHeight);
+						}
+						// highlight selections
+						mrG2.setStroke(new BasicStroke(6));
+						if (i == moveSourceIndex) {
+							g.setColor(new Color(30, 144, 255)); // DodgerBlue
+							mrG2.drawRect(xPos - 4, yPos - 4, mr_ppImageWidth + 8, mr_ppImageHeight + 8);
+						} else if (i == moveTargetIndex) {
+							g.setColor(new Color(255, 140, 0)); // DarkOrange
+							mrG2.drawRect(xPos - 4, yPos - 4, mr_ppImageWidth + 8, mr_ppImageHeight + 8);
+						} else {
+							mrG2.setStroke(new BasicStroke(4));
+							mrG2.setColor(Color.DARK_GRAY);
+							mrG2.drawRect(xPos, yPos, mr_ppImageWidth, mr_ppImageHeight);
+						}
+						// draw small resource counts
+						g.setFont(Main.customFont.deriveFont(Font.PLAIN, 14f));
+						g.setColor(Color.BLACK);
+						g.drawString("Current: " + pp.getCurrentResources().size(), xPos, yPos + mr_ppImageHeight + 18);
+					}
+					// Buttons: Move One, Move All, Done (left column)
+					int mr_btnW = 180, mr_btnH = 48;
+					int mr_btnColX = 60; // left column X
+					int mr_btnY = getHeight() - 220;
+					// Move One
+					int mr_mvOneX = mr_btnColX;
+					g.setColor(Color.WHITE);
+					g.fillRect(mr_mvOneX, mr_btnY, mr_btnW, mr_btnH);
+					g.setColor(Color.BLACK);
+					mrG2.setStroke(new BasicStroke(3));
+					mrG2.drawRect(mr_mvOneX, mr_btnY, mr_btnW, mr_btnH);
+					centerString(g, "Move One", mr_mvOneX, mr_btnY, mr_btnW, mr_btnH);
+					// Move All
+					int mr_mvAllX = mr_btnColX;
+					g.setColor(Color.WHITE);
+					g.fillRect(mr_mvAllX, mr_btnY + mr_btnH + 12, mr_btnW, mr_btnH);
+					g.setColor(Color.BLACK);
+					mrG2.drawRect(mr_mvAllX, mr_btnY + mr_btnH + 12, mr_btnW, mr_btnH);
+					centerString(g, "Move All", mr_mvAllX, mr_btnY + mr_btnH + 12, mr_btnW, mr_btnH);
+					// Done (return to Activate Powerplants)
+					int mr_doneX = mr_btnColX;
+					g.setColor(Color.WHITE);
+					g.fillRect(mr_doneX, mr_btnY + 2*(mr_btnH + 12), mr_btnW, mr_btnH);
+					g.setColor(Color.BLACK);
+					mrG2.drawRect(mr_doneX, mr_btnY + 2*(mr_btnH + 12), mr_btnW, mr_btnH);
+					centerString(g, "Done", mr_doneX, mr_btnY + 2*(mr_btnH + 12), mr_btnW, mr_btnH);
+				}
+					break;
+			case "Resource Summary":
+				// Show resource summary image centered (not fullscreen)
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.setColor(Color.BLACK);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
+				g.drawString("Resource Summary", 100, 100);
+				if(resourceSummary != null) {
+					int w = Math.min(800, getWidth()/2);
+					int h = (int)(w * (resourceSummary.getHeight() / (double)resourceSummary.getWidth()));
+					int resX = (getWidth() - w) / 2;
+					int resY = (getHeight() - h) / 2;
+					g.drawImage(resourceSummary, resX, resY, w, h, this);
+					// Show the yellow highlight only for the current step (1,2,3)
+					int[] stepXs = {0, 937, 972, 1022}; // index by step number
+					int boxW = 30;
+					Color highlightColor = new Color(255, 255, 0, 120); // semi-transparent yellow
+					Graphics2D g2h = (Graphics2D) g;
+					g2h.setStroke(new BasicStroke(2));
+					int cs = GameState.currentStep; // current step: 1,2,3...
+					if(cs >= 1 && cs <= 3) {
+						int hx = stepXs[cs];
+						if (hx >= resX && hx <= resX + w) {
+							int drawX = hx - boxW/2;
+							g2h.setColor(highlightColor);
+							g2h.fillRect(drawX, resY, boxW, h);
+							g2h.setColor(Color.YELLOW.darker());
+							g2h.drawRect(drawX, resY, boxW, h);
+						}
+					}
+				}
+				// Return to Menu button
+				int retW = 220, retH = 50, retX = getWidth() - retW - 20, retY = 20;
+				g.setColor(Color.WHITE);
+				g.fillRect(retX, retY, retW, retH);
+				g.setColor(Color.BLACK);
+				((Graphics2D)g).setStroke(new BasicStroke(3));
+				((Graphics2D)g).drawRect(retX, retY, retW, retH);
+				centerString(g, "Return to Menu", retX, retY, retW, retH);
+				break;
+			case "Player Profiles":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.setColor(Color.BLACK);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
+				g.drawString("Player Profiles", 100, 100);
+				// Draw scoring track (reuse coords from Bureaucracy) and place player markers with slight y offsets so markers don't stack
+				// Shifted to the right (40px earlier, now add ~200 more as requested)
+				int shiftRight = 240;
+				int[][] newScoringCoords = {
+					{749 + shiftRight, 247}, {808 + shiftRight, 247}, {893 + shiftRight, 245}, {977 + shiftRight, 241}, {1064 + shiftRight, 243}, {1149 + shiftRight, 244}, {1237 + shiftRight, 243}, {1305 + shiftRight, 246},
+					{746 + shiftRight, 299}, {790 + shiftRight, 298}, {834 + shiftRight, 299}, {876 + shiftRight, 300}, {917 + shiftRight, 299}, {962 + shiftRight, 300}, {1001 + shiftRight, 298}, {1043 + shiftRight, 301},
+					{1089 + shiftRight, 299}, {1134 + shiftRight, 300}, {1176 + shiftRight, 298}, {1223 + shiftRight, 298}, {1259 + shiftRight, 301}, {1305 + shiftRight, 296}
+				};
+				if(scoringTrack!=null) g.drawImage(scoringTrack, 724 + shiftRight, 200, 600, 130, this);
+				for(int i=0;i<4;i++){
+					Player p = GameState.players[i];
+					 cityCount = p.getCities().size();
+					int posIdx = Math.max(0, Math.min(newScoringCoords.length-1, cityCount));
+					int xC = newScoringCoords[posIdx][0];
+					int yC = newScoringCoords[posIdx][1];
+					int yOffset = (i - 1) * 8; // spread out markers vertically: -8,0,8,16
+					g.setColor(getColorFromString(p.getColor()));
+		 			Graphics2D g2p = (Graphics2D) g;
+		 			g2p.fillOval(xC - 12, yC - 12 + yOffset, 24, 24);
+		 			g2p.setColor(Color.BLACK);
+		 			g2p.setStroke(new BasicStroke(2));
+		 			g2p.drawOval(xC - 12, yC - 12 + yOffset, 24, 24);
+
+            		// (star will be drawn next to the player's header below)
+				}
+
+				// Player summary list with elektro and order (Arial) - show players in playerOrder
+				int infoX = 120; int infoY = 160; int lineH = 24;
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 14f));
+				Color[] sphereColorsLocal = {new Color(101, 67, 33), Color.BLACK, Color.YELLOW, Color.RED};
+				for(int slot=0; slot<4; slot++){
+					int playerIdx = GameState.playerOrder[slot]-1; // actual player index
+					Player p = GameState.players[playerIdx];
+					String header = "Player "+(playerIdx+1)+" ("+p.getColor()+")  | Elektro: "+p.getElektro()+"  | Order Slot: "+(slot+1);
+					g.setColor(Color.BLACK);
+					g.drawString(header, infoX, infoY);
+					// draw star next to player header for quick identification
+					Graphics2D g2s = (Graphics2D) g;
+					int starXHeader = infoX - 28; // left of the header text
+					int starYHeader = infoY - 6; // vertically near the text baseline
+					drawStar(g2s, starXHeader, starYHeader, 8, getColorFromString(p.getColor()));
+					infoY += lineH;
+
+					// Draw powerplants same as Buy Resources layout
+					ArrayList<PowerPlant> pps = p.getPowerPlants();
+					int ppX = infoX + 20;
+					int ppY = infoY;
+					if(pps.size() == 0) {
+						g.drawString("No power plants", ppX, ppY);
+						ppY += 20;
+					} else {
+						Graphics2D g2pp = (Graphics2D) g;
+						for(PowerPlant pp : pps) {
+							BufferedImage ppImage = getPowerPlantImage(pp.getPrice());
+							if(ppImage != null) {
+								g.drawImage(ppImage, ppX, ppY, 100, 100, this);
+							} else {
+								g.setColor(Color.LIGHT_GRAY);
+								g.fillRect(ppX, ppY, 100, 100);
+								g.setColor(Color.BLACK);
+								g2pp.setStroke(new BasicStroke(2));
+								g2pp.drawRect(ppX, ppY, 100, 100);
+							}
+							// info text
+							g.setColor(Color.BLACK);
+							g.drawString("Capacity: " + pp.getMaxResources(), ppX + 110, ppY + 20);
+							String fuelStr = "";
+							for(Resource r : pp.getFuelType()) fuelStr += r.toString().substring(0,1);
+							if(fuelStr.isEmpty()) fuelStr = "Renewable";
+							if(fuelStr.length() == 2) fuelStr = fuelStr.substring(0,1) + "/" + fuelStr.substring(1);
+							g.drawString("Fuels: " + fuelStr, ppX + 110, ppY + 40);
+							g.drawString("Current: " + pp.getCurrentResources().size(), ppX + 110, ppY + 60);
+
+							// resource tokens drawing (compact)
+							int tokenBaseX = ppX;
+							int tokenBaseY = ppY + 75;
+							int[] resourceCounts = {0,0,0,0};
+							for(Resource r : pp.getCurrentResources()){
+								if(r == Resource.COAL) resourceCounts[0]++;
+								else if(r == Resource.OIL) resourceCounts[1]++;
+								else if(r == Resource.GARBAGE) resourceCounts[2]++;
+								else if(r == Resource.URANIUM) resourceCounts[3]++;
+							}
+							int drew = 0;
+							for(int ri=0; ri<4; ri++){
+								for(int t=0; t<resourceCounts[ri]; t++){
+									g.setColor(sphereColorsLocal[ri]);
+									g.fillOval(tokenBaseX + (drew%5)*14, tokenBaseY + (drew/5)*14, 12, 12);
+									g.setColor(Color.WHITE);
+									g2pp.setStroke(new BasicStroke(1));
+									g2pp.drawOval(tokenBaseX + (drew%5)*14, tokenBaseY + (drew/5)*14, 12, 12);
+									drew++;
+								}
+							}
+
+							ppX += 220;
+							if(ppX > getWidth() - 200) { ppX = infoX + 20; ppY += 120; }
+						}
+						ppY += 120;
+					}
+					infoY = ppY + 10;
+				}
+
+				// Return to Menu button
+				int retW2 = 220, retH2 = 50, retX2 = getWidth() - retW2 - 20, retY2 = 20;
+				g.setColor(Color.WHITE);
+				g.fillRect(retX2, retY2, retW2, retH2);
+				g.setColor(Color.BLACK);
+				((Graphics2D)g).setStroke(new BasicStroke(3));
+				((Graphics2D)g).drawRect(retX2, retY2, retW2, retH2);
+				centerString(g, "Return to Menu", retX2, retY2, retW2, retH2);
+				break;
+			case "Discarded Plants":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.setColor(Color.BLACK);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
+				g.drawString("Discarded Powerplants", 100, 100);
+				int dx = 120; int dy = 160; int w = 140; int h = 120; int idx=0;
+				for(PowerPlant pp : GameState.discardPile){
+					BufferedImage img = getPowerPlantImage(pp.getPrice());
+					if(img!=null) g.drawImage(img, dx + (idx%6)*(w+20), dy + (idx/6)*(h+30), w, h, this);
+					else g.drawString("#"+pp.getPrice(), dx + (idx%6)*(w+20), dy + (idx/6)*(h+30));
+					idx++;
+				}
+				if(idx==0) g.drawString("No discarded powerplants", 120, 160);
+				// Return to Menu button
+				int retWd = 220, retHt = 50, retXd = getWidth() - retWd - 20, retYd = 20;
+				g.setColor(Color.WHITE);
+				g.fillRect(retXd, retYd, retWd, retHt);
+				g.setColor(Color.BLACK);
+				((Graphics2D)g).setStroke(new BasicStroke(3));
+				((Graphics2D)g).drawRect(retXd, retYd, retWd, retHt);
+				centerString(g, "Return to Menu", retXd, retYd, retWd, retHt);
+				break;
+			case "Full Map":
+				// Draw normal game background behind the map
+				g.drawImage(gameBackground, 0, 0, getWidth(), getHeight(), this);
+				// Draw board in center column (same as Buy Cities)
+				int boardX = getWidth()/4;
+				int boardW = getWidth()/2;
+				int boardY = 0;
+				int boardH = getHeight();
+				if(bigBoard!=null) g.drawImage(bigBoard, boardX, boardY, boardW, boardH, this);
+				else g.drawImage(board, boardX, boardY, boardW, boardH, this);
+
+				// Draw cities the same way as the Buy Cities screen
+				drawBuyCitiesUI(g);
+
+				g.setColor(Color.BLACK);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
+				
+				int retWm = 220, retHm = 50, retXm = getWidth() - retWm - 20, retYm = 20;
+				g.setColor(Color.WHITE);
+				g.fillRect(retXm, retYm, retWm, retHm);
+				g.setColor(Color.BLACK);
+				((Graphics2D)g).setStroke(new BasicStroke(3));
+				((Graphics2D)g).drawRect(retXm, retYm, retWm, retHm);
+				centerString(g, "Return to Menu", retXm, retYm, retWm, retHm);
+				break;
+			case "Resource Market View":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
+				g.setColor(Color.BLACK);
+				g.drawString("Resource Market", 100, 100);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 14f));
+				int ry = 160;
+				Resource[] resTypes = {Resource.COAL, Resource.OIL, Resource.GARBAGE, Resource.URANIUM};
+				for(Resource r : resTypes){
+					int price = GameState.resourceMarket.getCheapestPrice(r);
+					boolean[][] market = GameState.resourceMarket.getMarketForResource(r);
+					int count = 0; for(boolean[] row: market) for(boolean b: row) if(b) count++;
+					g.drawString(r.toString()+": " + count + " available, cheapest: $"+price, 120, ry);
+					ry += 36;
+				}
+				int retXr = getWidth() - 240, retYr = 20;
+				g.setColor(Color.WHITE); g.fillRect(retXr, retYr, 220, 50); g.setColor(Color.BLACK); ((Graphics2D)g).drawRect(retXr, retYr, 220, 50); centerString(g, "Return to Menu", retXr, retYr, 220, 50);
+				break;
+			case "Auction Market View":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.setFont(Main.customFont.deriveFont(Font.PLAIN, 22f));
+				g.setColor(Color.BLACK);
+				g.drawString("Auction Market", 100, 100);
+				// Current Market (top 4) and Future Market (bottom 4)
+				g.drawString("Current Market", 1000, 200);
+				g.drawString("Future Market", 1000, 400);
+				int apx = 175; int apy = 180; int apW = 150; int apH = 150;
+				int marketLen = Math.min(GameState.powerPlantsInMarket.size(), 8);
+				for(int i=0;i<marketLen;i++){
+					PowerPlant pp = GameState.powerPlantsInMarket.get(i);
+					BufferedImage img = getPowerPlantImage(pp.getPrice());
+					if(img!=null) g.drawImage(img, apx + (i%4)*200, apy + (i/4)*200, apW, apH, this);
+					// price removed per request
+				}
+				int retXa = getWidth() - 240, retYa = 20; g.setColor(Color.WHITE); g.fillRect(retXa, retYa, 220, 50); g.setColor(Color.BLACK); ((Graphics2D)g).drawRect(retXa, retYa, 220, 50); g.setFont(Main.customFont.deriveFont(Font.PLAIN, 14f)); centerString(g, "Return to Menu", retXa, retYa, 220, 50);
+				break;
+			case "Step Info":
+				// Large centered step display
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				Graphics2D bigG = (Graphics2D) g;
+				bigG.setColor(Color.BLACK);
+				// Choose a very large font; scale based on panel height for responsiveness
+				float size = Math.max(72f, getHeight() * 0.18f);
+				Font bigFont = Main.customFont.deriveFont(Font.BOLD, size);
+				bigG.setFont(bigFont);
+				String stepLabel = "STEP " + GameState.currentStep;
+				// Center the label in the whole panel
+				centerString(g, stepLabel, 0, 0, getWidth(), getHeight());
+				// Small hint to dismiss (keeps existing Return to Menu button behavior in mousePressed)
+				bigG.setFont(Main.customFont.deriveFont(Font.PLAIN, 14f));
+				bigG.setColor(new Color(0,0,0,140));
+				bigG.drawString("(Click Return to Menu to exit)", 20, getHeight() - 20);
+				break;
 			case "Menu":
-				System.out.println(GameState.currentEvent);
 				// Draw the current game state underneath (already drawn by previous paint?)
 				// Actually, when "Menu" is added, the previous screen is still behind.
 				// We'll draw a dark overlay over the existing graphics.
@@ -1037,19 +1656,15 @@ private void loadCityCoordinates() {
 					g.drawString(options[i], textX, textY);
 				}
 				break;
-			case "Step 2":
+				case "Step 2":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				drawMenu(g);
-				Font step2Font = new Font("Arial", Font.BOLD, 80);
+				Font step2Font = Main.customFont.deriveFont(Font.PLAIN, 48f);
 				g.setFont(step2Font);
 				g.setColor(Color.BLACK);
 				g.drawString("Step 2", (getWidth() - 200) / 2, getHeight() / 2);
 				break;
-			case "Full Map":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
-				 drawBuyCitiesUI(g);
-
+			
 				
 				
 
@@ -1059,7 +1674,7 @@ private void loadCityCoordinates() {
 		}
 	}
 			public void drawMenu(Graphics g) {
-				Graphics2D g2 = (Graphics2D) g;
+				// Graphics2D available via cast when needed; avoid declaring unused local here
 			
 			// Draw the white background image (or just fill white if image is missing)
 			g.drawImage(menu,1700, 10, 120, 110, this);
@@ -1113,6 +1728,7 @@ private void loadCityCoordinates() {
 
 	private BufferedImage getPowerPlantImage(int powerPlantNumber) {
 		switch(powerPlantNumber) {
+			case -1: return step3Card;
 			case 3: return pp3;
 			case 4: return pp4;
 			case 5: return pp5;
@@ -1265,6 +1881,28 @@ private void loadCityCoordinates() {
 			g.fillOval(sectorX - sectorSize/2, sectorY - sectorSize/2, sectorSize, sectorSize);
 		}
 	}
+
+	// Draw a 5-point star centered at (cx,cy) with outer radius r
+	private void drawStar(Graphics2D g2, int cx, int cy, int r, Color fill) {
+		double angle = Math.toRadians(-18); // rotate so one point is up
+		int n = 5;
+		double innerR = r * 0.45;
+		int[] xs = new int[n*2];
+		int[] ys = new int[n*2];
+		for (int i = 0; i < n*2; i++) {
+			double rad = (i % 2 == 0) ? r : innerR;
+			double a = angle + i * Math.PI / n;
+			xs[i] = cx + (int) Math.round(Math.cos(a) * rad);
+			ys[i] = cy + (int) Math.round(Math.sin(a) * rad);
+		}
+		Color prev = g2.getColor();
+		g2.setColor(fill);
+		g2.fillPolygon(xs, ys, n*2);
+		g2.setColor(Color.BLACK);
+		g2.setStroke(new BasicStroke(1));
+		g2.drawPolygon(xs, ys, n*2);
+		g2.setColor(prev);
+	}
 	
 	private int countPlayerSectorsInCity(String cityName) {
 		int count = 0;
@@ -1287,7 +1925,7 @@ private void loadCityCoordinates() {
 	
 	// Draw the auction UI with scaled coordinates
 	private void drawAuctionUI(Graphics g) {
-		Font font = new Font("Arial", Font.BOLD, 30);
+		Font font = Main.customFont.deriveFont(Font.PLAIN, 22f);
 		g.setFont(font);
 		
 		// Scaled positions for 4 players (left to right) - scaled from original 100, 500, 900, 1300 at 1920 width
@@ -1328,6 +1966,16 @@ private void loadCityCoordinates() {
 	
 	// Draw individual auction player UI
 	private void drawAuctionPlayer(Graphics g, int playerIndex, int x, int y, int width, int height, int elektroY, int bidY) {
+		// Draw colored rectangle behind player image
+		String playerColor = GameState.players[playerIndex].getColor();
+		if(playerColor != null) {
+			Color bgColor = getColorFromString(playerColor);
+			if(bgColor != null) {
+				g.setColor(bgColor);
+				g.fillRect(x, y, width, height);
+			}
+		}
+		
 		// Draw player image
 		BufferedImage playerImage = null;
 		if(playerIndex == 0) playerImage = auctionImagePlayerOne;
@@ -1347,7 +1995,7 @@ private void loadCityCoordinates() {
 		} else {
 			// Draw Elektro amount with original positioning
 			g.setColor(Color.BLACK);
-			Font font = new Font("Arial", Font.BOLD, 30);
+			Font font = Main.customFont.deriveFont(Font.PLAIN, 22f);
 			g.setFont(font);
 			int elektroX = x + (int)(width * 0.25);  // ~100 pixels into player card (original was 200 for player at 100)
 			g.drawString(GameState.players[playerIndex].getElektro() + " Elektro", elektroX, elektroY);
@@ -1367,12 +2015,11 @@ private void loadCityCoordinates() {
 			g.setColor(Color.BLACK);
 		}
 		
-		Font bidFont = new Font("Arial", Font.BOLD, 30);
+		Font bidFont = Main.customFont.deriveFont(Font.PLAIN, 22f);
 		g.setFont(bidFont);
 		int bidX = x + (int)(width * 0.25);  // ~100 pixels into player card (original was 200 for player at 100)
 		g.drawString(bid + "", bidX, bidY);
 	}
-
 	
 	public void mouseClicked(MouseEvent e) {
 		
@@ -1405,7 +2052,7 @@ private void loadCityCoordinates() {
 				}
 				// Check if Rules button was clicked
 				else if (x >= 1280 && x <= 1800 && y >= 950 && y <= 1050) {
-					GameState.currentEvent.removeLast();
+				
 					GameState.currentEvent.add("Instructions");
 					repaint();
 				}
@@ -1433,7 +2080,7 @@ private void loadCityCoordinates() {
 				} else if (x >= returnButtonX && x <= returnButtonX + returnButtonWidth && y >= returnButtonY && y <= returnButtonY + returnButtonHeight) {
 					// Return to Title Screen
 					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Title Screen");
+					
 				}
 
 				// Wrap-around logic
@@ -1974,8 +2621,12 @@ private void loadCityCoordinates() {
 								// Third sector: base price + 20
 								GameState.setPriceForCity = basePrice + 20;
 							}
-							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro()>=GameState.setPriceForCity)
-							GameState.currentEvent.add("Confirm City Purchase");
+								if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro()>=GameState.setPriceForCity) {
+									GameState.currentEvent.add("Confirm City Purchase");
+								} else {
+									// Player doesn't have enough elektro - show Too Broke screen
+									GameState.currentEvent.add("Too Broke");
+								}
 						}
 					}
 				}
@@ -2012,6 +2663,12 @@ private void loadCityCoordinates() {
 					}
 					break;
 
+				case "Too Broke":
+					// Any click on Too Broke screen returns to Buy Cities
+					GameState.currentEvent.removeLast();
+					repaint();
+					break;
+
 				case "Bureaucracy":
 					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
@@ -2040,6 +2697,18 @@ private void loadCityCoordinates() {
 						return;
 						
 				}
+					// Check if Move Resources button clicked (far left)
+					int moveBtnW = getWidth()/5;
+					int moveBtnX = 40; // far left
+					int moveBtnY = (int)(getHeight() * 0.9);
+					if (x >= moveBtnX && x <= moveBtnX + moveBtnW && y >= moveBtnY && y <= moveBtnY + (int)(getHeight() * 0.08)) {
+						// open Move Resources UI
+						moveSourceIndex = -1;
+						moveTargetIndex = -1;
+						GameState.currentEvent.add("Move Resources");
+						repaint();
+						break;
+					}
 					// Check if Done button clicked
 					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
 					   && y >= (int)(getHeight() * 0.9) && y <= (int)(getHeight() * 0.9) + (int)(getHeight() * 0.08)) {
@@ -2104,8 +2773,150 @@ private void loadCityCoordinates() {
 					GameState.setUpAuction();
 					repaint();
 					break;
+				case "Move Resources": {
+					// handle clicks in Move Resources UI
+					Player mrPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+					ArrayList<PowerPlant> mrPPs = mrPlayer.getPowerPlants();
+					int mr_ppDisplayXPos = 100;
+					int mr_ppDisplayYPos = 160;
+					int mr_ppImageWidth = 220;
+					int mr_ppImageHeight = 220;
+					int mr_ppSpacing = 270;
+					int mr_btnW = 180, mr_btnH = 48;
+					int mr_btnColX = 60; // left column for the Move UI buttons
+					int mr_btnY = getHeight() - 220;
+					int mr_mvOneX = mr_btnColX;
+					int mr_mvAllX = mr_btnColX;
+					int mr_doneX = mr_btnColX;
+					// Done button clicked -> return to Activate Powerplants
+					if (x >= mr_doneX && x <= mr_doneX + mr_btnW && y >= mr_btnY + 2*(mr_btnH + 12) && y <= mr_btnY + 2*(mr_btnH + 12) + mr_btnH) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						break;
+					}
+					// Move One
+					if (x >= mr_mvOneX && x <= mr_mvOneX + mr_btnW && y >= mr_btnY && y <= mr_btnY + mr_btnH) {
+						if (moveSourceIndex >= 0 && moveTargetIndex >= 0 && moveSourceIndex < mrPPs.size() && moveTargetIndex < mrPPs.size()) {
+							PowerPlant src = mrPPs.get(moveSourceIndex);
+							PowerPlant tgt = mrPPs.get(moveTargetIndex);
+							ArrayList<Resource> srcRes = src.getCurrentResources();
+							for (int i = 0; i < srcRes.size(); i++) {
+								Resource r = srcRes.get(i);
+								if (tgt.getCurrentResources().size() < tgt.getMaxResources() && tgt.getFuelType().contains(r)) {
+									srcRes.remove(i);
+									tgt.addResource(r);
+									break;
+								}
+							}
+						}
+						repaint();
+						break;
+					}
+					// Move All
+					if (x >= mr_mvAllX && x <= mr_mvAllX + mr_btnW && y >= mr_btnY + mr_btnH + 12 && y <= mr_btnY + mr_btnH + 12 + mr_btnH) {
+						if (moveSourceIndex >= 0 && moveTargetIndex >= 0 && moveSourceIndex < mrPPs.size() && moveTargetIndex < mrPPs.size()) {
+							PowerPlant src = mrPPs.get(moveSourceIndex);
+							PowerPlant tgt = mrPPs.get(moveTargetIndex);
+							boolean moved = true;
+							while (moved) {
+								moved = false;
+								ArrayList<Resource> srcRes = src.getCurrentResources();
+								for (int i = 0; i < srcRes.size(); i++) {
+									Resource r = srcRes.get(i);
+									if (tgt.getCurrentResources().size() < tgt.getMaxResources() && tgt.getFuelType().contains(r)) {
+										srcRes.remove(i);
+										tgt.addResource(r);
+										moved = true;
+										break;
+									}
+								}
+							}
+						}
+						repaint();
+						break;
+					}
+					// Otherwise, check if a powerplant image was clicked to select source/target
+					for (int i = 0; i < mrPPs.size(); i++) {
+						int xPos = mr_ppDisplayXPos + (i % 8) * mr_ppSpacing;
+						int yPos = mr_ppDisplayYPos + (i / 8) * mr_ppSpacing;
+						if (x >= xPos && x <= xPos + mr_ppImageWidth && y >= yPos && y <= yPos + mr_ppImageHeight) {
+							if (moveSourceIndex == -1) {
+								moveSourceIndex = i;
+							} else if (moveTargetIndex == -1 && i != moveSourceIndex) {
+								moveTargetIndex = i;
+							} else if (i == moveSourceIndex) {
+								moveSourceIndex = -1;
+							} else if (i == moveTargetIndex) {
+								moveTargetIndex = -1;
+							} else {
+								moveSourceIndex = i;
+								moveTargetIndex = -1;
+							}
+						repaint();
+						break;
+						}
+					}
+					break;
+				}
+						case "Resource Summary":
+					// Return button (top-right)
+					int retX_rs = getWidth() - 240, retY_rs = 20, retW_rs = 220, retH_rs = 50;
+					if (x >= retX_rs && x <= retX_rs + retW_rs && y >= retY_rs && y <= retY_rs + retH_rs) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					// otherwise ignore clicks
+					break;
+				case "Player Profiles":
+					int retX_pp = getWidth() - 240, retY_pp = 20, retW_pp = 220, retH_pp = 50;
+					if (x >= retX_pp && x <= retX_pp + retW_pp && y >= retY_pp && y <= retY_pp + retH_pp) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					break;
+				case "Discarded Plants":
+					int retX_dp = getWidth() - 240, retY_dp = 20, retW_dp = 220, retH_dp = 50;
+					if (x >= retX_dp && x <= retX_dp + retW_dp && y >= retY_dp && y <= retY_dp + retH_dp) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					break;
+				case "Full Map":
+					int retX_fm = getWidth() - 240, retY_fm = 20, retW_fm = 220, retH_fm = 50;
+					if (x >= retX_fm && x <= retX_fm + retW_fm && y >= retY_fm && y <= retY_fm + retH_fm) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					break;
+				case "Resource Market View":
+					int retX_rm = getWidth() - 240, retY_rm = 20, retW_rm = 220, retH_rm = 50;
+					if (x >= retX_rm && x <= retX_rm + retW_rm && y >= retY_rm && y <= retY_rm + retH_rm) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					break;
+				case "Auction Market View":
+					int retX_am = getWidth() - 240, retY_am = 20, retW_am = 220, retH_am = 50;
+					if (x >= retX_am && x <= retX_am + retW_am && y >= retY_am && y <= retY_am + retH_am) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					break;
+				case "Step Info":
+					int retX_si = getWidth() - 240, retY_si = 20, retW_si = 220, retH_si = 50;
+					if (x >= retX_si && x <= retX_si + retW_si && y >= retY_si && y <= retY_si + retH_si) {
+						GameState.currentEvent.removeLast();
+						repaint();
+						return;
+					}
+					break;
 					case "Menu":
-					
 					// Recalculate panel and button positions (same as in paint)
 					int panelW = 800;
 					int panelH = 800;
@@ -2171,18 +2982,24 @@ private void loadCityCoordinates() {
 							}
 							repaint();
 							return;
-					
+					 
 						
 					
 						}
-		
 					}
+					repaint();
+					break;
+					
+				
+
 				case "Step 2":
 					GameState.currentEvent.removeLast();
 					repaint();
 					break;
-				}
+				
+					}
 }
+
 	
 	public void mouseReleased(MouseEvent e) {
 		

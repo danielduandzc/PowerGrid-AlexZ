@@ -49,9 +49,10 @@ public class GameState{
         tempDeck.add(new PowerPlant(4,2,14,2,new ArrayList<Resource>(Arrays.asList(Resource.GARBAGE))));
         tempDeck.add(new PowerPlant(4,3,15,2,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
         Collections.shuffle(tempDeck);
-            for(int i=11;i>=3;i--) {
-                powerPlantsInMarket.add(tempDeck.remove(i));
-            }
+                            for(int i = 11; i >= 4; i--) {
+                        powerPlantsInMarket.add(tempDeck.remove(i));
+                    }
+
        powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
         for(int i=tempDeck.size()-1;i>=0;i--) {
             powerPlantDeck.add(tempDeck.get(i));
@@ -241,6 +242,28 @@ public class GameState{
             if(k.getInAuction()&&!k.getHasPassed()) {
                 numPlayersInAuction++;
             }
+        }
+        // If nobody remains in the auction (everyone passed), discard one card from the deck
+        if(numPlayersInAuction==0) {
+            System.out.println("All players passed the auction. Discarding one power plant from the deck.");
+            if(!powerPlantDeck.isEmpty()) {
+                PowerPlant removed = powerPlantDeck.remove(powerPlantDeck.size()-1);
+                discardPile.add(removed);
+                System.out.println("Discarded power plant: " + removed.getPrice());
+            }
+            // Reset auction state for all players
+            for(Player p : players) {
+                p.setInAuction(false);
+                p.setHasPassed(false);
+                p.setBid(0);
+                p.setGhostBid(0);
+            }
+            // Remove Auction event and proceed to pick powerplant phase
+            if(!currentEvent.isEmpty() && currentEvent.getLast().equals("Auction")) {
+                currentEvent.removeLast();
+            }
+            currentEvent.add("Pick Powerplant");
+            return;
         }
         if(numPlayersInAuction==1) {
             int j=0;
