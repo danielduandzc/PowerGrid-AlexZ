@@ -3,13 +3,13 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.util.*;
 public class GameState{
-
+    public static boolean firstRoundOfAuction=true;
     public static ArrayList<String> currentEvent = new ArrayList<>();
     public static Stack<String> previousStates = new Stack<>();
     public static int currentPlayerIndex=0;
     public static int currentStep=1;
     public static Player[] players=new Player[4];
-    public static int[] playerOrder= new int[]{1,2,3,4};
+    public static int[] playerOrder= new int[]{3,1,4,2};
     public static BufferedImage boardImage;
     public static CityGraph graphOfCity=new CityGraph();
     public static boolean[] isColorSelected=new boolean[6];
@@ -19,13 +19,22 @@ public class GameState{
     public static PowerPlant auctionedPowerPlant;
     public static ArrayList<PowerPlant> powerPlantDeck=new ArrayList<PowerPlant>();
     public static ArrayList<PowerPlant> powerPlantsInMarket=new ArrayList<PowerPlant>();
+    public static ArrayList<PowerPlant> discardPile=new ArrayList<PowerPlant>();
     public static ArrayList<Integer> playerOrderInAuction=new ArrayList<Integer>();
+    
     public static ResourceHub resourceMarket = new ResourceHub();
     public static CityGraph fullGraph = new CityGraph();
     public static String cityNameForPurchase;
     public static int setPriceForCity;
+    public static int auctionPlayerIndex=0;
+    public static Resource selectedResourceForAddition = null;
+    public static int numPlayerSkipped=0;
+    
 
     public static void setUpDeckAndMarket(){
+        
+        // Randomize player order for the first round only
+       
         
         for(Player k : players) {
             k.addElektro(50);
@@ -45,9 +54,10 @@ public class GameState{
         tempDeck.add(new PowerPlant(4,2,14,2,new ArrayList<Resource>(Arrays.asList(Resource.GARBAGE))));
         tempDeck.add(new PowerPlant(4,3,15,2,new ArrayList<Resource>(Arrays.asList(Resource.COAL))));
         Collections.shuffle(tempDeck);
-            for(int i=11;i>=3;i--) {
-                powerPlantsInMarket.add(tempDeck.remove(i));
-            }
+                            for(int i = 11; i >= 4; i--) {
+                        powerPlantsInMarket.add(tempDeck.remove(i));
+                    }
+
        powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
         for(int i=tempDeck.size()-1;i>=0;i--) {
             powerPlantDeck.add(tempDeck.get(i));
@@ -82,9 +92,14 @@ public class GameState{
         powerPlantDeck.add(new PowerPlant(0,5,44,0,new ArrayList<Resource>()));
         powerPlantDeck.add(new PowerPlant(6,7,46,3,new ArrayList<Resource>(Arrays.asList(Resource.OIL,Resource.COAL))));
         powerPlantDeck.add(new PowerPlant(0,6,50,0,new ArrayList<Resource>()));
+        Collections.shuffle(powerPlantDeck);
+        powerPlantDeck.add(0, new PowerPlant(0, 0, 51, 0, new ArrayList<Resource>()));
+        
+        
      } 
 
      public static void runBureaucracy(){
+         firstRoundOfAuction=false;
             for(Player p : players) {
                 int powerCount = 0;
                 for(PowerPlant plant : p.getPowerPlants()) {
@@ -92,7 +107,7 @@ public class GameState{
                         powerCount += plant.getPowerOutput();
                         // Remove resources used for this turn
                         for(Resource r : plant.getFuelType()) {
-                            int resourcesToRemove = Math.min(plant.getCurrentResources().size(), plant.getMaxResources());
+                            int resourcesToRemove = plant.getFuelCost();
                             for(int i = 0; i < resourcesToRemove; i++) {
                                 plant.getCurrentResources().remove(r);
                             }
@@ -100,8 +115,9 @@ public class GameState{
                     }
                 }
                 // Power cities based on powerCount
-                
+                   
                     p.setEarnedIncome(calculateIncome(Math.min(powerCount,p.getCities().size())));
+                     p.addElektro(p.getEarnedIncome());
                 
             }
      }
@@ -136,14 +152,16 @@ public class GameState{
     
 
     public static void setUpAuction(){
+        numPlayerSkipped=0;
+        auctionPlayerIndex=0;
         graphOfCity.removeUnselectedZones(isZoneSelected);
         currentPlayerIndex=0;
         minBid=0;
         playerOrderInAuction.clear();
-        playerOrderInAuction.add(0);
-        playerOrderInAuction.add(1);
-        playerOrderInAuction.add(2);
-        playerOrderInAuction.add(3);
+        playerOrderInAuction.add(playerOrder[0]-1);
+        playerOrderInAuction.add(playerOrder[1]-1);
+        playerOrderInAuction.add(playerOrder[2]-1);
+        playerOrderInAuction.add(playerOrder[3]-1);
         for(Player k : players)
         {
             k.setInAuction(true);
@@ -156,16 +174,71 @@ public class GameState{
            
         
     }
+            public static void newRound() {
+
+            // Determine Step 2 or Step 3
+            int mostCities = 0;
+            for (Player p : players) {
+                mostCities = Math.max(mostCities, p.getCities().size());
+            }
+
+           
+            resourceMarket.restockMarket();
+
+            // Sort players by:
+            // 1. Most cities (descending)
+            // 2. Highest power plant (descending)
+            Integer[] order = {0, 1, 2, 3};
+
+            Arrays.sort(order, (a, b) -> {
+                Player pA = players[a];
+                Player pB = players[b];
+
+                int cityDiff = pB.getCities().size() - pA.getCities().size();
+                if (cityDiff != 0) return cityDiff;
+
+                int plantDiff = pB.getHighestPowerPlant() - pA.getHighestPowerPlant();
+                return plantDiff;
+            });
+
+            // Save sorted order back into playerOrder
+            for (int i = 0; i < 4; i++) {
+                playerOrder[i] = order[i] + 1; // +1 because your array uses 1–4 instead of 0–3
+            }
+
+            currentEvent.add("Player Order");
+             if (mostCities >= 7) {
+                currentStep = 2;
+                discardPile.add(powerPlantsInMarket.remove(0)); // Remove the cheapest power plant
+                powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size() - 1)); // Add a new one from the deck
+                currentEvent.add("Step 2");
+            }
+            if (mostCities >= 17) {
+                // End game
+                return;
+            }
+        }
     public static void continueAuction(){
+        System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player");
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
-        minBid=Math.max(minBid, players[currentPlayerIndex].getBid());
-        currentPlayerIndex++;
-        if(currentPlayerIndex==4) {
-            currentPlayerIndex=0;
+        
+        // Make sure auctionPlayerIndex is valid
+        if(playerOrderInAuction.isEmpty()) {
+            return;
         }
-        if(!players[currentPlayerIndex].getInAuction()||players[currentPlayerIndex].getHasPassed()) {
+        if(auctionPlayerIndex >= playerOrderInAuction.size()) {
+            auctionPlayerIndex = 0;
+        }
+       
+        minBid=Math.max(minBid, players[playerOrderInAuction.get(auctionPlayerIndex)].getBid());
+        auctionPlayerIndex++;
+        if(auctionPlayerIndex==playerOrderInAuction.size()) {
+            auctionPlayerIndex=0;
+        }
+        if(!players[playerOrderInAuction.get(auctionPlayerIndex)].getInAuction()||players[playerOrderInAuction.get(auctionPlayerIndex)].getHasPassed()) {
+            System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player who was skipped");
             continueAuction();
         }
         int numPlayersInAuction=0;
@@ -175,21 +248,48 @@ public class GameState{
                 numPlayersInAuction++;
             }
         }
+        // If nobody remains in the auction (everyone passed), remove the lowest power plant from the market
+        if(numPlayersInAuction==0) {
+            System.out.println("All players passed the auction. Removing lowest power plant from the market.");
+            if(!powerPlantsInMarket.isEmpty()) {
+                PowerPlant removed = powerPlantsInMarket.remove(0);  // Remove the first (lowest price) power plant
+                discardPile.add(removed);
+                System.out.println("Removed power plant: " + removed.getPrice());
+                // Add a new power plant from the deck to the market
+                if(!powerPlantDeck.isEmpty()) {
+                    powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
+                    powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
+                }
+            }
+            // Reset auction state for all players
+            for(Player p : players) {
+                p.setInAuction(false);
+                p.setHasPassed(false);
+                p.setBid(0);
+                p.setGhostBid(0);
+            }
+            // Remove Auction event and proceed to pick powerplant phase
+            if(!currentEvent.isEmpty() && currentEvent.getLast().equals("Auction")) {
+                currentEvent.removeLast();
+            }
+            currentEvent.add("Pick Powerplant");
+            return;
+        }
         if(numPlayersInAuction==1) {
             int j=0;
-            int lock=0;
-            for(int k : playerOrderInAuction)
+           
+            for(Player k : players)
             {
               if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
                
-                currentPlayerIndex=0;
-                if(players[k].getInAuction()&&!players[k].getHasPassed()) {
-                     System.out.println("Player "+(k+1)+" has won the auction");
-                     players[k].setBid(0);
-                    players[k].setGhostBid(0);
-                    players[k].buyPowerPlant(auctionedPowerPlant);
+                auctionPlayerIndex=0;
+                if(k.getInAuction()&&!k.getHasPassed()) {
+                     
+                     k.setBid(0);
+                    k.setGhostBid(0);
+                    k.buyPowerPlant(auctionedPowerPlant);
                     int i=0;
                     while(powerPlantsInMarket.get(i).getPrice()<auctionedPowerPlant.getPrice()) {
                         i++;
@@ -197,51 +297,63 @@ public class GameState{
                     powerPlantsInMarket.remove(i);
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
-                    players[k].setInAuction(false);
-                    lock=j;
+                    i=0;
+                    System.out.println("j at the time of death "+j);
+                    while(i<j&&playerOrderInAuction.get(i)!=j)
+                        i++;
+                    playerOrderInAuction.remove(i);
+                    System.out.println("Player "+(j+1)+" Is out of the auction");
+                    k.setInAuction(false);
+                    
                    
                     
                     
                 }else{
-                    System.out.println("Player "+(k+1)+" Is still in the auction");
-                    players[k].setBid(0);
-                    players[k].setGhostBid(0);
+                    if(players[j].getInAuction())
+                    System.out.println("Player "+(j+1)+" Is still in the auction");
+                    k.setBid(0);
+                    k.setGhostBid(0);
                     minBid=0;
-                    players[k].setHasPassed(false);
+                    k.setHasPassed(false);
                 }
+                 if(players[j].getInAuction())
                   j++;
-               
+                
             }
-             playerOrderInAuction.remove(lock);
+            
             if(playerOrderInAuction.size()==1) {
             System.out.println("I, TONY, have won");
             currentEvent.removeLast();
+           
              currentEvent.add("Buy Powerplant");
              return;
             }
+            
               if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
             System.out.println("Ts shouldnt appear after i win");
-            currentPlayerIndex=0;
-            int max=0;
-            for(int k=0;k<4;k++){
-                if(players[k].getInAuction()) {
-                    max=k;
-                    break;
-                }
-            }
-            while(currentPlayerIndex==max+1||!players[playerOrder[currentPlayerIndex]-1].getInAuction()){
-                currentPlayerIndex++;
-            }
+            auctionPlayerIndex=0;
+            
+           
+            
+            
             
             currentEvent.add("Pick Powerplant");
             
         }
     }
-}
-   
     
+    // Reverse the player order for phases like Buy Resources and Build Houses
+    public static void reversePlayerOrder() {
+        int[] temp = new int[playerOrder.length];
+        for(int i = 0; i < playerOrder.length; i++) {
+            temp[i] = playerOrder[playerOrder.length - 1 - i];
+        }
+        playerOrder = temp;
+        currentPlayerIndex = 0;
+    }
+}    
 
 
 

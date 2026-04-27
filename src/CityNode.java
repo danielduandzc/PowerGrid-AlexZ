@@ -1,6 +1,7 @@
 //package src;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CityNode {
     private String cityName;
@@ -9,10 +10,10 @@ public class CityNode {
     private int firstSector;
     private int secondSector;
     private int thirdSector;
-    
-    private ArrayList<Edge> adjacentEdges;
+    private List<Edge> adjacentEdges = new ArrayList<>();
 
     public CityNode(String n, String c) {
+        this.distance = Integer.MAX_VALUE;
         this.cityName = n;
         this.zoneColor = c;
         this.firstSector = 0;
@@ -69,7 +70,20 @@ public class CityNode {
         return distance;
     }
 
-    public ArrayList<Edge> getAdjacentEdges() {
+    public List<Edge> getAdjacentEdges() {
         return adjacentEdges;
     }
+    @Override
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CityNode)) return false;
+    CityNode other = (CityNode) o;
+    return this.cityName.equalsIgnoreCase(other.cityName);
+}
+
+@Override
+public int hashCode() {
+    return cityName.toLowerCase().hashCode();
+}
+
 }

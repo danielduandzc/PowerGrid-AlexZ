@@ -44,8 +44,10 @@ public class PowerPlant {
         return maxResources;
     }
     public boolean addResource(Resource resource) {
+        
         if (currentResources.size() < maxResources && fuelType.contains(resource)) {
             currentResources.add(resource);
+            System.out.println("True");
             return true;
         }
         return false;

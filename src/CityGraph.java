@@ -20,6 +20,17 @@ public class CityGraph {
     }
     return false;
 }
+private void rebuildAdjacencyLists() {
+    // Clear all adjacency lists
+    for (CityNode node : nodes) {
+        node.getAdjacentEdges().clear();
+    }
+    // Re-add each edge to its endpoint nodes
+    for (Edge edge : edges) {
+        edge.getANode().getAdjacentEdges().add(edge);
+        edge.getBNode().getAdjacentEdges().add(edge);
+    }
+}
 
     private void initializeGraph() {
         // Create all nodes
@@ -136,37 +147,59 @@ public class CityGraph {
         }
     }
 
-    public int getShortestPath(CityNode startNode, CityNode targetNode) {
-        // Implementation for shortest path algorithm (e.g., Dijkstra's)
-        PriorityQueue<CityNode> adjacentCities = new PriorityQueue<CityNode>();
-        HashSet<CityNode> visitedNodes = new HashSet<>();
-        CityNode currentNode = startNode;
-        adjacentCities.offer(currentNode);
-        startNode.setDistance(0);
-        for(CityNode n: nodes)
-            n.setDistance(Integer.MAX_VALUE);
-        
-        while(!adjacentCities.isEmpty()){ 
-            if(visitedNodes.containsAll(nodes))
-               return targetNode.getDistance();
-            
-            currentNode = adjacentCities.poll();
-            visitedNodes.add(currentNode);
-            
-            for(Edge e: currentNode.getAdjacentEdges()){
-                if(e.getOtherNode(currentNode).equals(targetNode))
-                    return targetNode.getDistance();
-                if(visitedNodes.contains(e.getOtherNode(currentNode)))
-                    continue;
-                else{
-                    adjacentCities.offer(e.getOtherNode(currentNode));
-                    if((currentNode.getDistance() + e.getCost()) < e.getOtherNode(currentNode).getDistance())
-                        e.getOtherNode(currentNode).setDistance(currentNode.getDistance() + e.getCost());
-                }
+    public int getShortestPath(String startName, String targetName) {
+    CityNode startNode = null;
+    CityNode targetNode = null;
+
+    // Find the nodes by name
+    for (CityNode n : nodes) {
+        if (n.getName().equalsIgnoreCase(startName)) startNode = n;
+        if (n.getName().equalsIgnoreCase(targetName)) targetNode = n;
+    }
+
+    if (startNode == null || targetNode == null) {
+        return -1; // city not found
+    }
+
+    // Reset distances
+    for (CityNode n : nodes) {
+        n.setDistance(Integer.MAX_VALUE);
+    }
+    startNode.setDistance(0);
+
+    // Priority queue sorted by distance
+    PriorityQueue<CityNode> pq = new PriorityQueue<>(Comparator.comparingInt(CityNode::getDistance));
+    pq.add(startNode);
+
+    HashSet<CityNode> visited = new HashSet<>();
+
+    while (!pq.isEmpty()) {
+        CityNode current = pq.poll();
+
+        if (visited.contains(current)) continue;
+        visited.add(current);
+
+        // If we reached the target, we are done
+        if (current.equals(targetNode)) {
+            return current.getDistance();
+        }
+
+        // Relax edges
+        for (Edge e : current.getAdjacentEdges()) {
+            CityNode neighbor = e.getOtherNode(current);
+
+            if (visited.contains(neighbor)) continue;
+
+            int newDist = current.getDistance() + e.getCost();
+            if (newDist < neighbor.getDistance()) {
+                neighbor.setDistance(newDist);
+                pq.add(neighbor);
             }
         }
-        return targetNode.getDistance();
     }
+
+    return targetNode.getDistance();
+}
 
     public void addNode(CityNode n) {
         if (n != null && !nodes.contains(n)) {
@@ -198,54 +231,63 @@ public class CityGraph {
     }
 
     public void removeUnselectedZones(boolean[] isZoneSelected) {
-        // Map zones to their city names
-        HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
-        
-        // Teal (zone 0)
-        zoneMap.put(0, new ArrayList<>(Arrays.asList(
-            "Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover", "Lubeck"
-        )));
-        
-        // Brown (zone 1)
-        zoneMap.put(1, new ArrayList<>(Arrays.asList(
-            "Lubeck", "Schwerin", "Rostock", "Torgelow", "Magdeburg", "Berlin", "Frankfurt-O"
-        )));
-        
-        // Red (zone 2)
-        zoneMap.put(2, new ArrayList<>(Arrays.asList(
-            "Osnabruck", "Munster", "Duisburg", "Essen", "Dortmund", "Dusseldorf", "Kassel"
-        )));
-        
-        // Yellow (zone 3)
-        zoneMap.put(3, new ArrayList<>(Arrays.asList(
-            "Halle", "Leipzig", "Dresden", "Erfurt", "Fulda", "Wurzburg", "Nurnberg"
-        )));
-        
-        // Blue (zone 4)
-        zoneMap.put(4, new ArrayList<>(Arrays.asList(
-            "Aachen", "Koln", "Trier", "Wiesbaden", "Frankfurt-M", "Saarbrucken", "Mannheim"
-        )));
-        
-        // Purple (zone 5)
-        zoneMap.put(5, new ArrayList<>(Arrays.asList(
-            "Stuttgart", "Freiburg", "Konstanz", "Augsburg", "Munchen", "Regensburg", "Passau"
-        )));
-        
-        // Collect all cities in selected zones
-        HashSet<String> selectedCities = new HashSet<>();
-        for (int i = 0; i < isZoneSelected.length; i++) {
-            if (isZoneSelected[i]) {
-                selectedCities.addAll(zoneMap.get(i));
-            }
+    // Map zones to their city names
+    HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
+    
+    // Teal (zone 0)
+    zoneMap.put(0, new ArrayList<>(Arrays.asList(
+        "Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover", "Lubeck"
+    )));
+    
+    // Brown (zone 1)
+    zoneMap.put(1, new ArrayList<>(Arrays.asList(
+        "Lubeck", "Schwerin", "Rostock", "Torgelow", "Magdeburg", "Berlin", "Frankfurt-O"
+    )));
+    
+    // Red (zone 2)
+    zoneMap.put(2, new ArrayList<>(Arrays.asList(
+        "Osnabruck", "Munster", "Duisburg", "Essen", "Dortmund", "Dusseldorf", "Kassel"
+    )));
+    
+    // Yellow (zone 3)
+    zoneMap.put(3, new ArrayList<>(Arrays.asList(
+        "Halle", "Leipzig", "Dresden", "Erfurt", "Fulda", "Wurzburg", "Nurnberg"
+    )));
+    
+    // Blue (zone 4)
+    zoneMap.put(4, new ArrayList<>(Arrays.asList(
+        "Aachen", "Koln", "Trier", "Wiesbaden", "Frankfurt-M", "Saarbrucken", "Mannheim"
+    )));
+    
+    // Purple (zone 5)
+    zoneMap.put(5, new ArrayList<>(Arrays.asList(
+        "Stuttgart", "Freiburg", "Konstanz", "Augsburg", "Munchen", "Regensburg", "Passau"
+    )));
+    
+    // Collect all cities in selected zones
+    HashSet<String> selectedCities = new HashSet<>();
+    for (int i = 0; i < isZoneSelected.length; i++) {
+        if (isZoneSelected[i]) {
+            selectedCities.addAll(zoneMap.get(i));
         }
-        
-        // Remove nodes not in selected zones
-        nodes.removeIf(node -> !selectedCities.contains(node.getName()));
-        
-        // Remove edges connected to removed nodes
-        edges.removeIf(edge -> !selectedCities.contains(edge.getANode().getName()) || 
-                               !selectedCities.contains(edge.getBNode().getName()));
     }
+    
+    // Remove nodes not in selected zones
+    nodes.removeIf(node -> !selectedCities.contains(node.getName()));
+    
+    // Remove edges connected to removed nodes
+    edges.removeIf(edge -> !selectedCities.contains(edge.getANode().getName()) || 
+                           !selectedCities.contains(edge.getBNode().getName()));
+    
+    // Rebuild adjacency lists for the remaining nodes
+    for (CityNode node : nodes) {
+        node.getAdjacentEdges().clear();
+    }
+    for (Edge edge : edges) {
+        edge.getANode().getAdjacentEdges().add(edge);
+        edge.getBNode().getAdjacentEdges().add(edge);
+    }
+}
 
  
 }

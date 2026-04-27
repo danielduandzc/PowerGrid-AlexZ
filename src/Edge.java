@@ -6,6 +6,7 @@ public class Edge {
     private int cost;
     
     public Edge(CityNode a, CityNode b, int cost) {
+        
         this.a = a;
         this.b = b;
         this.cost = cost;
