@@ -236,9 +236,17 @@ public class GameState{
         if(auctionPlayerIndex==playerOrderInAuction.size()) {
             auctionPlayerIndex=0;
         }
-        if(!players[playerOrderInAuction.get(auctionPlayerIndex)].getInAuction()||players[playerOrderInAuction.get(auctionPlayerIndex)].getHasPassed()) {
+        
+        // Skip players who are not in auction or have passed - using a loop instead of recursion to avoid stack overflow
+        int skipCounter = 0;
+        int maxSkips = playerOrderInAuction.size();  // Prevent infinite loops
+        while(skipCounter < maxSkips && (!players[playerOrderInAuction.get(auctionPlayerIndex)].getInAuction() || players[playerOrderInAuction.get(auctionPlayerIndex)].getHasPassed())) {
             System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player who was skipped");
-            continueAuction();
+            auctionPlayerIndex++;
+            if(auctionPlayerIndex==playerOrderInAuction.size()) {
+                auctionPlayerIndex=0;
+            }
+            skipCounter++;
         }
         int numPlayersInAuction=0;
         for(Player k : players)
@@ -267,79 +275,72 @@ public class GameState{
                 p.setBid(0);
                 p.setGhostBid(0);
             }
-            // Remove Auction event and proceed to pick powerplant phase
-            if(!currentEvent.isEmpty() && currentEvent.getLast().equals("Auction")) {
-                currentEvent.removeLast();
-            }
+            
             currentEvent.add("Pick Powerplant");
             return;
         }
         if(numPlayersInAuction==1) {
-            int j=0;
-           
-            for(Player k : players)
-            {
-              if(currentEvent.getLast().equals("Buy Powerplant")){
-                return;
+            // Find the remaining player who won the auction
+            Player winner = null;
+            int winnerIndex = -1;
+            for(int i = 0; i < players.length; i++) {
+                if(players[i].getInAuction() && !players[i].getHasPassed()) {
+                    winner = players[i];
+                    winnerIndex = i;
+                    break;
+                }
             }
-               
-                auctionPlayerIndex=0;
-                if(k.getInAuction()&&!k.getHasPassed()) {
-                     
-                     k.setBid(0);
-                    k.setGhostBid(0);
-                    k.buyPowerPlant(auctionedPowerPlant);
-                    int i=0;
-                    while(powerPlantsInMarket.get(i).getPrice()<auctionedPowerPlant.getPrice()) {
-                        i++;
-                    }
-                    powerPlantsInMarket.remove(i);
+            
+            if(winner != null) {
+                // Give the power plant to the winner
+                winner.setBid(0);
+                winner.setGhostBid(0);
+                winner.buyPowerPlant(auctionedPowerPlant);
+                
+                // Remove this power plant from market and add a new one
+                int marketIndex = 0;
+                while(marketIndex < powerPlantsInMarket.size() && 
+                      powerPlantsInMarket.get(marketIndex).getPrice() < auctionedPowerPlant.getPrice()) {
+                    marketIndex++;
+                }
+                powerPlantsInMarket.remove(marketIndex);
+                if(!powerPlantDeck.isEmpty()) {
                     powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
                     powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
-                    i=0;
-                    System.out.println("j at the time of death "+j);
-                    while(i<j&&playerOrderInAuction.get(i)!=j)
-                        i++;
-                    playerOrderInAuction.remove(i);
-                    System.out.println("Player "+(j+1)+" Is out of the auction");
-                    k.setInAuction(false);
-                    
-                   
-                    
-                    
-                }else{
-                    if(players[j].getInAuction())
-                    System.out.println("Player "+(j+1)+" Is still in the auction");
-                    k.setBid(0);
-                    k.setGhostBid(0);
-                    minBid=0;
-                    k.setHasPassed(false);
                 }
-                 if(players[j].getInAuction())
-                  j++;
                 
+                System.out.println("Player " + (winnerIndex + 1) + " won the auction");
+                
+                // Remove this player from the auction rotation
+                playerOrderInAuction.remove((Integer) winnerIndex);
+                winner.setInAuction(false);
+            
             }
             
+            // Reset all players' auction states for next round
+            for(Player p : players) {
+                p.setHasPassed(false);
+                p.setBid(0);
+                p.setGhostBid(0);
+            }
+            
+            // Check if auction is done
             if(playerOrderInAuction.size()==1) {
-            System.out.println("I, TONY, have won");
-            currentEvent.removeLast();
-           
-             currentEvent.add("Buy Powerplant");
-             return;
-            }
-            
-              if(currentEvent.getLast().equals("Buy Powerplant")){
+                System.out.println("Auction complete - all players have power plants");
+                if(!currentEvent.isEmpty() && currentEvent.getLast().equals("Auction")) {
+                    currentEvent.removeLast();
+                }
+                currentEvent.add("Buy Powerplant");
                 return;
             }
-            System.out.println("Ts shouldnt appear after i win");
-            auctionPlayerIndex=0;
             
-           
-            
-            
+            // Continue to next auction round
+            auctionPlayerIndex = 0;
+            minBid = 0;
+            System.out.println("Starting next auction round with " + playerOrderInAuction.size() + " players");
             
             currentEvent.add("Pick Powerplant");
-            
+            return;
         }
     }
     

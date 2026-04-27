@@ -1341,7 +1341,7 @@ private void loadCityCoordinates() {
 					int resY = (getHeight() - h) / 2;
 					g.drawImage(resourceSummary, resX, resY, w, h, this);
 					// Show the yellow highlight only for the current step (1,2,3)
-					int[] stepXs = {0, 937, 972, 1022}; // index by step number
+					int[] stepXs = {0, 880, 912, 952}; // 880
 					int boxW = 30;
 					Color highlightColor = new Color(255, 255, 0, 120); // semi-transparent yellow
 					Graphics2D g2h = (Graphics2D) g;
