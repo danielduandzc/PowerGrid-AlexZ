@@ -2378,7 +2378,7 @@ private void loadCityCoordinates() {
                     if(buyPlayer.getPowerPlants().size() >= 3) {
                         // Store player index and trigger discard choice
                         GameState.currentPlayerIndex = GameState.playerOrderInAuction.get(0);
-                        GameState.currentEvent.add("Discard Powerplant From Buy");
+                        GameState.currentEvent.add("Discard Powerplant");
                         repaint();
                         return;
                     }
@@ -2405,7 +2405,7 @@ private void loadCityCoordinates() {
                     if(buyPlayer.getPowerPlants().size() >= 3) {
                         // Store player index and trigger discard choice
                         GameState.currentPlayerIndex = GameState.playerOrderInAuction.get(0);
-                        GameState.currentEvent.add("Discard Powerplant From Buy");
+                        GameState.currentEvent.add("Discard Powerplant");
                         repaint();
                         return;
                     }
@@ -2432,7 +2432,7 @@ private void loadCityCoordinates() {
                     if(buyPlayer.getPowerPlants().size() >= 3) {
                         // Store player index and trigger discard choice
                         GameState.currentPlayerIndex = GameState.playerOrderInAuction.get(0);
-                        GameState.currentEvent.add("Discard Powerplant From Buy");
+                        GameState.currentEvent.add("Discard Powerplant");
                         repaint();
                         return;
                     }
@@ -2593,6 +2593,8 @@ private void loadCityCoordinates() {
 							
 							GameState.currentEvent.add("Buy Powerplant");
 						} else {
+							if(GameState.playerOrderInAuction.size()==0)
+								return;
 							// Continue to next auction round
 							GameState.auctionPlayerIndex = 0;
 							GameState.minBid = 0;
