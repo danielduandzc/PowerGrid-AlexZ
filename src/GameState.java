@@ -167,6 +167,7 @@ public class GameState{
             k.setHasPassed(false);
             k.setBid(0);
         }
+         powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
          currentEvent.add("Auction");
         currentEvent.add("Pick Powerplant");
        
@@ -295,6 +296,13 @@ public class GameState{
                 // Give the power plant to the winner
                 winner.setBid(0);
                 winner.setGhostBid(0);
+                if(winner.getPowerPlants().size() >= 3) {
+                    // If they already have 3 power plants, they must choose one to discard
+                    // Store which player needs to discard for the UI to handle
+                    currentPlayerIndex = winnerIndex;
+                    currentEvent.add("Discard Powerplant");
+                    return;
+                }
                 winner.buyPowerPlant(auctionedPowerPlant);
                 
                 // Remove this power plant from market and add a new one
