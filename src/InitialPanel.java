@@ -667,7 +667,7 @@ private void loadCityCoordinates() {
 				
 				g.setFont(customFontLarge);
 				g.setColor(Color.BLACK);
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Buy Resources", 100, 100);
+				g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " - Buy Resources", 100, 100);
 				
 				g.setFont(customFontMed);
 				g.drawString("Elektro: " + GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro(), 100, 150);
@@ -973,8 +973,12 @@ private void loadCityCoordinates() {
 				
 				g.setFont(citiesFontLarge);
 				g.setColor(Color.BLACK);
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1), 100, 100);
+				g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]), 100, 100);
 				g.drawString("Buy Cities", 100, 150);
+				// g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " - Buy Resources", 100, 100);
+				
+				// g.setFont(customFontMed);
+				 g.drawString("Elektro: " + GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getElektro(), 100, 500);
 				
 				// Draw continue button
 				g.setFont(citiesFontSmall);
@@ -1116,7 +1120,8 @@ private void loadCityCoordinates() {
 				Font ppFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
 				g.setFont(ppFontLarge);
 				g.setColor(Color.BLACK);
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Activate Powerplants", 100, 100);
+				g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " - Activate Powerplants", 100, 100);
+				
 				
 				// Display player's powerplants with images
 				Player currentPPPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1];
@@ -2247,7 +2252,8 @@ private void loadCityCoordinates() {
 		else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50){
 			x=0;y=0;
 			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
-			
+			GameState.numPlayerSkipped++;
+			System.out.println("Players skiped: "+GameState.numPlayerSkipped);
 			if(GameState.playerOrderInAuction.size()==2){
 			GameState.currentEvent.removeFirst();
 			GameState.currentEvent.removeFirst();
@@ -2255,8 +2261,7 @@ private void loadCityCoordinates() {
 			GameState.playerOrderInAuction.remove(0);
 				GameState.currentEvent.add("Buy Powerplant");
 			}else{ 
-				GameState.numPlayerSkipped++;
-				System.out.println("Players skiped: "+GameState.numPlayerSkipped);
+				
 				GameState.playerOrderInAuction.remove(0);
 			}
 
