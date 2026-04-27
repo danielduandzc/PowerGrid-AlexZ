@@ -27,16 +27,13 @@ public class GameState{
     public static int setPriceForCity;
     public static int auctionPlayerIndex=0;
     public static Resource selectedResourceForAddition = null;
+    public static int numPlayerSkipped=0;
     
 
     public static void setUpDeckAndMarket(){
         
         // Randomize player order for the first round only
-        ArrayList<Integer> tempOrder = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-        Collections.shuffle(tempOrder);
-        for(int i = 0; i < 4; i++) {
-            playerOrder[i] = tempOrder.get(i);
-        }
+       
         
         for(Player k : players) {
             k.addElektro(50);
@@ -154,7 +151,7 @@ public class GameState{
     
 
     public static void setUpAuction(){
-
+        numPlayerSkipped=0;
         auctionPlayerIndex=0;
         graphOfCity.removeUnselectedZones(isZoneSelected);
         currentPlayerIndex=0;

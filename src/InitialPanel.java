@@ -2255,6 +2255,8 @@ private void loadCityCoordinates() {
 			GameState.playerOrderInAuction.remove(0);
 				GameState.currentEvent.add("Buy Powerplant");
 			}else{ 
+				GameState.numPlayerSkipped++;
+				System.out.println("Players skiped: "+GameState.numPlayerSkipped);
 				GameState.playerOrderInAuction.remove(0);
 			}
 
@@ -2337,6 +2339,14 @@ private void loadCityCoordinates() {
 				}
 				
 		}else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50&&!GameState.firstRoundOfAuction){
+			GameState.numPlayerSkipped++;
+			if(GameState.numPlayerSkipped==4){
+				System.out.println("MIJO");
+				GameState.discardPile.add(GameState.powerPlantsInMarket.remove(0));
+				GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.get(GameState.powerPlantDeck.size()-1));
+				GameState.powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
+
+			}
 			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
 			GameState.playerOrderInAuction.remove(0);
 			
