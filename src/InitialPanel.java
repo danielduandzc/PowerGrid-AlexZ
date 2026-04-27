@@ -1781,9 +1781,9 @@ private void loadCityCoordinates() {
 		switch(colorString) {
 			case "Red": return new Color(255, 0, 0);
 			case "Yellow": return new Color(255, 255, 0);
-			case "Green": return new Color(0, 128, 0);
-			case "Blue": return new Color(0, 0, 128);
-			case "Purple": return new Color(128, 0, 128);
+			case "Green": return new Color(0, 255, 0);
+			case "Blue": return new Color(0, 100, 255);
+			case "Purple": return new Color(200, 0, 255);
 			case "White": return Color.WHITE;
 			default: return Color.BLACK;
 		}
@@ -1986,6 +1986,12 @@ private void loadCityCoordinates() {
 		if(playerImage != null) {
 			g.drawImage(playerImage, x, y, width, height, this);
 		}
+		
+		// Draw black border around player profile
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setStroke(new BasicStroke(8));
+		g2d.setColor(Color.BLACK);
+		g2d.drawRect(x, y, width, height);
 		
 		// Draw grayed out overlay if player is out or passed
 		if(!GameState.players[playerIndex].getInAuction() || GameState.players[playerIndex].getHasPassed()) {
@@ -2274,6 +2280,7 @@ private void loadCityCoordinates() {
                     GameState.powerPlantsInMarket.remove(i);
 				    GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
+				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
 
 				} else if (x >= 375 && x <= 525) {
@@ -2308,6 +2315,7 @@ private void loadCityCoordinates() {
                     GameState.powerPlantsInMarket.remove(i);
                     GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
+				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
 				} else if (x >= 775 && x <= 925) {
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
@@ -2324,6 +2332,7 @@ private void loadCityCoordinates() {
                     GameState.powerPlantsInMarket.remove(i);
                     GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
+				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
 				}
 				
@@ -2331,11 +2340,10 @@ private void loadCityCoordinates() {
 			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
 			GameState.playerOrderInAuction.remove(0);
 			
-				GameState.currentEvent.removeFirst();
-				
-				GameState.currentEvent.add("Buy Resources");
+			GameState.currentEvent.removeFirst();
 			
-			}
+			GameState.reversePlayerOrder();
+			GameState.currentEvent.add("Buy Resources");			}
 			repaint();
 				break;
 			case "Auction":

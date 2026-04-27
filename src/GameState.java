@@ -8,7 +8,7 @@ public class GameState{
     public static int currentPlayerIndex=0;
     public static int currentStep=1;
     public static Player[] players=new Player[4];
-    public static int[] playerOrder= new int[]{1,2,3,4};
+    public static int[] playerOrder= new int[]{3,1,4,2};
     public static BufferedImage boardImage;
     public static CityGraph graphOfCity=new CityGraph();
     public static boolean[] isColorSelected=new boolean[6];
@@ -30,6 +30,13 @@ public class GameState{
     
 
     public static void setUpDeckAndMarket(){
+        
+        // Randomize player order for the first round only
+        ArrayList<Integer> tempOrder = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+        Collections.shuffle(tempOrder);
+        for(int i = 0; i < 4; i++) {
+            playerOrder[i] = tempOrder.get(i);
+        }
         
         for(Player k : players) {
             k.addElektro(50);
@@ -243,13 +250,18 @@ public class GameState{
                 numPlayersInAuction++;
             }
         }
-        // If nobody remains in the auction (everyone passed), discard one card from the deck
+        // If nobody remains in the auction (everyone passed), remove the lowest power plant from the market
         if(numPlayersInAuction==0) {
-            System.out.println("All players passed the auction. Discarding one power plant from the deck.");
-            if(!powerPlantDeck.isEmpty()) {
-                PowerPlant removed = powerPlantDeck.remove(powerPlantDeck.size()-1);
+            System.out.println("All players passed the auction. Removing lowest power plant from the market.");
+            if(!powerPlantsInMarket.isEmpty()) {
+                PowerPlant removed = powerPlantsInMarket.remove(0);  // Remove the first (lowest price) power plant
                 discardPile.add(removed);
-                System.out.println("Discarded power plant: " + removed.getPrice());
+                System.out.println("Removed power plant: " + removed.getPrice());
+                // Add a new power plant from the deck to the market
+                if(!powerPlantDeck.isEmpty()) {
+                    powerPlantsInMarket.add(powerPlantDeck.remove(powerPlantDeck.size()-1));
+                    powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
+                }
             }
             // Reset auction state for all players
             for(Player p : players) {
@@ -328,13 +340,22 @@ public class GameState{
            
             
             
+            
             currentEvent.add("Pick Powerplant");
             
         }
     }
-}
-   
     
+    // Reverse the player order for phases like Buy Resources and Build Houses
+    public static void reversePlayerOrder() {
+        int[] temp = new int[playerOrder.length];
+        for(int i = 0; i < playerOrder.length; i++) {
+            temp[i] = playerOrder[playerOrder.length - 1 - i];
+        }
+        playerOrder = temp;
+        currentPlayerIndex = 0;
+    }
+}    
 
 
 
