@@ -74,7 +74,7 @@ private void loadCityCoordinates() {
 	};	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, rules1, rules2, rules3, rules4, rules5, 
-	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menuscreen, menutile, colorselection;
+	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menuscreen, menutile, colorselection, rulesbutton;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50;
@@ -95,6 +95,7 @@ private void loadCityCoordinates() {
 			rules10 = ImageIO.read(new File("resources/Rules10.png"));
 			rules11 = ImageIO.read(new File("resources/Rules11.png"));
 			rules12 = ImageIO.read(new File("resources/Rules12.png"));
+			rulesbutton = ImageIO.read(new File("resources/rulesbutton.png"));
 			bigBoard = ImageIO.read(new File("resources/Board.png"));
 			board = ImageIO.read(new File("resources/Cropped Board.png"));
             titleScreen = ImageIO.read(new File("Powergrid.png"));
@@ -188,7 +189,6 @@ private void loadCityCoordinates() {
 
 			case "Instructions":
 				g.drawImage(rulesBG, 0, 0, 1920, 1080, this);
-				g.drawImage(menutile, 1604, 59, 218, 75, this);
 				switch(rulecounter) {
 					case 0: g.drawImage(rules1, 600, 0, 700, 1000, this); break;
 					case 1: g.drawImage(rules2, 600, 0, 700, 1000, this); break;
@@ -208,14 +208,16 @@ private void loadCityCoordinates() {
 			
 			case "Color Selection":
 				g.drawImage(colorselection, 0, 0, 1920, 1080, this);
+				
 
-				int startX = 124;
-				int startY = 399;
+				int startX = 129;
+				int startY = 402;
 				int boxW = 193;
 				int boxH = 192;
-				int step = 196; // real spacing from your data
 
-				Color overlay = new Color(0, 0, 0, 127);
+				int step = 296; // real spacing from your data
+
+				Color overlay = new Color(0, 0, 0, 100);
 				g.setColor(overlay);
 
 				for (int i = 0; i < 6; i++) {
@@ -224,7 +226,7 @@ private void loadCityCoordinates() {
 
 						int x = startX + (i * step);
 
-						g.fillRect(x, startY, boxW, boxH);
+						g.fillRoundRect(x, startY, boxW, boxH, 30, 30);
 					}
 				}
 
@@ -237,9 +239,9 @@ private void loadCityCoordinates() {
 
 			case "Zone Selection":
 				// zone selection
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
-		
+				g.drawImage(rulesbutton, 1514, 71, 295, 68, null);
 				//continue button
 				//height: 950
 				Font font = new Font("Arial", Font.BOLD, 30);
@@ -301,9 +303,10 @@ private void loadCityCoordinates() {
 				}
 				break;
 			case "Auction":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
-				    g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
-					switch(GameState.playerOrder[GameState.currentPlayerIndex]) {
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
+				g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
+				g.drawImage(menutile, 1514, 71, 295, 100, null);
+				switch(GameState.playerOrder[GameState.currentPlayerIndex]) {
 					case 1: g.drawImage(arrow, 220, 500, 250, 200, this); break;
 					case 2: g.drawImage(arrow, 620, 500, 250, 200, this); break;
 					case 3: g.drawImage(arrow, 1020, 500, 250, 200, this); break;
@@ -422,7 +425,7 @@ private void loadCityCoordinates() {
 					
 					*/
 					System.out.println("works");
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				Font sizedFont;
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 50f);
 				g.setFont(sizedFont);
@@ -456,7 +459,7 @@ private void loadCityCoordinates() {
 				}
 				break;
 			case "Buy Resources":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				Font customFontLarge = Main.customFont.deriveFont(Font.BOLD, 40f);
 				Font customFontMed = Main.customFont.deriveFont(Font.BOLD, 30f);
 				Font customFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
@@ -637,7 +640,7 @@ private void loadCityCoordinates() {
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Buy Cities":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				g.drawImage(bigBoard, getWidth()/4, 0, getWidth()/2, getHeight(), null);
 				// Draw the board and city houses - UI will be implemented with board drawing
 				// Draw continue button
@@ -677,7 +680,7 @@ private void loadCityCoordinates() {
 				}
 				break;
 			case "Confirm City Purchase":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				Font confirmFont = new Font("Arial", Font.BOLD, 40);
 				g.setFont(confirmFont);
 				g.setColor(Color.BLACK);
@@ -705,7 +708,7 @@ private void loadCityCoordinates() {
 				centerString(g, "No", (int)(getWidth() * 0.6), (int)(getHeight() * 0.55), (int)(getWidth() * 0.15), (int)(getHeight() * 0.08));
 				break;
 			case "Bureaucracy":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				Font bureaucracyFont = new Font("Arial", Font.BOLD, 50);
 				g.setFont(bureaucracyFont);
 				g.setColor(Color.BLACK);
@@ -725,7 +728,7 @@ private void loadCityCoordinates() {
 				centerString(g, "Continue", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.75), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Activate Powerplants":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				Font ppFont = new Font("Arial", Font.BOLD, 35);
 				g.setFont(ppFont);
 				g.setColor(Color.BLACK);
@@ -745,7 +748,7 @@ private void loadCityCoordinates() {
 				centerString(g, "Done", getWidth()/2 - (getWidth()/10), (int)(getHeight() * 0.9), getWidth()/5, (int)(getHeight() * 0.08));
 				break;
 			case "Hybrid Powerplant":
-				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				Font hybridFont = new Font("Arial", Font.BOLD, 40);
 				g.setFont(hybridFont);
 				g.setColor(Color.BLACK);
@@ -908,7 +911,6 @@ private void loadCityCoordinates() {
 				}
 				// Check if Rules button was clicked
 				else if (x >= 1200 && x <= 1700 && y >= 830 && y <= 914) {
-					GameState.currentEvent.removeLast();
 					GameState.currentEvent.add("Instructions");
 					repaint();
 				}
@@ -938,25 +940,19 @@ private void loadCityCoordinates() {
 				// return button in iunctructions page
 				if (x >= 80 && x <= 325 && y >= 30 && y <= 87) {
 					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Title Screen");
 					repaint();
-				}
-				if(x >= 1604 && x <= 1822 && y >= 75 && y <= 135) {
-					GameState.previousStates.push(GameState.currentEvent.getLast());
-					GameState.currentEvent.removeLast();
-					GameState.currentEvent.add("Menu Screen");
 				}
 				repaint();
 				break;
 
 			case "Color Selection":
-					int startX = 124;
-					int startY = 399;
+					int startX = 129;
+					int startY = 402;
 
 					int boxW = 193;
 					int boxH = 192;
 
-					int step = 196; // real spacing from your data
+					int step = 296; // real spacing from your data
 
 					if (y >= startY && y <= startY + boxH) {
 
@@ -1000,6 +996,10 @@ private void loadCityCoordinates() {
 					}
 
 				
+				if (x >= 1518 && x <= 1808 && y >= 73 && y <= 140) {
+					GameState.currentEvent.add("Instructions");
+				}
+				
 				if(GameState.currentPlayerIndex == 4) {
 					GameState.currentEvent.removeLast();
 					System.out.println("Player One Color: " + GameState.players[0].getColor());
@@ -1012,6 +1012,12 @@ private void loadCityCoordinates() {
 				repaint();
 				break;
 			case "Zone Selection":
+				
+				if (x >= 1518 && x <= 1808 && y >= 73 && y <= 140) {
+					GameState.currentEvent.add("Instructions");
+				}
+
+
 				if(x>=180 && x <= 255 && y >= 150 && y <= 225 && !GameState.isZoneSelected[0]) {
 					GameState.isZoneSelected[0] = true;
 					GameState.currentPlayerIndex++;
