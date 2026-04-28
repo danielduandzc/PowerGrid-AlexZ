@@ -28,6 +28,44 @@ public class GameState{
     public static int auctionPlayerIndex=0;
     public static Resource selectedResourceForAddition = null;
     public static int numPlayerSkipped=0;
+    public static ArrayList<Resource> resourcesToAdd = new ArrayList<Resource>();
+
+    public static boolean canAddResourceToAnyPlant(Player player, Resource resource) {
+        if (player == null || resource == null) return false;
+        for (PowerPlant pp : player.getPowerPlants()) {
+            if (pp.getCurrentResources().size() < pp.getMaxResources() && pp.getFuelType().contains(resource)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void queueDiscardedResources(Player player, ArrayList<Resource> discardedResources) {
+        resourcesToAdd.clear();
+        selectedResourceForAddition = null;
+        if (player == null || discardedResources == null || discardedResources.isEmpty()) {
+            return;
+        }
+
+        for (Resource r : discardedResources) {
+            if (canAddResourceToAnyPlant(player, r)) {
+                resourcesToAdd.add(r);
+            }
+        }
+
+        processNextDiscardedResource(player);
+    }
+
+    public static void processNextDiscardedResource(Player player) {
+        selectedResourceForAddition = null;
+        while (!resourcesToAdd.isEmpty()) {
+            Resource next = resourcesToAdd.remove(0);
+            if (canAddResourceToAnyPlant(player, next)) {
+                selectedResourceForAddition = next;
+                return;
+            }
+        }
+    }
     
 
     public static void setUpDeckAndMarket(){

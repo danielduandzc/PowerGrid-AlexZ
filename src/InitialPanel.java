@@ -2468,7 +2468,7 @@ private void loadCityCoordinates() {
 			repaint();
 				break;
 			case "Auction":
-				if (y >= 900 && y <= 950) {
+				if (y >= 900 && y <= 1000) {
 
 				// Scaled click coordinates from original 1920 width
 				int[][] coords = {
@@ -2558,6 +2558,14 @@ private void loadCityCoordinates() {
 						
 						// Add the new power plant they won
 						discardPlayer.buyPowerPlant(GameState.auctionedPowerPlant);
+
+							// Move resources from the discarded power plant to any valid remaining plants
+							ArrayList<Resource> discardedResources = new ArrayList<>(discarded.getCurrentResources());
+							discarded.getCurrentResources().clear();
+							GameState.queueDiscardedResources(discardPlayer, discardedResources);
+							if (GameState.selectedResourceForAddition != null) {
+								GameState.currentEvent.add("Select Resource");
+							}
 						
 						// Remove this power plant from market and add a new one
 						int marketIndex = 0;
@@ -2738,18 +2746,24 @@ private void loadCityCoordinates() {
 								} else if(pp.getFuelType().contains(GameState.selectedResourceForAddition)) {
 									canUseResource = true;
 								}
-								
-								if(canUseResource) {
-									pp.addResource(GameState.selectedResourceForAddition);
-									
-									
-									// Return to Buy Resources
-									GameState.currentEvent.removeLast();
-									repaint();
-									return;
-								} else {
-									System.out.println("This power plant cannot use " + GameState.selectedResourceForAddition);
-								}
+										if(canUseResource) {
+											if (pp.addResource(GameState.selectedResourceForAddition)) {
+												if (!GameState.resourcesToAdd.isEmpty()) {
+													GameState.processNextDiscardedResource(selectPlayer);
+													if (GameState.selectedResourceForAddition != null) {
+														repaint();
+														return;
+													}
+												}
+												GameState.currentEvent.removeLast();
+												GameState.selectedResourceForAddition = null;
+												GameState.resourcesToAdd.clear();
+												repaint();
+												return;
+											}
+										} else {
+											System.out.println("This power plant cannot use " + GameState.selectedResourceForAddition);
+										}
 							} else {
 								System.out.println("This power plant is at maximum capacity");
 							}
