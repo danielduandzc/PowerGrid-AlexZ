@@ -72,6 +72,8 @@ private void loadCityCoordinates() {
 	private Graphics g;
 	private int rulecounter = 0;
 	private int resourceButtonStartY = 500; // Y position where resource buy buttons start
+	private Player discardPlayer;
+	private ArrayList<PowerPlant> discardPPs;
 	
 	private BufferedImage titleScreen, gameBackground, redHouse, yellowHouse, greenHouse, blueHouse, purpleHouse, whiteHouse, bigBoard, board,
 	auctionImagePlayerOne, auctionImagePlayerTwo, auctionImagePlayerThree, auctionImagePlayerFour, arrow, scoringTrack, rules1, rules2, rules3, rules4, rules5, 
@@ -672,8 +674,8 @@ private void loadCityCoordinates() {
 				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Discard a Power Plant", 100, 100);
 				
 				// Display player's powerplants with images
-				Player discardPlayer = GameState.players[GameState.currentPlayerIndex];
-				ArrayList<PowerPlant> discardPPs = discardPlayer.getPowerPlants();
+				 discardPlayer = GameState.players[GameState.currentPlayerIndex];
+				 discardPPs = discardPlayer.getPowerPlants();
 				
 				g.setFont(discardFontSmall);
 				g.drawString("You have 3 power plants. Click one to discard.", 100, 150);
@@ -2561,10 +2563,13 @@ private void loadCityCoordinates() {
 
 							// Move resources from the discarded power plant to any valid remaining plants
 							ArrayList<Resource> discardedResources = new ArrayList<>(discarded.getCurrentResources());
+							GameState.resourcesToAdd.addAll(discardedResources);
 							discarded.getCurrentResources().clear();
-							GameState.queueDiscardedResources(discardPlayer, discardedResources);
-							if (GameState.selectedResourceForAddition != null) {
+							
+							if (!GameState.resourcesToAdd.isEmpty()) {
 								GameState.currentEvent.add("Select Resource");
+								repaint();
+								return;
 							}
 						
 						// Remove this power plant from market and add a new one
@@ -2715,7 +2720,27 @@ private void loadCityCoordinates() {
 					return;
 				}
 				
+				
 				Player selectPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+				if(!GameState.resourcesToAdd.isEmpty())
+				if(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1)){
+					while(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1) && !GameState.resourcesToAdd.isEmpty()) {
+						GameState.resourcesToAdd.removeLast();
+						if(!GameState.resourcesToAdd.isEmpty()){
+							repaint();
+							return;
+						}else{
+							GameState.currentEvent.removeLast();
+							GameState.selectedResourceForAddition = null;
+							repaint();
+							return;
+						}
+					}
+				}
+				boolean doEndingOfDiscard = false;
+				if(GameState.resourcesToAdd.size()==1){
+					doEndingOfDiscard = true;
+				}
 				ArrayList<PowerPlant> selectPlayerPowerPlants = selectPlayer.getPowerPlants();
 				int numPlantsToShow = Math.min(3, selectPlayerPowerPlants.size());
 				
@@ -2769,12 +2794,67 @@ private void loadCityCoordinates() {
 							}
 						}
 					}
+					if(doEndingOfDiscard) {
+				discardPlayer = GameState.players[GameState.currentPlayerIndex];
+				 discardPPs = discardPlayer.getPowerPlants();
+				
+				 discardDisplayXPos = 100;
+				 discardDisplayYPos = 200;
+				 discardImageWidth = 250;
+				 discardImageHeight = 250;
+				 discardSpacing = 310;
+						int marketIndex = 0;
+						while(marketIndex < GameState.powerPlantsInMarket.size() && 
+						      GameState.powerPlantsInMarket.get(marketIndex).getPrice() < GameState.auctionedPowerPlant.getPrice()) {
+							marketIndex++;
+						}
+						GameState.powerPlantsInMarket.remove(marketIndex);
+						if(!GameState.powerPlantDeck.isEmpty()) {
+							GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+							GameState.powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
+						}
+						
+						// Remove this player from the auction rotation
+						GameState.playerOrderInAuction.remove((Integer) GameState.currentPlayerIndex);
+						discardPlayer.setInAuction(false);
+						
+						// Reset all players' auction states for next round
+						for(Player p : GameState.players) {
+							p.setHasPassed(false);
+							p.setBid(0);
+							p.setGhostBid(0);
+						}
+						
+						// Remove "Discard Powerplant" event and proceed
+						if(!GameState.currentEvent.isEmpty() && GameState.currentEvent.getLast().equals("Discard Powerplant")) {
+							GameState.currentEvent.removeLast();
+						}
+						
+						// Check if auction is done
+						if(GameState.playerOrderInAuction.size()==1) {
+							System.out.println("Auction complete - all players have power plants");
+							
+							GameState.currentEvent.add("Buy Powerplant");
+						} else {
+							if(GameState.playerOrderInAuction.size()==0)
+								return;
+							// Continue to next auction round
+							GameState.auctionPlayerIndex = 0;
+							GameState.minBid = 0;
+							
+							
+							GameState.currentEvent.add("Pick Powerplant");
+						}
+						
+						repaint();
+						return;
+					}
 				}
+				
 				repaint();
 				break;
 
-				
-							case "Buy Cities":
+			case "Buy Cities":
 								 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 						
 						GameState.currentEvent.add("Menu");
@@ -3225,11 +3305,9 @@ private void loadCityCoordinates() {
 					GameState.currentEvent.removeLast();
 					repaint();
 					break;
-				
-					}
-}
+			}
+	}
 
-	
 	public void mouseReleased(MouseEvent e) {
 		
 	}

@@ -40,21 +40,7 @@ public class GameState{
         return false;
     }
 
-    public static void queueDiscardedResources(Player player, ArrayList<Resource> discardedResources) {
-        resourcesToAdd.clear();
-        selectedResourceForAddition = null;
-        if (player == null || discardedResources == null || discardedResources.isEmpty()) {
-            return;
-        }
-
-        for (Resource r : discardedResources) {
-            if (canAddResourceToAnyPlant(player, r)) {
-                resourcesToAdd.add(r);
-            }
-        }
-
-        processNextDiscardedResource(player);
-    }
+    
 
     public static void processNextDiscardedResource(Player player) {
         selectedResourceForAddition = null;
