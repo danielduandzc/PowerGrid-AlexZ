@@ -1189,6 +1189,8 @@ private void loadCityCoordinates() {
 				g.setFont(ppFontLarge);
 				g.setColor(Color.BLACK);
 				g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " - Activate Powerplants", 100, 100);
+				g.setFont(ppFontSmall);
+				g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " Has "+ GameState.players[GameState.playerOrder[GameState.currentPlayerIndex] - 1].getCities().size() + " cities", 100, 170);
 				
 				
 				// Display player's powerplants with images
@@ -2496,6 +2498,7 @@ private void loadCityCoordinates() {
 					GameState.currentStep = 3;
 				}
 				}
+			
 				
 		}else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50&&!GameState.firstRoundOfAuction){
 			GameState.numPlayerSkipped++;
@@ -2519,6 +2522,74 @@ private void loadCityCoordinates() {
 					GameState.currentPlayerIndex = 0;
 					GameState.currentStep = 3;
 				}			}
+			if (GameState.currentStep == 3) {
+
+				// First Step-3 card (index 4 in the market)
+				if (x >= 175 && x <= 325 && y >= 350 && y <= 500) {
+
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(4);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice() - 1;
+
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+					GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+
+					Player buyPlayer = GameState.players[GameState.playerOrderInAuction.get(0)];
+
+					if (buyPlayer.getPowerPlants().size() >= 3) {
+						GameState.currentPlayerIndex = GameState.playerOrderInAuction.get(0);
+						GameState.currentEvent.add("Discard Powerplant");
+						repaint();
+						return;
+					}
+
+					buyPlayer.buyPowerPlant(GameState.auctionedPowerPlant);
+
+					int i = 0;
+					while (GameState.powerPlantsInMarket.get(i).getPrice() < GameState.auctionedPowerPlant.getPrice()) {
+						i++;
+					}
+
+					GameState.powerPlantsInMarket.remove(i);
+					GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size() - 1));
+
+					GameState.currentEvent.removeLast();
+					GameState.reversePlayerOrder();
+					GameState.currentEvent.add("Buy Resources");
+				}
+
+				// Second Step-3 card (index 5 in the market)
+				else if (x >= 375 && x <= 525 && y >= 350 && y <= 500) {
+
+					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(5);
+					GameState.minBid = GameState.auctionedPowerPlant.getPrice() - 1;
+
+					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
+					GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+
+					Player buyPlayer = GameState.players[GameState.playerOrderInAuction.get(0)];
+
+					if (buyPlayer.getPowerPlants().size() >= 3) {
+						GameState.currentPlayerIndex = GameState.playerOrderInAuction.get(0);
+						GameState.currentEvent.add("Discard Powerplant");
+						repaint();
+						return;
+					}
+
+					buyPlayer.buyPowerPlant(GameState.auctionedPowerPlant);
+
+					int i = 0;
+					while (GameState.powerPlantsInMarket.get(i).getPrice() < GameState.auctionedPowerPlant.getPrice()) {
+						i++;
+					}
+
+					GameState.powerPlantsInMarket.remove(i);
+					GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size() - 1));
+
+					GameState.currentEvent.removeLast();
+					GameState.reversePlayerOrder();
+					GameState.currentEvent.add("Buy Resources");
+				}
+			}
 			repaint();
 				break;
 			case "Auction":
@@ -2960,7 +3031,7 @@ private void loadCityCoordinates() {
 								&& countTotalSectorsInCity(GameState.cityNameForPurchase) > 0) {
 							// Player has no cities and cannot buy in a city that already has a player
 							System.out.println("Player must build their first city in an empty city");
-						} else {
+						} else if(countTotalSectorsInCity(GameState.cityNameForPurchase) <= GameState.currentStep) {
 							// Calculate base price
 							int basePrice;
 							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0){
@@ -3279,7 +3350,7 @@ private void loadCityCoordinates() {
 					
 						GameState.currentEvent.removeLast();
 						repaint();
-						return;
+						
 					
 					break;
 					case "Menu":
@@ -3363,6 +3434,8 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 				case "Step 3":
+					GameState.powerPlantsInMarket.removeLast();
+					GameState.discardPile.add(GameState.powerPlantsInMarket.removeLast());
 					GameState.currentEvent.removeLast();
 					repaint();
 					break;
