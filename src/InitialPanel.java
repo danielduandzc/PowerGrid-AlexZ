@@ -305,108 +305,7 @@ private void loadCityCoordinates() {
 			case "Auction":
 				g.drawImage(gameBackground, 0, 0, 1920, 1080, this);
 				g.drawImage(getPowerPlantImage(GameState.auctionedPowerPlant.getPrice()), 824, 200, 200, 200, this);
-				g.drawImage(menutile, 1514, 71, 295, 100, null);
-				switch(GameState.playerOrder[GameState.currentPlayerIndex]) {
-					case 1: g.drawImage(arrow, 220, 500, 250, 200, this); break;
-					case 2: g.drawImage(arrow, 620, 500, 250, 200, this); break;
-					case 3: g.drawImage(arrow, 1020, 500, 250, 200, this); break;
-					case 4: g.drawImage(arrow, 1420, 500, 250, 200, this); break;
-					}
-					 font = new Font("Arial", Font.BOLD, 30);
-					g.setFont(font);
-
-					
-					
-					g.drawImage(auctionImagePlayerOne, 100, 800, 400, 175, this);
-					if(!GameState.players[0].getInAuction()||GameState.players[0].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(100, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[0].getElektro() + " Elektro", 200, 750);
-					}
-					if(GameState.players[0].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[0].getGhostBid()+GameState.players[0].getBid() <= GameState.minBid ||
-							GameState.players[0].getGhostBid()+GameState.players[0].getBid() > GameState.players[0].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					g.drawString((GameState.players[0].getBid() + GameState.players[0].getGhostBid()) + "", 200, 950);
-					g.drawImage(auctionImagePlayerTwo, 500, 800, 400, 175, this);
-					if(!GameState.players[1].getInAuction()||GameState.players[1].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(500, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[1].getElektro() + " Elektro", 600, 750);
-					}
-					if(GameState.players[1].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[1].getGhostBid()+GameState.players[1].getBid() <= GameState.minBid ||
-							GameState.players[1].getGhostBid()+GameState.players[1].getBid() > GameState.players[1].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					
-					g.drawString((GameState.players[1].getBid() + GameState.players[1].getGhostBid()) + "", 600, 950);
-					g.drawImage(auctionImagePlayerThree, 900, 800, 400, 175, this);
-					if(!GameState.players[2].getInAuction()||GameState.players[2].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(900, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[2].getElektro() + " Elektro", 1000, 750);
-					}
-					if(GameState.players[2].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[2].getGhostBid()+GameState.players[2].getBid() <= GameState.minBid ||
-							GameState.players[2].getGhostBid()+GameState.players[2].getBid() > GameState.players[2].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					g.drawString((GameState.players[2].getBid() + GameState.players[2].getGhostBid()) + "", 1000, 950);
-					g.drawImage(auctionImagePlayerFour, 1300, 800, 400, 175, this);
-					if(!GameState.players[3].getInAuction()||GameState.players[3].getHasPassed()) {
-						Color halfTransparentBlack = new Color(0, 0, 0, 127);
-						g.setColor(halfTransparentBlack);
-						g.fillRect(1300, 800, 400, 175);
-					}else{
-						g.setColor(Color.BLACK);
-						g.drawString(GameState.players[3].getElektro() + " Elektro", 1400, 750);
-					}
-				
-					if(GameState.players[3].getGhostBid() != 0) {
-						g.setColor(Color.BLUE);
-						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.minBid) {
-							g.setColor(new Color(0,100,0));
-						}
-						if(GameState.players[3].getGhostBid()+GameState.players[3].getBid() <= GameState.minBid ||
-							GameState.players[3].getGhostBid()+GameState.players[3].getBid() > GameState.players[3].getElektro()) {
-							g.setColor(Color.RED);
-						}
-					}else {
-						g.setColor(Color.BLACK);
-					}
-					g.drawString((GameState.players[3].getBid() + GameState.players[3].getGhostBid()) + "", 1400, 950);
+				drawAuctionUI(g);
 			break;
 			case "Pick Powerplant":
 				/*	
@@ -803,6 +702,95 @@ private void loadCityCoordinates() {
 			}
 			return false;
 		}
+
+		private void drawAuctionUI(Graphics g) {
+			Font font = new Font("Arial", Font.BOLD, 30);
+			g.setFont(font);
+
+			// Scaled positions for 4 players (left to right) - scaled from original 100, 500, 900, 1300 at 1920 width
+			int[] playerXPositions = {
+				(int)(getWidth() * (100.0 / 1920.0)),    // Player 1
+				(int)(getWidth() * (500.0 / 1920.0)),    // Player 2
+				(int)(getWidth() * (900.0 / 1920.0)),    // Player 3
+				(int)(getWidth() * (1300.0 / 1920.0))    // Player 4
+			};
+			int playerY = (int)(getHeight() * (800.0 / 1070.0));  
+			int playerWidth = (int)(getWidth() * (400.0 / 1920.0));   
+			int playerHeight = (int)(getHeight() * (175.0 / 1070.0));
+
+			// Text positions relative to player cards
+			int elektroY = (int)(getHeight() * (750.0 / 1070.0));  // 50 pixels above player cards
+			int bidY = (int)(getHeight() * (950.0 / 1070.0));      // 150 pixels below player cards
+
+			// Draw each player's auction info
+			for(int i = 0; i < 4; i++) {
+				drawAuctionPlayer(g, i, playerXPositions[i], playerY, playerWidth, playerHeight, elektroY, bidY);
+			}
+
+			// Draw current player arrow - scaled from original positions (220, 620, 1020, 1420)
+			int[] arrowXPositions = {
+				(int)(getWidth() * (220.0 / 1920.0)),
+				(int)(getWidth() * (620.0 / 1920.0)),
+				(int)(getWidth() * (1020.0 / 1920.0)),
+				(int)(getWidth() * (1420.0 / 1920.0))
+			};
+			int arrowY = (int)(getHeight() * (500.0 / 1070.0));
+			int arrowWidth = (int)(getWidth() * (250.0 / 1920.0));
+			int arrowHeight = (int)(getHeight() * (200.0 / 1070.0));
+
+			int currentPlayerIndex = GameState.playerOrderInAuction.get(0);
+			if(GameState.playerOrder[currentPlayerIndex] >= 1 && GameState.playerOrder[currentPlayerIndex] <= 4) {
+				g.drawImage(arrow, arrowXPositions[GameState.playerOrder[currentPlayerIndex] - 1], arrowY, arrowWidth, arrowHeight, this);
+			}
+		}
+
+		// Draw individual auction player UI
+		private void drawAuctionPlayer(Graphics g, int playerIndex, int x, int y, int width, int height, int elektroY, int bidY) {
+			// Draw player image
+			BufferedImage playerImage = null;
+			if(playerIndex == 0) playerImage = auctionImagePlayerOne;
+			else if(playerIndex == 1) playerImage = auctionImagePlayerTwo;
+			else if(playerIndex == 2) playerImage = auctionImagePlayerThree;
+			else if(playerIndex == 3) playerImage = auctionImagePlayerFour;
+
+			if(playerImage != null) {
+				g.drawImage(playerImage, x, y, width, height, this);
+			}
+
+			// Draw grayed out overlay if player is out or passed
+			if(!GameState.players[playerIndex].getInAuction() || GameState.players[playerIndex].getHasPassed()) {
+				Color halfTransparentBlack = new Color(0, 0, 0, 127);
+				g.setColor(halfTransparentBlack);
+				g.fillRect(x, y, width, height);
+			} else {
+				// Draw Elektro amount with original positioning
+				g.setColor(Color.BLACK);
+				Font font = new Font("Arial", Font.BOLD, 30);
+				g.setFont(font);
+				int elektroX = x + (int)(width * 0.25);  // ~100 pixels into player card (original was 200 for player at 100)
+				g.drawString(GameState.players[playerIndex].getElektro() + " Elektro", elektroX, elektroY);
+			}
+
+			// Draw bid amount with color coding
+			int bid = GameState.players[playerIndex].getBid() + GameState.players[playerIndex].getGhostBid();
+			if(GameState.players[playerIndex].getGhostBid() != 0) {
+				g.setColor(Color.BLUE);
+				if(bid > GameState.minBid) {
+					g.setColor(new Color(0, 100, 0));
+				}
+				if(bid <= GameState.minBid || bid > GameState.players[playerIndex].getElektro()) {
+					g.setColor(Color.RED);
+				}
+			} else {
+				g.setColor(Color.BLACK);
+			}
+
+			Font bidFont = new Font("Arial", Font.BOLD, 30);
+			g.setFont(bidFont);
+			int bidX = x + (int)(width * 0.25);  // ~100 pixels into player card (original was 200 for player at 100)
+			g.drawString(bid + "", bidX, bidY);
+		}
+
 	public void centerString(Graphics g, String text, int xRect, int yRect, int rectWidth, int rectHeight) {
 	    // Get the FontMetrics
 	    FontMetrics fm = g.getFontMetrics();
