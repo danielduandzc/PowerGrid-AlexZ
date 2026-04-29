@@ -934,7 +934,7 @@ private void loadCityCoordinates() {
 				g.setFont(selectResourceFontLarge);
 				g.setColor(Color.BLACK);
 				String resourceName = GameState.selectedResourceForAddition != null ? GameState.selectedResourceForAddition.toString() : "Resource";
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Select Power Plant for " + resourceName, 50, 100);
+				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Select Power Plant for " + resourceName.toUpperCase(), 50, 100);
 				
 				// Get current player's power plants
 				Player selectPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
@@ -1641,6 +1641,7 @@ private void loadCityCoordinates() {
 				Graphics2D bigG = (Graphics2D) g;
 				bigG.setColor(Color.BLACK);
 				// Choose a very large font; scale based on panel height for responsiveness
+				
 				float size = Math.max(72f, getHeight() * 0.18f);
 				Font bigFont = Main.customFont.deriveFont(Font.BOLD, size);
 				bigG.setFont(bigFont);
@@ -1649,8 +1650,9 @@ private void loadCityCoordinates() {
 				centerString(g, stepLabel, 0, 0, getWidth(), getHeight());
 				// Small hint to dismiss (keeps existing Return to Menu button behavior in mousePressed)
 				bigG.setFont(Main.customFont.deriveFont(Font.PLAIN, 14f));
-				bigG.setColor(new Color(0,0,0,140));
-				bigG.drawString("(Click Return to Menu to exit)", 20, getHeight() - 20);
+				
+				
+				centerString(g, "(Click Anywhere toReturn to Menu and exit)", 0, 0, getWidth(), getHeight()+200);
 				break;
 			case "Menu":
 				// Draw the current game state underneath (already drawn by previous paint?)
@@ -1737,6 +1739,15 @@ private void loadCityCoordinates() {
 				g.setColor(Color.BLACK);
 				g.drawString("Step 2", (getWidth() - 200) / 2, getHeight() / 2);
 				break;
+				case "Step 3":
+				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
+				drawMenu(g);
+				
+				Font step3Font = Main.customFont.deriveFont(Font.PLAIN, 48f);
+				g.setFont(step3Font);
+				g.setColor(Color.BLACK);
+				g.drawString("Step 3", (getWidth() - 200) / 2, getHeight() / 2);
+				break;
 			
 				
 				
@@ -1759,7 +1770,7 @@ private void loadCityCoordinates() {
 			HashMap<Integer, ArrayList<String>> zoneMap = new HashMap<>();
 
 			zoneMap.put(0, new ArrayList<>(Arrays.asList(
-				"Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover", "Lubeck"
+				"Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover"
 			)));
 			zoneMap.put(1, new ArrayList<>(Arrays.asList(
 				"Lubeck", "Schwerin", "Rostock", "Torgelow", "Magdeburg", "Berlin", "Frankfurt-O"
@@ -1801,7 +1812,7 @@ private void loadCityCoordinates() {
 
 	private BufferedImage getPowerPlantImage(int powerPlantNumber) {
 		switch(powerPlantNumber) {
-			case -1: return step3Card;
+			case 51: return step3Card;
 			case 3: return pp3;
 			case 4: return pp4;
 			case 5: return pp5;
@@ -2264,7 +2275,9 @@ private void loadCityCoordinates() {
 				if (y >= 150 && y <= 300) {
 
 				if (x >= 175 && x <= 325) {
-					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
+				if(GameState.powerPlantsInMarket.get(0).getPrice() == 51) // Step 3 card cannot be purchased
+					return;
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
 						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
 					
@@ -2278,6 +2291,8 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 
 			} else if (x >= 375 && x <= 525) {
+				if(GameState.powerPlantsInMarket.get(1).getPrice() == 51) // Step 3 card cannot be purchased
+					return;
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1)
 						return;
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
@@ -2291,6 +2306,8 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 			
 			} else if (x >= 575 && x <= 725) {
+				if(GameState.powerPlantsInMarket.get(2).getPrice() == 51) // Step 3 card cannot be purchased
+					return;
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1)
 						return;
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
@@ -2304,6 +2321,8 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 
 			} else if (x >= 775 && x <= 925) {
+				if(GameState.powerPlantsInMarket.get(3).getPrice() == 51) // Step 3 card cannot be purchased
+					return;
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
 						return;
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
@@ -2341,6 +2360,8 @@ private void loadCityCoordinates() {
 				if (y >= 150 && y <= 300) {
 
 				if (x >= 175 && x <= 325) {
+					if(GameState.powerPlantsInMarket.get(0).getPrice() == 51) // Step 3 card cannot be purchased
+						return;
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
 						return;
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
@@ -2367,6 +2388,12 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.removeLast();
 				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
+				if(GameState.powerPlantsInMarket.getLast().getPrice() == 51) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Step 3");
+					GameState.currentPlayerIndex = 0;
+					GameState.currentStep = 3;
+				}
 
 				} else if (x >= 375 && x <= 525) {
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1)
@@ -2393,7 +2420,14 @@ private void loadCityCoordinates() {
                     GameState.powerPlantsInMarket.remove(i);
                     GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.currentEvent.removeLast();
+				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
+				if(GameState.powerPlantsInMarket.getLast().getPrice() == 51) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Step 3");
+					GameState.currentPlayerIndex = 0;
+					GameState.currentStep = 3;
+				}
 
 				} else if (x >= 575 && x <= 725) {
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1)
@@ -2422,6 +2456,12 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.removeLast();
 				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
+				if(GameState.powerPlantsInMarket.getLast().getPrice() == 51) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Step 3");
+					GameState.currentPlayerIndex = 0;
+					GameState.currentStep = 3;
+				}
 				} else if (x >= 775 && x <= 925) {
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
 						return;
@@ -2449,6 +2489,12 @@ private void loadCityCoordinates() {
 				GameState.currentEvent.removeLast();
 				GameState.reversePlayerOrder();
 				GameState.currentEvent.add("Buy Resources");
+				if(GameState.powerPlantsInMarket.getLast().getPrice() == 51) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Step 3");
+					GameState.currentPlayerIndex = 0;
+					GameState.currentStep = 3;
+				}
 				}
 				
 		}else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50&&!GameState.firstRoundOfAuction){
@@ -2456,7 +2502,7 @@ private void loadCityCoordinates() {
 			if(GameState.numPlayerSkipped==4){
 				System.out.println("MIJO");
 				GameState.discardPile.add(GameState.powerPlantsInMarket.remove(0));
-				GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.get(GameState.powerPlantDeck.size()-1));
+				GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
 				GameState.powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
 
 			}
@@ -2466,7 +2512,13 @@ private void loadCityCoordinates() {
 			GameState.currentEvent.removeFirst();
 			
 			GameState.reversePlayerOrder();
-			GameState.currentEvent.add("Buy Resources");			}
+			GameState.currentEvent.add("Buy Resources");
+		if(GameState.powerPlantsInMarket.getLast().getPrice() == 51) {
+					GameState.currentEvent.removeLast();
+					GameState.currentEvent.add("Step 3");
+					GameState.currentPlayerIndex = 0;
+					GameState.currentStep = 3;
+				}			}
 			repaint();
 				break;
 			case "Auction":
@@ -2513,7 +2565,7 @@ private void loadCityCoordinates() {
 
 				// CONFIRM BID
 				if (x >= c[3] && x <= c[3] + 70) {
-					if (p.getGhostBid() + p.getBid() > GameState.minBid) {
+					if (p.getGhostBid() + p.getBid() > GameState.minBid && p.getGhostBid() + p.getBid() <= p.getElektro()) {
 						p.useGhostBid();
 						GameState.continueAuction();
 					}
@@ -2567,6 +2619,11 @@ private void loadCityCoordinates() {
 							discarded.getCurrentResources().clear();
 							
 							if (!GameState.resourcesToAdd.isEmpty()) {
+								GameState.selectedResourceForAddition = GameState.resourcesToAdd.removeFirst();
+								while(!discardPlayer.canAddResource(GameState.selectedResourceForAddition, 1)) {
+									GameState.selectedResourceForAddition = GameState.resourcesToAdd.removeFirst();
+								}
+								
 								GameState.currentEvent.add("Select Resource");
 								repaint();
 								return;
@@ -3219,11 +3276,11 @@ private void loadCityCoordinates() {
 					break;
 				case "Step Info":
 					int retX_si = getWidth() - 240, retY_si = 20, retW_si = 220, retH_si = 50;
-					if (x >= retX_si && x <= retX_si + retW_si && y >= retY_si && y <= retY_si + retH_si) {
+					
 						GameState.currentEvent.removeLast();
 						repaint();
 						return;
-					}
+					
 					break;
 					case "Menu":
 					// Recalculate panel and button positions (same as in paint)
@@ -3302,6 +3359,10 @@ private void loadCityCoordinates() {
 				
 
 				case "Step 2":
+					GameState.currentEvent.removeLast();
+					repaint();
+					break;
+				case "Step 3":
 					GameState.currentEvent.removeLast();
 					repaint();
 					break;

@@ -236,12 +236,12 @@ private void rebuildAdjacencyLists() {
     
     // Teal (zone 0)
     zoneMap.put(0, new ArrayList<>(Arrays.asList(
-        "Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover", "Lubeck"
+        "Flensburg", "Kiel", "Hamburg", "Cuxhaven", "Wilhelmshaven", "Bremen", "Hannover"
     )));
     
     // Brown (zone 1)
     zoneMap.put(1, new ArrayList<>(Arrays.asList(
-        "Lubeck", "Schwerin", "Rostock", "Torgelow", "Magdeburg", "Berlin", "Frankfurt-O"
+      "Lubeck", "Schwerin", "Rostock", "Torgelow", "Magdeburg", "Berlin", "Frankfurt-O"
     )));
     
     // Red (zone 2)
