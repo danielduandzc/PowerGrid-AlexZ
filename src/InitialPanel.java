@@ -612,7 +612,11 @@ private void loadCityCoordinates() {
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
 				}
-				g.drawString("Future Market ", 1000, 400);
+				if (GameState.currentStep == 3) {
+					g.drawString("Also Available ", 1000, 400);
+				} else {
+					g.drawString("Future Market ", 1000, 400);
+				}
 				if(!GameState.firstRoundOfAuction){
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 20f);
 				g.setFont(sizedFont);
@@ -645,8 +649,18 @@ private void loadCityCoordinates() {
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i).getPrice()), 175 + i * 200, 150, 150, 150, this);
 				}
+				if (GameState.currentStep == 3) {
+					g.drawString("Current Market (All Available)", 1000, 200);
+				} else {
+					g.drawString("Current Market", 1000, 200);
+				}
 				for(int i=0;i<4;i++){
 					g.drawImage(getPowerPlantImage(GameState.powerPlantsInMarket.get(i+4).getPrice()), 175 + i * 200, 350, 150, 150, this);
+				}
+				if (GameState.currentStep == 3) {
+					g.drawString("Also Available", 1000, 400);
+				} else {
+					g.drawString("Future Market", 1000, 400);
 				}
 				if(!GameState.firstRoundOfAuction){
 				sizedFont = Main.customFont.deriveFont(Font.PLAIN, 20f);
@@ -2225,26 +2239,58 @@ private void loadCityCoordinates() {
 				repaint();
 				break;
 			case "Zone Selection":
-				if(x>=180 && x <= 255 && y >= 150 && y <= 225 && !GameState.isZoneSelected[0]) {
-					GameState.isZoneSelected[0] = true;
-					GameState.currentPlayerIndex++;
-				} else if(x >= 180 && x <= 255 && y >= 250 && y <= 325 && !GameState.isZoneSelected[1]) {
-					GameState.isZoneSelected[1] = true;
-					GameState.currentPlayerIndex++;
-				} else if(x >= 180 && x <= 255 && y >= 350 && y <= 425 && !GameState.isZoneSelected[2]) {
-					GameState.isZoneSelected[2] = true;
-					GameState.currentPlayerIndex++;
-				} else if(x >= 180 && x <= 255 && y >= 450 && y <= 525 && !GameState.isZoneSelected[3]) {
-					GameState.isZoneSelected[3] = true;
-					GameState.currentPlayerIndex++;
-				} else if(x >= 180 && x <= 255 && y >= 550 && y <= 625 && !GameState.isZoneSelected[4]) {
-					GameState.isZoneSelected[4] = true;
-					GameState.currentPlayerIndex++;
-				} else if(x >= 180 && x <= 255 && y >= 650 && y <= 725 && !GameState.isZoneSelected[5]) {
-					GameState.isZoneSelected[5] = true;
-					GameState.currentPlayerIndex++;
-				}else if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
-						GameState.currentEvent.add("Menu");
+				// Define zone adjacencies: 0=Teal, 1=Brown, 2=Yellow, 3=Red, 4=Blue, 5=Purple
+				int[][] zoneAdjacencies = {
+					{1, 2, 3},           // 0 (Teal) adjacent to Brown, Yellow, Red
+					{0, 2},           // 1 (Brown) adjacent to Teal, Yellow, Red
+					{0, 1, 3, 4, 5},     // 2 (Yellow) adjacent to Teal, Brown, Red, Blue, Purple
+					{0, 2, 4},           // 3 (Red) adjacent to Teal, Yellow, Blue
+					{2, 3, 5},           // 4 (Blue) adjacent to Yellow, Red, Purple
+					{2, 4}               // 5 (Purple) adjacent to Yellow, Blue
+				};
+				
+				// Check if any zone has been selected
+				boolean anyZoneSelected = false;
+				for(int i = 0; i < 6; i++) {
+					if(GameState.isZoneSelected[i]) {
+						anyZoneSelected = true;
+						break;
+					}
+				}
+				
+				// Determine which zone was clicked
+				int clickedZone = -1;
+				if(x >= 180 && x <= 255) {
+					if(y >= 150 && y <= 225) clickedZone = 0;
+					else if(y >= 250 && y <= 325) clickedZone = 1;
+					else if(y >= 350 && y <= 425) clickedZone = 2;
+					else if(y >= 450 && y <= 525) clickedZone = 3;
+					else if(y >= 550 && y <= 625) clickedZone = 4;
+					else if(y >= 650 && y <= 725) clickedZone = 5;
+				}
+				
+				// Check if the clicked zone can be selected
+				boolean canSelectZone = false;
+				if(clickedZone >= 0 && !GameState.isZoneSelected[clickedZone]) {
+					if(!anyZoneSelected) {
+						// First zone can always be selected
+						canSelectZone = true;
+					} else {
+						// Check if clicked zone is adjacent to any selected zone
+						for(int adj : zoneAdjacencies[clickedZone]) {
+							if(GameState.isZoneSelected[adj]) {
+								canSelectZone = true;
+								break;
+							}
+						}
+					}
+					
+					if(canSelectZone) {
+						GameState.isZoneSelected[clickedZone] = true;
+						GameState.currentPlayerIndex++;
+					}
+				} else if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
+					GameState.currentEvent.add("Menu");
 				}
 				
 				if(GameState.currentPlayerIndex == 4) {
@@ -2338,6 +2384,37 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 			}
 		}
+		// Step 3 - Allow purchasing from indices 4 and 5 during Step 3
+		if (GameState.currentStep == 3 && y >= 350 && y <= 500) {
+			if (x >= 175 && x <= 325) {
+				// First Step 3 card (index 4)
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(4).getPrice()-1)
+					return;
+				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(4);
+				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				// Automatically make minimum bid and lock it in
+				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
+				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
+				GameState.currentEvent.removeLast();
+				
+				GameState.continueAuction();
+
+			} else if (x >= 375 && x <= 525) {
+				// Second Step 3 card (index 5)
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(5).getPrice()-1)
+					return;
+				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(5);
+				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
+				// Automatically make minimum bid and lock it in
+				GameState.players[GameState.playerOrderInAuction.get(0)].setBid(GameState.minBid+1);
+				GameState.players[GameState.playerOrderInAuction.get(0)].setGhostBid(0);
+				GameState.players[GameState.playerOrderInAuction.get(0)].useGhostBid();
+				GameState.currentEvent.removeLast();
+				
+				GameState.continueAuction();
+			}
+		}
 		else if (x >= getWidth() - 200 && x <= getWidth() - 50 && y >= getHeight() - 110 && y <= getHeight() - 50){
 			x=0;y=0;
 			GameState.players[GameState.playerOrderInAuction.get(0)].setInAuction(false);
@@ -2375,7 +2452,7 @@ private void loadCityCoordinates() {
                     if(buyPlayer.getPowerPlants().size() >= 3) {
                         // Store player index and trigger discard choice
                         GameState.currentPlayerIndex = GameState.playerOrderInAuction.get(0);
-                        GameState.currentEvent.add("Discard Powerplant");
+                        GameState.currentEvent.add("Discard Powerplant");	
                         repaint();
                         return;
                     }
@@ -2660,7 +2737,7 @@ private void loadCityCoordinates() {
 					
 			}
 				// Handle power plant discard selection
-				Player discardPlayer = GameState.players[GameState.currentPlayerIndex];
+				Player discardPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
 				ArrayList<PowerPlant> discardPPs = discardPlayer.getPowerPlants();
 				
 				int discardDisplayXPos = 100;
@@ -2679,7 +2756,7 @@ private void loadCityCoordinates() {
 						// Player clicked on this power plant - discard it
 						PowerPlant discarded = discardPPs.remove(ppIdx);
 						GameState.discardPile.add(discarded);
-						System.out.println("Player " + (GameState.currentPlayerIndex + 1) + " discarded power plant with price " + discarded.getPrice());
+						
 						
 						// Add the new power plant they won
 						discardPlayer.buyPowerPlant(GameState.auctionedPowerPlant);
@@ -2694,7 +2771,7 @@ private void loadCityCoordinates() {
 								while(!discardPlayer.canAddResource(GameState.selectedResourceForAddition, 1)) {
 									GameState.selectedResourceForAddition = GameState.resourcesToAdd.removeFirst();
 								}
-								
+								GameState.currentEvent.removeLast();
 								GameState.currentEvent.add("Select Resource");
 								repaint();
 								return;
@@ -2718,9 +2795,11 @@ private void loadCityCoordinates() {
 						
 						// Reset all players' auction states for next round
 						for(Player p : GameState.players) {
+							if(p.getInAuction()) {
 							p.setHasPassed(false);
 							p.setBid(0);
 							p.setGhostBid(0);
+							}
 						}
 						
 						// Remove "Discard Powerplant" event and proceed
@@ -2852,22 +2931,22 @@ private void loadCityCoordinates() {
 				Player selectPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
 				if(!GameState.resourcesToAdd.isEmpty())
 				if(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1)){
-					while(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1) && !GameState.resourcesToAdd.isEmpty()) {
+					while(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1)) {
 						GameState.resourcesToAdd.removeLast();
 						if(!GameState.resourcesToAdd.isEmpty()){
 							repaint();
-							return;
 						}else{
 							GameState.currentEvent.removeLast();
 							GameState.selectedResourceForAddition = null;
 							repaint();
-							return;
+							break;
 						}
 					}
 				}
 				boolean doEndingOfDiscard = false;
 				if(GameState.resourcesToAdd.size()==1){
 					doEndingOfDiscard = true;
+					
 				}
 				ArrayList<PowerPlant> selectPlayerPowerPlants = selectPlayer.getPowerPlants();
 				int numPlantsToShow = Math.min(3, selectPlayerPowerPlants.size());
@@ -2948,9 +3027,11 @@ private void loadCityCoordinates() {
 						
 						// Reset all players' auction states for next round
 						for(Player p : GameState.players) {
-							p.setHasPassed(false);
-							p.setBid(0);
-							p.setGhostBid(0);
+							if(p.getInAuction()) {
+								p.setHasPassed(false);
+								p.setBid(0);
+								p.setGhostBid(0);
+							}
 						}
 						
 						// Remove "Discard Powerplant" event and proceed

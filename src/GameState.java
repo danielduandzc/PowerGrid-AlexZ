@@ -308,9 +308,9 @@ public class GameState{
             // Find the remaining player who won the auction
             Player winner = null;
             int winnerIndex = -1;
-            for(int i = 0; i < players.length; i++) {
-                if(players[i].getInAuction() && !players[i].getHasPassed()) {
-                    winner = players[i];
+            for(int i = 0; i < playerOrderInAuction.size(); i++) {
+                if(players[playerOrderInAuction.get(i)].getInAuction() && !players[playerOrderInAuction.get(i)].getHasPassed()) {
+                    winner = players[playerOrderInAuction.get(i)];
                     winnerIndex = i;
                     break;
                 }
@@ -323,7 +323,14 @@ public class GameState{
                 if(winner.getPowerPlants().size() >= 3) {
                     // If they already have 3 power plants, they must choose one to discard
                     // Store which player needs to discard for the UI to handle
-                    currentPlayerIndex = winnerIndex;
+                    for(int i=0;i<playerOrder.length;i++) {
+                        if(playerOrder[i]-1==winnerIndex) {
+                            winnerIndex=i;
+                            break;
+                        }
+                    }
+                   
+                    currentPlayerIndex=winnerIndex;
                     currentEvent.add("Discard Powerplant");
                     return;
                 }
@@ -344,7 +351,7 @@ public class GameState{
                 System.out.println("Player " + (winnerIndex + 1) + " won the auction");
                 
                 // Remove this player from the auction rotation
-                playerOrderInAuction.remove((Integer) winnerIndex);
+                playerOrderInAuction.remove(winnerIndex);
                 winner.setInAuction(false);
             
             }
