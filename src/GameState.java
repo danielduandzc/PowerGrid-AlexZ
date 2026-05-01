@@ -29,6 +29,7 @@ public class GameState{
     public static Resource selectedResourceForAddition = null;
     public static int numPlayerSkipped=0;
     public static ArrayList<Resource> resourcesToAdd = new ArrayList<Resource>();
+    public static int discardPlayerIndex = -1;  // Track which player is in discard flow
 
     public static boolean canAddResourceToAnyPlant(Player player, Resource resource) {
         if (player == null || resource == null) return false;
@@ -243,7 +244,7 @@ public class GameState{
             }
         }
     public static void continueAuction(){
-        System.out.println((playerOrderInAuction.get(auctionPlayerIndex)+1)+" is the player");
+        
         if(currentEvent.getLast().equals("Buy Powerplant")){
                 return;
             }
@@ -335,6 +336,7 @@ public class GameState{
                     currentPlayerIndex=winnerIndex;
                     winnerIndex=playerOrderInAuction.indexOf(playerOrder[currentPlayerIndex]-1);
                     System.out.println("Player " + (playerOrder[currentPlayerIndex]) + " Player "+playerOrderInAuction.get(winnerIndex));
+                    discardPlayerIndex = playerOrder[currentPlayerIndex] - 1;  // Store actual player index
                     currentEvent.add("Discard Powerplant");
                     return;
                 }
