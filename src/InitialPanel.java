@@ -76,6 +76,14 @@ private void loadCityCoordinates() {
 		}
 	}
 
+	private void selectRandomTooBrokeImage() {
+		if (tooBrokeImages != null && tooBrokeImages.length > 0) {
+			currentTooBrokeImage = tooBrokeImages[random.nextInt(tooBrokeImages.length)];
+		} else {
+			currentTooBrokeImage = son;
+		}
+	}
+
 	private void triggerInvalidClickEvent() {
 		if (GameState.currentEvent.isEmpty() || !GameState.currentEvent.getLast().equals("Invalid Click")) {
 			GameState.currentEvent.add("Invalid Click");
@@ -97,9 +105,11 @@ private void loadCityCoordinates() {
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
 	pp42, pp44, pp46, pp50, step3Card;
 	//Here are the GEEKED ass images
-	private BufferedImage son, britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow;
+	private BufferedImage son, britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow, tookMeSoLong, bigC, blueRoblox, chromeLibro, duo, fih, fork, homieCheckup, iphone, recipe, sinPalabras, theBabwe;
 	private BufferedImage[] invalidClickImages;
 	private BufferedImage currentInvalidImage;
+	private BufferedImage[] tooBrokeImages;
+	private BufferedImage currentTooBrokeImage;
 	private final Random random = new Random();
 	// Invalid Click button coordinates
 	private int invalidClickBtnX, invalidClickBtnY, invalidClickBtnW, invalidClickBtnH;
@@ -163,7 +173,60 @@ private void loadCityCoordinates() {
 
 		is= PowerGridFrame.class.getResourceAsStream("/resources/Wiki how.jpg");
 		if(is == null) is = new java.io.FileInputStream("/resources/Wiki how.jpg");
-		wikiHow = ImageIO.read(is);			invalidClickImages = new BufferedImage[] { britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow };
+		wikiHow = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/Took me so long to find this.jpeg");
+		if(is == null) is = new java.io.FileInputStream("/resources/Took me so long to find this.jpeg");
+		tookMeSoLong = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/big c.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/big c.png");
+		bigC = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/blue roblox.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/blue roblox.png");
+		blueRoblox = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/chrome libro.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/chrome libro.png");
+		chromeLibro = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/duo.jpg");
+		if(is == null) is = new java.io.FileInputStream("/resources/duo.jpg");
+		duo = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/fih.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/fih.png");
+		fih = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/fork.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/fork.png");
+		fork = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/homie checkup.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/homie checkup.png");
+		homieCheckup = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/iphone.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/iphone.png");
+		iphone = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/recipe.jpeg");
+		if(is == null) is = new java.io.FileInputStream("/resources/recipe.jpeg");
+		recipe = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/sin palabras.jpg");
+		if(is == null) is = new java.io.FileInputStream("/resources/sin palabras.jpg");
+		sinPalabras = ImageIO.read(is);
+		
+		is= PowerGridFrame.class.getResourceAsStream("/resources/the babwe.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/the babwe.png");
+		theBabwe = ImageIO.read(is);
+		
+		invalidClickImages = new BufferedImage[] { britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow, tookMeSoLong, bigC, blueRoblox, chromeLibro, duo, fih, fork, homieCheckup, iphone, recipe, sinPalabras, theBabwe };
+		
+		tooBrokeImages = new BufferedImage[] { britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow, tookMeSoLong, bigC, blueRoblox, chromeLibro, duo, fih, fork, homieCheckup, iphone, recipe, sinPalabras, theBabwe };
+		currentTooBrokeImage = tooBrokeImages[random.nextInt(tooBrokeImages.length)];
 
 			is = PowerGridFrame.class.getResourceAsStream("/resources/Too Broke.png");
 			if(is == null) is = new java.io.FileInputStream("resources/Too Broke.png");
@@ -1216,17 +1279,19 @@ private void loadCityCoordinates() {
 		case "Too Broke":
 			// Draw background
 			g.drawImage(gameBackground, 0, 0, getWidth(), getHeight(), this);
-			// Draw a smaller centered Too Broke image (if available)
-			int imgWidth = 0;
-			int imgHeight = 0;
-			if (son != null) {
-				imgWidth = son.getWidth();
-				imgHeight = son.getHeight();
+			// Draw a random Too Broke meme image centered
+			BufferedImage tooBrokeImg = currentTooBrokeImage;
+			if (tooBrokeImg == null) {
+				tooBrokeImg = son; // fallback to static image
+			}
+			if (tooBrokeImg != null) {
+				int imgWidth = tooBrokeImg.getWidth();
+				int imgHeight = tooBrokeImg.getHeight();
 				int targetW = Math.min(getWidth() / 3, imgWidth);
 				int targetH = (int) ((double) imgHeight / imgWidth * targetW);
 				int imgX = (getWidth() - targetW) / 2;
 				int imgY = (getHeight() - targetH) / 2 - 40; // lift a bit to make room for text
-				g.drawImage(son, imgX, imgY, targetW, targetH, this);
+				g.drawImage(tooBrokeImg, imgX, imgY, targetW, targetH, this);
 				// Draw the text below the image
 				g.setColor(Color.WHITE);
 				g.setFont(Main.customFont.deriveFont(Font.BOLD, 36f));
@@ -2194,7 +2259,7 @@ private void loadCityCoordinates() {
 			(int)(getWidth() * (100.0 / 1920.0)),    // Player 1
 			(int)(getWidth() * (500.0 / 1920.0)),    // Player 2
 			(int)(getWidth() * (900.0 / 1920.0)),    // Player 3
-			(int)(getWidth() * (1300.0 / 1920.0))    // Player 4
+			(int)(getWidth() * (1300.0 / 1920.0)) - 2    // Player 4 (2 pixels wider to the left)
 		};
 		int playerY = (int)(getHeight() * (800.0 / 1070.0));  
 		int playerWidth = (int)(getWidth() * (400.0 / 1920.0));   
@@ -2214,7 +2279,7 @@ private void loadCityCoordinates() {
 			(int)(getWidth() * (220.0 / 1920.0)),
 			(int)(getWidth() * (620.0 / 1920.0)),
 			(int)(getWidth() * (1020.0 / 1920.0)),
-			(int)(getWidth() * (1420.0 / 1920.0))
+			(int)(getWidth() * (1420.0 / 1920.0)) - 2    // Adjusted for Player 4
 		};
 		int arrowY = (int)(getHeight() * (500.0 / 1070.0));
 		int arrowWidth = (int)(getWidth() * (250.0 / 1920.0));
@@ -2246,6 +2311,16 @@ private void loadCityCoordinates() {
 		
 		if(playerImage != null) {
 			g.drawImage(playerImage, x, y, width, height, this);
+		}
+		
+		// Draw colored rectangle covering top right quadrant (same color as background)
+		if(playerColor != null) {
+			Color bgColor = getColorFromString(playerColor);
+			if(bgColor != null) {
+				g.setColor(bgColor);
+				// Top right quadrant: from x + width/2 to x + width, from y to y + height/2
+				g.fillRect(x + width / 2, y, width / 2, height / 2);
+			}
 		}
 		
 		// Draw black border around player profile
@@ -2404,10 +2479,10 @@ private void loadCityCoordinates() {
 				// 0=Teal, 1=Brown, 2=Red, 3=Yellow, 4=Blue, 5=Purple
 				// Build symmetric adjacency matrix for robust zone selection
 				int[][] zoneAdjacencies = {
-					{1, 2},              // 0 (Teal) adjacent to Brown, Red
+					{1, 2, 3},           // 0 (Teal) adjacent to Brown, Red, Yellow
 					{0, 2, 3},           // 1 (Brown) adjacent to Teal, Red, Yellow
 					{0, 1, 3, 4},        // 2 (Red) adjacent to Teal, Brown, Yellow, Blue
-					{1, 2, 4, 5},        // 3 (Yellow) adjacent to Brown, Red, Blue, Purple
+					{0, 1, 2, 4, 5},     // 3 (Yellow) adjacent to Teal, Brown, Red, Blue, Purple
 					{2, 3, 5},           // 4 (Blue) adjacent to Red, Yellow, Purple
 					{3, 4}               // 5 (Purple) adjacent to Yellow, Blue
 				};
@@ -2517,6 +2592,7 @@ private void loadCityCoordinates() {
 				}
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 				}
@@ -2539,6 +2615,7 @@ private void loadCityCoordinates() {
 				}
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 				}
@@ -2560,6 +2637,7 @@ private void loadCityCoordinates() {
 				}
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 				}
@@ -2581,6 +2659,7 @@ private void loadCityCoordinates() {
 				}
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 				}
@@ -2618,6 +2697,7 @@ private void loadCityCoordinates() {
 				// Second Step 3 card (index 5)
 				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(5).getPrice()-1) {
 					GameState.currentEvent.add("Too Broke");
+					selectRandomTooBrokeImage();
 					repaint();
 					return;
 				}
@@ -2663,6 +2743,7 @@ private void loadCityCoordinates() {
 					}
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 					}
@@ -2705,6 +2786,7 @@ private void loadCityCoordinates() {
 					}
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 					}
@@ -2747,6 +2829,7 @@ private void loadCityCoordinates() {
 					}
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 					}
@@ -2788,6 +2871,7 @@ private void loadCityCoordinates() {
 					}
 					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1) {
 						GameState.currentEvent.add("Too Broke");
+						selectRandomTooBrokeImage();
 						repaint();
 						return;
 					}
@@ -3035,25 +3119,24 @@ private void loadCityCoordinates() {
 						PowerPlant discarded = discardPPs.remove(ppIdx);
 						GameState.discardPile.add(discarded);
 						
+						// Add the new power plant they won (don't call buyPowerPlant again—they already won it in the auction)
+						discardPlayer.getPowerPlants().add(GameState.auctionedPowerPlant);
 						
-						// Add the new power plant they won
-						discardPlayer.buyPowerPlant(GameState.auctionedPowerPlant);
-
-							// Move resources from the discarded power plant to any valid remaining plants
-							ArrayList<Resource> discardedResources = new ArrayList<>(discarded.getCurrentResources());
-							GameState.resourcesToAdd.addAll(discardedResources);
-							discarded.getCurrentResources().clear();
-							
-							if (!GameState.resourcesToAdd.isEmpty()) {
+						// Move resources from the discarded power plant to any valid remaining plants
+						ArrayList<Resource> discardedResources = new ArrayList<>(discarded.getCurrentResources());
+						GameState.resourcesToAdd.addAll(discardedResources);
+						discarded.getCurrentResources().clear();
+						
+						if (!GameState.resourcesToAdd.isEmpty()) {
+							GameState.selectedResourceForAddition = GameState.resourcesToAdd.removeFirst();
+							while(!discardPlayer.canAddResource(GameState.selectedResourceForAddition, 1)) {
 								GameState.selectedResourceForAddition = GameState.resourcesToAdd.removeFirst();
-								while(!discardPlayer.canAddResource(GameState.selectedResourceForAddition, 1)) {
-									GameState.selectedResourceForAddition = GameState.resourcesToAdd.removeFirst();
-								}
-								GameState.currentEvent.removeLast();
-								GameState.currentEvent.add("Select Resource");
-								repaint();
-								return;
 							}
+							GameState.currentEvent.removeLast();
+							GameState.currentEvent.add("Select Resource");
+							repaint();
+							return;
+						}
 						
 						// Remove this power plant from market and add a new one
 						int marketIndex = 0;
@@ -3074,9 +3157,9 @@ private void loadCityCoordinates() {
 						// Reset all players' auction states for next round
 						for(Player p : GameState.players) {
 							if(p.getInAuction()) {
-							p.setHasPassed(false);
-							p.setBid(0);
-							p.setGhostBid(0);
+								p.setHasPassed(false);
+								p.setBid(0);
+								p.setGhostBid(0);
 							}
 						}
 						
@@ -3088,17 +3171,17 @@ private void loadCityCoordinates() {
 						// Check if auction is done
 						if(GameState.playerOrderInAuction.size()==1) {
 							System.out.println("Auction complete - all players have power plants");
-							
 							GameState.currentEvent.add("Buy Powerplant");
 						} else {
-							if(GameState.playerOrderInAuction.size()==0)
+							if(GameState.playerOrderInAuction.size()==0) {
+								repaint();
 								return;
+							}
 							// Continue to next auction round
 							GameState.auctionPlayerIndex = 0;
-							GameState.minBid = 0;
-							
-							
+							GameState.minBid = GameState.auctionedPowerPlant.getPrice() - 1;
 							GameState.currentEvent.add("Pick Powerplant");
+							GameState.continueAuction();
 						}
 						
 						repaint();
@@ -3173,13 +3256,12 @@ private void loadCityCoordinates() {
 										triggerInvalidClickEvent();
 										repaint();
 										return;
-									} else {
-										GameState.currentEvent.add("Too Broke");
-										repaint();
-										return;
-									}
-
 								} else {
+									GameState.currentEvent.add("Too Broke");
+									selectRandomTooBrokeImage();
+									repaint();
+									return;
+								}								} else {
 									System.out.println(resourceTypes[r] + " is sold out");
 								}
 							}
@@ -3241,8 +3323,10 @@ private void loadCityCoordinates() {
 								return;
 							}
 							GameState.auctionPlayerIndex = 0;
-							GameState.minBid = 0;
+							GameState.minBid = GameState.auctionedPowerPlant.getPrice() - 1;
 							GameState.currentEvent.add("Pick Powerplant");
+							// Properly continue the auction with remaining players
+							GameState.continueAuction();
 						}
 						repaint();
 						return;
@@ -3405,6 +3489,7 @@ private void loadCityCoordinates() {
 								} else {
 									// Player doesn't have enough elektro - show Too Broke screen
 									GameState.currentEvent.add("Too Broke");
+									selectRandomTooBrokeImage();
 								}
 						}
 					}

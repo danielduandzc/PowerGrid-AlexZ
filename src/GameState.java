@@ -338,7 +338,9 @@ public class GameState{
                     currentEvent.add("Discard Powerplant");
                     return;
                 }
-                winner.buyPowerPlant(auctionedPowerPlant);
+                // Charge the winner their actual bid amount (minBid), not the powerplant face value
+                winner.getPowerPlants().add(auctionedPowerPlant);
+                winner.addElektro(-minBid);
                 
                 // Remove this power plant from market and add a new one
                 int marketIndex = 0;
