@@ -323,14 +323,18 @@ public class GameState{
                 if(winner.getPowerPlants().size() >= 3) {
                     // If they already have 3 power plants, they must choose one to discard
                     // Store which player needs to discard for the UI to handle
+                    int actualWinnerIndex = playerOrderInAuction.get(winnerIndex);
                     for(int i=0;i<playerOrder.length;i++) {
-                        if(playerOrder[i]-1==winnerIndex) {
+                        if(playerOrder[i]-1==actualWinnerIndex) {
                             winnerIndex=i;
                             break;
                         }
                     }
+                
                    
                     currentPlayerIndex=winnerIndex;
+                    winnerIndex=playerOrderInAuction.indexOf(playerOrder[currentPlayerIndex]-1);
+                    System.out.println("Player " + (playerOrder[currentPlayerIndex]) + " Player "+playerOrderInAuction.get(winnerIndex));
                     currentEvent.add("Discard Powerplant");
                     return;
                 }

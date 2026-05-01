@@ -67,6 +67,21 @@ private void loadCityCoordinates() {
 
 }
 	private boolean hasLoadedCoords=false;
+
+	private void selectRandomInvalidImage() {
+		if (invalidClickImages != null && invalidClickImages.length > 0) {
+			currentInvalidImage = invalidClickImages[random.nextInt(invalidClickImages.length)];
+		} else {
+			currentInvalidImage = son;
+		}
+	}
+
+	private void triggerInvalidClickEvent() {
+		if (GameState.currentEvent.isEmpty() || !GameState.currentEvent.getLast().equals("Invalid Click")) {
+			GameState.currentEvent.add("Invalid Click");
+			selectRandomInvalidImage();
+		}
+	}
 	private int screenNum = 0; // 0 = title, 1 = instructions, 2 = game 
 	public static int numMouseClicks = 0;
 	private Graphics g;
@@ -80,13 +95,76 @@ private void loadCityCoordinates() {
 	rules6, rules7, rules8, rules9, rules10, rules11, rules12, rulesBG, menu, resourceSummary;
 	private BufferedImage pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15, pp16, pp17, pp18,
 	pp19, pp20, pp21, pp22, pp23, pp24, pp25, pp26, pp27, pp28, pp29, pp30, pp31, pp32, pp33, pp34, pp35, pp36, pp37, pp38, pp39, pp40,
-	pp42, pp44, pp46, pp50, step3Card, son;
+	pp42, pp44, pp46, pp50, step3Card;
+	//Here are the GEEKED ass images
+	private BufferedImage son, britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow;
+	private BufferedImage[] invalidClickImages;
+	private BufferedImage currentInvalidImage;
+	private final Random random = new Random();
+	// Invalid Click button coordinates
+	private int invalidClickBtnX, invalidClickBtnY, invalidClickBtnW, invalidClickBtnH;
 	public InitialPanel() {
 		
 		//Load all images
 		try{
 			// Try loading from resources with null checks
 			InputStream is;
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/British dog.jpeg");
+			if(is == null) is = new java.io.FileInputStream("/resources/British dog.jpeg");
+			britDog = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/cat meme.jpeg");
+			if(is == null) is = new java.io.FileInputStream("/resources/cat meme.jpeg");
+			catMeme = ImageIO.read(is);
+
+		is= PowerGridFrame.class.getResourceAsStream("/resources/Does he know.jpeg");
+		if(is == null) is = new java.io.FileInputStream("/resources/Does he know.jpeg");
+		doesHeKnow = ImageIO.read(is);			is= PowerGridFrame.class.getResourceAsStream("/resources/Dolg.jpeg");
+			if(is == null) is = new java.io.FileInputStream("/resources/Dolg.jpeg");
+			Dolg = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/folk-meme.png");
+			if(is == null) is = new java.io.FileInputStream("/resources/folk-meme.png");
+			folk = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/hey twin.jpeg");
+			if(is == null) is = new java.io.FileInputStream("/resources/hey twin.jpeg");
+			heyTwin = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/I guess bro.jpeg");
+			if(is == null) is = new java.io.FileInputStream("/resources/I guess bro.jpeg");
+			iGuessBro = ImageIO.read(is);
+			
+
+		is= PowerGridFrame.class.getResourceAsStream("/resources/Last one.png");
+		if(is == null) is = new java.io.FileInputStream("/resources/Last one.png");
+		lastOne = ImageIO.read(is);			is= PowerGridFrame.class.getResourceAsStream("/resources/Simpsons laughing.png");
+			if(is == null) is = new java.io.FileInputStream("/resources/Simpsons laughing.png");
+			simpsons = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/son-son-meme.png");
+			if(is == null) is = new java.io.FileInputStream("/resources/son-son-meme.png");
+			sonSon = ImageIO.read(is);
+
+		is= PowerGridFrame.class.getResourceAsStream("/resources/Sonionite (4).jpg");
+		if(is == null) is = new java.io.FileInputStream("/resources/Sonionite (4).jpg");
+		sonionite = ImageIO.read(is);			is= PowerGridFrame.class.getResourceAsStream("/resources/Tom pointing.jpeg");
+			if(is == null) is = new java.io.FileInputStream("/resources/Tom pointing.jpeg");
+			tomPointing = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/watches.png");
+			if(is == null) is = new java.io.FileInputStream("/resources/watches.png");
+			watches = ImageIO.read(is);
+
+			is= PowerGridFrame.class.getResourceAsStream("/resources/Why would you do that.png");
+			if(is == null) is = new java.io.FileInputStream("/resources/Why would you do that.png");
+			whyWouldYou = ImageIO.read(is);
+
+		is= PowerGridFrame.class.getResourceAsStream("/resources/Wiki how.jpg");
+		if(is == null) is = new java.io.FileInputStream("/resources/Wiki how.jpg");
+		wikiHow = ImageIO.read(is);			invalidClickImages = new BufferedImage[] { britDog, catMeme, doesHeKnow, Dolg, folk, heyTwin, iGuessBro, lastOne, simpsons, sonSon, sonionite, tomPointing, watches, whyWouldYou, wikiHow };
+
 			is = PowerGridFrame.class.getResourceAsStream("/resources/Too Broke.png");
 			if(is == null) is = new java.io.FileInputStream("resources/Too Broke.png");
 			son = ImageIO.read(is);
@@ -685,10 +763,11 @@ private void loadCityCoordinates() {
 				Font discardFontSmall = Main.customFont.deriveFont(Font.BOLD, 20f);
 				g.setFont(discardFontLarge);
 				g.setColor(Color.BLACK);
-				g.drawString("Player " + (GameState.currentPlayerIndex + 1) + " - Discard a Power Plant", 100, 100);
-				
-				// Display player's powerplants with images
-				 discardPlayer = GameState.players[GameState.currentPlayerIndex];
+					int discardPlayerIndex = GameState.playerOrder[GameState.currentPlayerIndex] - 1;
+					g.drawString("Player " + GameState.playerOrder[GameState.currentPlayerIndex] + " - Discard a Power Plant", 100, 100);
+					
+					// Display player's powerplants with images
+					discardPlayer = GameState.players[discardPlayerIndex];
 				 discardPPs = discardPlayer.getPowerPlants();
 				
 				g.setFont(discardFontSmall);
@@ -1056,6 +1135,36 @@ private void loadCityCoordinates() {
 				g.setFont(citiesFontLarge);
 				g.setColor(Color.BLACK);
 				g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]), 100, 100);
+				// Draw player's color as a small house icon (or colored square fallback)
+				Player headerPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+				String headerPlayerColorStr = headerPlayer.getColor();
+				int colorIconX = 100 + 220; // position to the right of the "Player #" text
+				int colorIconY = 70;
+				int colorIconSize = 48;
+				BufferedImage colorIcon = null;
+				switch(headerPlayerColorStr) {
+					case "Red": colorIcon = redHouse; break;
+					case "Yellow": colorIcon = yellowHouse; break;
+					case "Green": colorIcon = greenHouse; break;
+					case "Blue": colorIcon = blueHouse; break;
+					case "Purple": colorIcon = purpleHouse; break;
+					case "White": colorIcon = whiteHouse; break;
+					default: colorIcon = null; break;
+				}
+				if(colorIcon != null) {
+					g.drawImage(colorIcon, colorIconX, colorIconY, colorIconSize, colorIconSize, this);
+				} else {
+					Color fill = getColorFromString(headerPlayerColorStr);
+					g.setColor(fill);
+					g.fillRect(colorIconX, colorIconY, colorIconSize, colorIconSize);
+					g.setColor(Color.BLACK);
+					((Graphics2D)g).setStroke(new BasicStroke(2));
+					((Graphics2D)g).drawRect(colorIconX, colorIconY, colorIconSize, colorIconSize);
+				}
+				// Draw the color name label
+				g.setFont(citiesFontSmall);
+				g.setColor(Color.BLACK);
+				g.drawString("(" + headerPlayerColorStr + ")", colorIconX + colorIconSize + 8, colorIconY + colorIconSize/2 + 6);
 				g.drawString("Buy Cities", 100, 150);
 				// g.drawString("Player " + (GameState.playerOrder[GameState.currentPlayerIndex]) + " - Buy Resources", 100, 100);
 				
@@ -1142,7 +1251,58 @@ private void loadCityCoordinates() {
 			}
 			// Click to return to Buy Cities
 			break;
-			case "Bureaucracy":
+		case "Invalid Click": {
+			// Ensure we always have an image to show (fallback to "son")
+			if (currentInvalidImage == null) {
+				currentInvalidImage = son;
+			}
+			g.drawImage(gameBackground, 0, 0, getWidth(), getHeight(), this);
+			// Destination square size (big but constrained to panel)
+			int dstSize = (int)Math.min(getWidth() * 0.66, getHeight() * 0.66);
+			int imgX = (getWidth() - dstSize) / 2;
+			int imgY = Math.max(40, (getHeight() - dstSize) / 2 - 20);
+			// Stretch the image to a square (do not crop)
+			g.drawImage(currentInvalidImage, imgX, imgY, dstSize, dstSize, this);
+
+			// Draw title and helper text consistently below the image
+			g.setColor(Color.WHITE);
+			g.setFont(Main.customFont.deriveFont(Font.BOLD, 34f));
+			String title = "You are barred from clicking there.";
+			FontMetrics titleFm = g.getFontMetrics();
+			int titleW = titleFm.stringWidth(title);
+			int titleY = imgY + dstSize + 24;
+			g.setColor(Color.BLACK);
+			g.drawString(title, (getWidth() - titleW) / 2 + 2, titleY + 2);
+			g.setColor(Color.WHITE);
+			g.drawString(title, (getWidth() - titleW) / 2, titleY);
+
+			String[] options = {""};
+			String help = options[random.nextInt(options.length)];
+			int helpW = g.getFontMetrics().stringWidth(help);
+			g.setColor(Color.WHITE);
+			g.drawString(help, (getWidth() - helpW) / 2, titleY + 36);
+
+			// Draw "I understand" button (always shown and coordinates stored)
+			int btnY = titleY + 32;
+			int btnW = Math.min(320, getWidth() / 3);
+			int btnH = 56;
+			int btnX = (getWidth() - btnW) / 2;
+			invalidClickBtnX = btnX;
+			invalidClickBtnY = btnY;
+			invalidClickBtnW = btnW;
+			invalidClickBtnH = btnH;
+			g.setColor(new Color(60, 60, 60, 220));
+			g.fillRoundRect(btnX, btnY, btnW, btnH, 8, 8);
+			((Graphics2D) g).setStroke(new BasicStroke(3));
+			g.setColor(Color.WHITE);
+			g.drawRoundRect(btnX, btnY, btnW, btnH, 8, 8);
+			g.setFont(Main.customFont.deriveFont(Font.BOLD, 22f));
+			String btnText = "I understand";
+			int btnTextW = g.getFontMetrics().stringWidth(btnText);
+			g.drawString(btnText, btnX + (btnW - btnTextW) / 2, btnY + (btnH + 10) / 2);
+			}
+			break;
+		case "Bureaucracy":
 				g.drawImage(gameBackground, 0, 0, 2048, 1152, this);
 				g.drawImage(scoringTrack, 724, 200, 600, 130, this);
 				drawMenu(g);
@@ -1914,31 +2074,32 @@ private void loadCityCoordinates() {
 			Point p = cityCoords.get(name);
 			
 			if (p == null) continue;
-			
-			boolean allowed = GameState.graphOfCity.contains(name);
-			String status = allowed ? "available" : "unavailable";
+					// Determine availability: unavailable only if city not in the current graph.
+					boolean inGraph = GameState.graphOfCity.contains(name);
+					String status = inGraph ? "available" : "unavailable";
 			
 			// Store city data as object array [name, status, x, y, point]
 			cityData.add(new Object[]{name, status, p.x, p.y, p});
 		}
 		
-		// Draw each city based on its status
+		// Draw each city: always draw occupying players' colored sectors first,
+		// then overlay an X only for cities that are not in the current graph.
 		for (Object[] city : cityData) {
 			String name = (String) city[0];
 			String status = (String) city[1];
 			int x = (int) city[2];
 			int y = (int) city[3];
 			Point p = (Point) city[4];
-			
+
+			// Always show which players occupy the city
+			drawCitySectors(g, name, p);
+
+			// If the city is not part of the current graph, draw an X over it
 			if (status.equals("unavailable")) {
-				// Draw red X for unavailable cities
 				g2d.setStroke(new BasicStroke(6));
 				g2d.setColor(Color.RED);
 				g2d.drawLine(x - 20, y - 20, x + 20, y + 20);
 				g2d.drawLine(x + 20, y - 20, x - 20, y + 20);
-			} else {
-				// Draw sectors for available cities
-				drawCitySectors(g, name, p);
 			}
 		}
 	}
@@ -2239,15 +2400,26 @@ private void loadCityCoordinates() {
 				repaint();
 				break;
 			case "Zone Selection":
-				// Define zone adjacencies: 0=Teal, 1=Brown, 2=Yellow, 3=Red, 4=Blue, 5=Purple
+				// Define zone adjacencies: Actual painted order is:
+				// 0=Teal, 1=Brown, 2=Red, 3=Yellow, 4=Blue, 5=Purple
+				// Build symmetric adjacency matrix for robust zone selection
 				int[][] zoneAdjacencies = {
-					{1, 2, 3},           // 0 (Teal) adjacent to Brown, Yellow, Red
-					{0, 2},           // 1 (Brown) adjacent to Teal, Yellow, Red
-					{0, 1, 3, 4, 5},     // 2 (Yellow) adjacent to Teal, Brown, Red, Blue, Purple
-					{0, 2, 4},           // 3 (Red) adjacent to Teal, Yellow, Blue
-					{2, 3, 5},           // 4 (Blue) adjacent to Yellow, Red, Purple
-					{2, 4}               // 5 (Purple) adjacent to Yellow, Blue
+					{1, 2},              // 0 (Teal) adjacent to Brown, Red
+					{0, 2, 3},           // 1 (Brown) adjacent to Teal, Red, Yellow
+					{0, 1, 3, 4},        // 2 (Red) adjacent to Teal, Brown, Yellow, Blue
+					{1, 2, 4, 5},        // 3 (Yellow) adjacent to Brown, Red, Blue, Purple
+					{2, 3, 5},           // 4 (Blue) adjacent to Red, Yellow, Purple
+					{3, 4}               // 5 (Purple) adjacent to Yellow, Blue
 				};
+
+				// Create symmetric adjacency booleans for robust checks
+				boolean[][] adj = new boolean[6][6];
+				for (int i = 0; i < zoneAdjacencies.length; i++) {
+					for (int j : zoneAdjacencies[i]) {
+						adj[i][j] = true;
+						adj[j][i] = true;
+					}
+				}
 				
 				// Check if any zone has been selected
 				boolean anyZoneSelected = false;
@@ -2269,25 +2441,40 @@ private void loadCityCoordinates() {
 					else if(y >= 650 && y <= 725) clickedZone = 5;
 				}
 				
-				// Check if the clicked zone can be selected
-				boolean canSelectZone = false;
-				if(clickedZone >= 0 && !GameState.isZoneSelected[clickedZone]) {
-					if(!anyZoneSelected) {
-						// First zone can always be selected
-						canSelectZone = true;
+				// If a zone square was clicked, validate selection and show "nope" when invalid
+				if (clickedZone >= 0) {
+					// If the zone is already selected, show Invalid Click
+					if (GameState.isZoneSelected[clickedZone]) {
+						triggerInvalidClickEvent();
+						repaint();
+						return;
+					}
+					// Determine if the clicked zone can be selected (adjacency rules)
+					boolean canSelectZone = false;
+					if (!anyZoneSelected) {
+						canSelectZone = true; // first pick can be any zone
 					} else {
-						// Check if clicked zone is adjacent to any selected zone
-						for(int adj : zoneAdjacencies[clickedZone]) {
-							if(GameState.isZoneSelected[adj]) {
+						// Check if clickedZone is adjacent (in either direction) to any selected zone
+						System.out.println("[ZONE DEBUG] Clicked zone: " + clickedZone + ", Selected zones: " + java.util.Arrays.toString(GameState.isZoneSelected));
+						for (int i = 0; i < 6; i++) {
+							if (!GameState.isZoneSelected[i]) continue;
+							System.out.println("[ZONE DEBUG] Checking adj[" + clickedZone + "][" + i + "] = " + adj[clickedZone][i]);
+							if (adj[clickedZone][i]) {
 								canSelectZone = true;
+								System.out.println("[ZONE DEBUG] Adjacent! canSelectZone = true");
 								break;
 							}
 						}
+						if (!canSelectZone) System.out.println("[ZONE DEBUG] NOT adjacent to any selected zone!");
 					}
-					
-					if(canSelectZone) {
+					if (canSelectZone) {
 						GameState.isZoneSelected[clickedZone] = true;
 						GameState.currentPlayerIndex++;
+					} else {
+						// Click was on a zone but selection is not allowed -> show Invalid Click
+						triggerInvalidClickEvent();
+						repaint();
+						return;
 					}
 				} else if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
 					GameState.currentEvent.add("Menu");
@@ -2323,10 +2510,16 @@ private void loadCityCoordinates() {
 				if (y >= 150 && y <= 300) {
 
 				if (x >= 175 && x <= 325) {
-				if(GameState.powerPlantsInMarket.get(0).getPrice() == 51) // Step 3 card cannot be purchased
+				if(GameState.powerPlantsInMarket.get(0).getPrice() == 51) { // Step 3 card cannot be purchased
+					triggerInvalidClickEvent();
+					repaint();
 					return;
-				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
+				}
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
 						return;
+				}
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
 					
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
@@ -2339,10 +2532,16 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 
 			} else if (x >= 375 && x <= 525) {
-				if(GameState.powerPlantsInMarket.get(1).getPrice() == 51) // Step 3 card cannot be purchased
+				if(GameState.powerPlantsInMarket.get(1).getPrice() == 51) { // Step 3 card cannot be purchased
+					triggerInvalidClickEvent();
+					repaint();
 					return;
-				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1)
+				}
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
 						return;
+				}
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -2354,10 +2553,16 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 			
 			} else if (x >= 575 && x <= 725) {
-				if(GameState.powerPlantsInMarket.get(2).getPrice() == 51) // Step 3 card cannot be purchased
+				if(GameState.powerPlantsInMarket.get(2).getPrice() == 51) { // Step 3 card cannot be purchased
+					triggerInvalidClickEvent();
+					repaint();
 					return;
-				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1)
+				}
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
 						return;
+				}
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -2369,10 +2574,16 @@ private void loadCityCoordinates() {
 				GameState.continueAuction();
 
 			} else if (x >= 775 && x <= 925) {
-				if(GameState.powerPlantsInMarket.get(3).getPrice() == 51) // Step 3 card cannot be purchased
+				if(GameState.powerPlantsInMarket.get(3).getPrice() == 51) { // Step 3 card cannot be purchased
+					triggerInvalidClickEvent();
+					repaint();
 					return;
-				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
+				}
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
 						return;
+				}
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -2388,8 +2599,11 @@ private void loadCityCoordinates() {
 		if (GameState.currentStep == 3 && y >= 350 && y <= 500) {
 			if (x >= 175 && x <= 325) {
 				// First Step 3 card (index 4)
-				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(4).getPrice()-1)
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(4).getPrice()-1) {
+					GameState.currentEvent.add("Too Broke");
+					repaint();
 					return;
+				}
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(4);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -2402,8 +2616,11 @@ private void loadCityCoordinates() {
 
 			} else if (x >= 375 && x <= 525) {
 				// Second Step 3 card (index 5)
-				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(5).getPrice()-1)
+				if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(5).getPrice()-1) {
+					GameState.currentEvent.add("Too Broke");
+					repaint();
 					return;
+				}
 				GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(5);
 				GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 				// Automatically make minimum bid and lock it in
@@ -2439,10 +2656,16 @@ private void loadCityCoordinates() {
 				if (y >= 150 && y <= 300) {
 
 				if (x >= 175 && x <= 325) {
-					if(GameState.powerPlantsInMarket.get(0).getPrice() == 51) // Step 3 card cannot be purchased
+					if(GameState.powerPlantsInMarket.get(0).getPrice() == 51) { // Step 3 card cannot be purchased
+						triggerInvalidClickEvent();
+						repaint();
 						return;
-					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1)
+					}
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(0).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
 						return;
+					}
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(0);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -2475,8 +2698,16 @@ private void loadCityCoordinates() {
 				}
 
 				} else if (x >= 375 && x <= 525) {
-					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1)
+					if(GameState.powerPlantsInMarket.get(1).getPrice() == 51) {
+						triggerInvalidClickEvent();
+						repaint();
 						return;
+					}
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(1).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
+						return;
+					}
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(1);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -2509,8 +2740,16 @@ private void loadCityCoordinates() {
 				}
 
 				} else if (x >= 575 && x <= 725) {
-					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1)
+					if(GameState.powerPlantsInMarket.get(2).getPrice() == 51) {
+						triggerInvalidClickEvent();
+						repaint();
 						return;
+					}
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(2).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
+						return;
+					}
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(2);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -2542,8 +2781,16 @@ private void loadCityCoordinates() {
 					GameState.currentStep = 3;
 				}
 				} else if (x >= 775 && x <= 925) {
-					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1)
+					if(GameState.powerPlantsInMarket.get(3).getPrice() == 51) {
+						triggerInvalidClickEvent();
+						repaint();
 						return;
+					}
+					if(GameState.players[GameState.playerOrderInAuction.get(0)].getElektro()<GameState.powerPlantsInMarket.get(3).getPrice()-1) {
+						GameState.currentEvent.add("Too Broke");
+						repaint();
+						return;
+					}
 					GameState.auctionedPowerPlant = GameState.powerPlantsInMarket.get(3);
 					GameState.minBid = GameState.auctionedPowerPlant.getPrice()-1;
 					GameState.players[GameState.playerOrderInAuction.get(0)].setBid(0);
@@ -2682,6 +2929,27 @@ private void loadCityCoordinates() {
 
 				int pIndex = GameState.playerOrderInAuction.get(GameState.auctionPlayerIndex);  
 				Player p = GameState.players[pIndex];
+					int clickedPlayer = -1;
+					for (int pi = 0; pi < coords.length; pi++) {
+						int[] cp = coords[pi];
+						if ((x >= cp[0] && x <= cp[0] + 50) ||
+							(x >= cp[1] && x <= cp[1] + 50) ||
+							(x >= cp[2] && x <= cp[2] + 80) ||
+							(x >= cp[3] && x <= cp[3] + 70)) {
+							clickedPlayer = pi;
+							break;
+						}
+					}
+					if (clickedPlayer != -1) {
+						boolean invalidAuctionClick = clickedPlayer != pIndex ||
+							!GameState.players[clickedPlayer].getInAuction() ||
+							GameState.players[clickedPlayer].getHasPassed();
+						if (invalidAuctionClick) {
+							triggerInvalidClickEvent();
+							repaint();
+							return;
+						}
+					}
 
 				if (!p.getInAuction()) return;
 
@@ -2712,17 +2980,26 @@ private void loadCityCoordinates() {
 				}
 
 				// CONFIRM BID
+				// CONFIRM BID
 				if (x >= c[3] && x <= c[3] + 70) {
 					if (p.getGhostBid() + p.getBid() > GameState.minBid && p.getGhostBid() + p.getBid() <= p.getElektro()) {
-						p.useGhostBid();
-						GameState.continueAuction();
-					}
-				}
-			}else if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
-						GameState.currentEvent.add("Menu");
+						 p.useGhostBid();
+						 GameState.continueAuction();
+					} else {
+						triggerInvalidClickEvent();
 						repaint();
 						return;
+					}
 				}
+						
+				}
+				if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
+					
+					GameState.currentEvent.add("Menu");
+					repaint();
+					return;
+					
+			}
 				
 			
 				repaint();
@@ -2737,7 +3014,8 @@ private void loadCityCoordinates() {
 					
 			}
 				// Handle power plant discard selection
-				Player discardPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
+				int discardPlayerIndex = GameState.playerOrder[GameState.currentPlayerIndex] - 1;
+				Player discardPlayer = GameState.players[discardPlayerIndex];
 				ArrayList<PowerPlant> discardPPs = discardPlayer.getPowerPlants();
 				
 				int discardDisplayXPos = 100;
@@ -2790,7 +3068,7 @@ private void loadCityCoordinates() {
 						}
 						
 						// Remove this player from the auction rotation
-						GameState.playerOrderInAuction.remove((Integer) GameState.currentPlayerIndex);
+						GameState.playerOrderInAuction.remove((Integer) discardPlayerIndex);
 						discardPlayer.setInAuction(false);
 						
 						// Reset all players' auction states for next round
@@ -2889,23 +3167,16 @@ private void loadCityCoordinates() {
 											buyPlayer.addElektro(-price);
 											repaint();
 											return;
-
-											
 										}
 
 									} else if (!buyPlayer.canAddResource(resourceTypes[r], 1)) {
-
-										System.out.println(
-											"Player " + (GameState.currentPlayerIndex + 1) +
-											" does not have capacity for more resources"
-										);
-
+										triggerInvalidClickEvent();
+										repaint();
+										return;
 									} else {
-
-										System.out.println(
-											"Player " + (GameState.currentPlayerIndex + 1) +
-											" does not have enough Elektro"
-										);
+										GameState.currentEvent.add("Too Broke");
+										repaint();
+										return;
 									}
 
 								} else {
@@ -2929,24 +3200,53 @@ private void loadCityCoordinates() {
 				
 				
 				Player selectPlayer = GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1];
-				if(!GameState.resourcesToAdd.isEmpty())
-				if(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1)){
-					while(!selectPlayer.canAddResource(GameState.resourcesToAdd.getLast(), 1)) {
-						GameState.resourcesToAdd.removeLast();
-						if(!GameState.resourcesToAdd.isEmpty()){
-							repaint();
-						}else{
-							GameState.currentEvent.removeLast();
-							GameState.selectedResourceForAddition = null;
-							repaint();
-							break;
+				boolean discardFlow = GameState.currentEvent.contains("Discard Powerplant");
+				if (!GameState.resourcesToAdd.isEmpty()) {
+					GameState.processNextDiscardedResource(selectPlayer);
+					if (GameState.selectedResourceForAddition == null && discardFlow) {
+						GameState.currentEvent.removeLast();
+						GameState.resourcesToAdd.clear();
+						int selectDiscardPlayerIndex = GameState.playerOrder[GameState.currentPlayerIndex] - 1;
+						int marketIndex = 0;
+						while(marketIndex < GameState.powerPlantsInMarket.size() &&
+						      GameState.powerPlantsInMarket.get(marketIndex).getPrice() < GameState.auctionedPowerPlant.getPrice()) {
+							marketIndex++;
 						}
+						GameState.powerPlantsInMarket.remove(marketIndex);
+						if(!GameState.powerPlantDeck.isEmpty()) {
+							GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
+							GameState.powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
+						}
+						GameState.playerOrderInAuction.remove((Integer) selectDiscardPlayerIndex);
+						selectPlayer.setInAuction(false);
+						for(Player p : GameState.players) {
+							if(p.getInAuction()) {
+								p.setHasPassed(false);
+								p.setBid(0);
+								p.setGhostBid(0);
+							}
+						}
+						if(!GameState.currentEvent.isEmpty() && GameState.currentEvent.getLast().equals("Discard Powerplant")) {
+							GameState.currentEvent.removeLast();
+						}
+						if(GameState.playerOrderInAuction.size()==1) {
+							int auctionIndex = GameState.currentEvent.lastIndexOf("Auction");
+							if(auctionIndex != -1) {
+								GameState.currentEvent.remove(auctionIndex);
+							}
+							GameState.currentEvent.add("Buy Powerplant");
+						} else {
+							if(GameState.playerOrderInAuction.size()==0) {
+								repaint();
+								return;
+							}
+							GameState.auctionPlayerIndex = 0;
+							GameState.minBid = 0;
+							GameState.currentEvent.add("Pick Powerplant");
+						}
+						repaint();
+						return;
 					}
-				}
-				boolean doEndingOfDiscard = false;
-				if(GameState.resourcesToAdd.size()==1){
-					doEndingOfDiscard = true;
-					
 				}
 				ArrayList<PowerPlant> selectPlayerPowerPlants = selectPlayer.getPowerPlants();
 				int numPlantsToShow = Math.min(3, selectPlayerPowerPlants.size());
@@ -2994,74 +3294,23 @@ private void loadCityCoordinates() {
 												return;
 											}
 										} else {
-											System.out.println("This power plant cannot use " + GameState.selectedResourceForAddition);
+											// Powerplant cannot use this resource -> show Invalid Click panel
+											triggerInvalidClickEvent();
+											repaint();
+											return;
 										}
-							} else {
-								System.out.println("This power plant is at maximum capacity");
-							}
+									} else {
+										// Powerplant at maximum capacity -> show Invalid Click panel
+										triggerInvalidClickEvent();
+										repaint();
+										return;
+									}
 						}
 					}
-					if(doEndingOfDiscard) {
-				discardPlayer = GameState.players[GameState.currentPlayerIndex];
-				 discardPPs = discardPlayer.getPowerPlants();
-				
-				 discardDisplayXPos = 100;
-				 discardDisplayYPos = 200;
-				 discardImageWidth = 250;
-				 discardImageHeight = 250;
-				 discardSpacing = 310;
-						int marketIndex = 0;
-						while(marketIndex < GameState.powerPlantsInMarket.size() && 
-						      GameState.powerPlantsInMarket.get(marketIndex).getPrice() < GameState.auctionedPowerPlant.getPrice()) {
-							marketIndex++;
-						}
-						GameState.powerPlantsInMarket.remove(marketIndex);
-						if(!GameState.powerPlantDeck.isEmpty()) {
-							GameState.powerPlantsInMarket.add(GameState.powerPlantDeck.remove(GameState.powerPlantDeck.size()-1));
-							GameState.powerPlantsInMarket.sort(Comparator.comparingInt(PowerPlant::getPrice));
-						}
-						
-						// Remove this player from the auction rotation
-						GameState.playerOrderInAuction.remove((Integer) GameState.currentPlayerIndex);
-						discardPlayer.setInAuction(false);
-						
-						// Reset all players' auction states for next round
-						for(Player p : GameState.players) {
-							if(p.getInAuction()) {
-								p.setHasPassed(false);
-								p.setBid(0);
-								p.setGhostBid(0);
-							}
-						}
-						
-						// Remove "Discard Powerplant" event and proceed
-						if(!GameState.currentEvent.isEmpty() && GameState.currentEvent.getLast().equals("Discard Powerplant")) {
-							GameState.currentEvent.removeLast();
-						}
-						
-						// Check if auction is done
-						if(GameState.playerOrderInAuction.size()==1) {
-							System.out.println("Auction complete - all players have power plants");
-							
-							GameState.currentEvent.add("Buy Powerplant");
-						} else {
-							if(GameState.playerOrderInAuction.size()==0)
-								return;
-							// Continue to next auction round
-							GameState.auctionPlayerIndex = 0;
-							GameState.minBid = 0;
-							
-							
-							GameState.currentEvent.add("Pick Powerplant");
-						}
-						
-						repaint();
-						return;
-					}
-				}
-				
-				repaint();
-				break;
+			}
+		
+			repaint();
+			break;
 
 			case "Buy Cities":
 								 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
@@ -3096,23 +3345,35 @@ private void loadCityCoordinates() {
 						String cityName = entry.getKey();
 						Point p = entry.getValue();
 						double dist = Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
-						if (dist <= clickRadius && GameState.graphOfCity.contains(cityName)) {
-							GameState.cityNameForPurchase = cityName;
-							System.out.println("Clicked city: " + cityName);
-							break;
+						if (dist <= clickRadius) {
+							if (GameState.graphOfCity.contains(cityName)) {
+								GameState.cityNameForPurchase = cityName;
+								System.out.println("Clicked city: " + cityName);
+								break;
+							} else {
+								// Clicked a city coordinate that is not in the graph -> invalid click
+								triggerInvalidClickEvent();
+								repaint();
+								return;
+							}
 						}
 					}
 					
 					// Only proceed if a city was actually selected
 					if (GameState.cityNameForPurchase != null) {
 						// Check if player already owns a sector in this city
-						if(countPlayerSectorsInCity(GameState.cityNameForPurchase) > 0) {
-							System.out.println("Player already owns a sector in " + GameState.cityNameForPurchase);
-						} else if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0 
-								&& countTotalSectorsInCity(GameState.cityNameForPurchase) > 0) {
-							// Player has no cities and cannot buy in a city that already has a player
-							System.out.println("Player must build their first city in an empty city");
-						} else if(countTotalSectorsInCity(GameState.cityNameForPurchase) <= GameState.currentStep) {
+					if(countPlayerSectorsInCity(GameState.cityNameForPurchase) > 0) {
+						System.out.println("Player already owns a sector in " + GameState.cityNameForPurchase);
+						triggerInvalidClickEvent();
+						repaint();
+						return;
+					} else if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0 && countTotalSectorsInCity(GameState.cityNameForPurchase) > 0) {
+						// Player has no cities and cannot buy in a city that already has a player
+						System.out.println("Player must build their first city in an empty city");
+						triggerInvalidClickEvent();
+						repaint();
+						return;
+					} else if(countTotalSectorsInCity(GameState.cityNameForPurchase) < GameState.currentStep) {
 							// Calculate base price
 							int basePrice;
 							if(GameState.players[GameState.playerOrder[GameState.currentPlayerIndex]-1].getCities().size() == 0){
@@ -3187,14 +3448,28 @@ private void loadCityCoordinates() {
 					repaint();
 					break;
 
-				case "Bureaucracy":
-					 if (x >= 1700 && x <= 1820 && y >= 10 && y <= 120) {
-						
-						GameState.currentEvent.add("Menu");
-						repaint();
-						return;
-						
-				}
+		case "Invalid Click":
+			// Check if "I understand" button clicked
+			if (x >= invalidClickBtnX && x <= invalidClickBtnX + invalidClickBtnW &&
+				y >= invalidClickBtnY && y <= invalidClickBtnY + invalidClickBtnH) {
+				GameState.currentEvent.removeLast();
+				repaint();
+				return;
+			}
+			// Any click on Invalid Click screen returns to previous state
+			GameState.currentEvent.removeLast();
+			repaint();
+			return; // Prevent any other event handlers from executing
+
+		case "Bureaucracy":
+				 // Only check menu button if coordinates are reasonable
+				 if (x >= getWidth() - 120 && x <= getWidth() && y >= 10 && y <= 120) {
+					
+					GameState.currentEvent.add("Menu");
+					repaint();
+					return;
+					
+			}
 					// Any click continues to next phase
 					if(x >= getWidth()/2 - (getWidth()/10) && x <= getWidth()/2 - (getWidth()/10) + getWidth()/5 
 					   && y >= (int)(getHeight() * 0.75) && y <= (int)(getHeight() * 0.75) + (int)(getHeight() * 0.08)) {
@@ -3427,13 +3702,13 @@ private void loadCityCoordinates() {
 					}
 					break;
 				case "Step Info":
-					int retX_si = getWidth() - 240, retY_si = 20, retW_si = 220, retH_si = 50;
 					
+				
 						GameState.currentEvent.removeLast();
 						repaint();
-						
+						return;
 					
-					break;
+					
 					case "Menu":
 					// Recalculate panel and button positions (same as in paint)
 					int panelW = 800;
